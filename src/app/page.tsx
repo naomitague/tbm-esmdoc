@@ -134,8 +134,7 @@ export default function HomePage() {
               Scientific References
             </h3>
             <p className="text-sm text-stone-500">
-              Peer-reviewed literature and code references for each
-              model component.
+              text here.
             </p>
           </div>
         </div>

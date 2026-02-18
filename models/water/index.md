@@ -21,9 +21,9 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 ## Key Processes
 
 ### Evapotranspiration
-- [Transpiration](tbm-RHESSys-Obs-main/models/water/processes/Transpiration.md) - Plant water loss through stomata
-- [Stomatal Conductance](stomatal_Conductance.md) - Regulation of plant water loss
-- [Soil Evaporation](soil_evaporation.md) - Direct evaporation from soil surface
+- [Transpiration](water/processes/Transpiration) - Plant water loss through stomata
+- [Stomatal Conductance](water/processes/Stomatal_Conductance) - Regulation of plant water loss
+- [Soil Evaporation](water/processes/Soil_Evaporation) - Direct evaporation from soil surface
 - Litter Evaporation - Evaporation from litter layer
 - Canopy Evaporation - Interception and evaporation from canopy
 
@@ -36,18 +36,18 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 
 ## Key Parameters
 
-- [Field Capacity](Field_Capacity.md) - Soil water holding capacity
-- [Rooting Depth](Rooting_Depth.md) - Plant root extent
-- [Wilting Point](tbm-RHESSys-Obs-main/models/water/parameters/Psi_Wilt.md) - Minimum plant-accessible water
-- [Hydraulic Conductivity](parameters/saturated_hydraulic_conductivity) - Soil water transmission
-- [Water Storage Capacity](Root_Water_Storage_Capacity.md) - Available water for plants
+- [Field Capacity](water/parameters/Field_Capacity) - Soil water holding capacity
+- [Rooting Depth](water/parameters/Rooting_Depth) - Plant root extent
+- [Wilting Point](water/parameters/Psi_Wilt) - Minimum plant-accessible water
+- [Hydraulic Conductivity](water/parameters/saturated_hydraulic_conductivity) - Soil water transmission
+- [Water Storage Capacity](water/Root_Water_Storage_Capacity) - Available water for plants
 
 ## Key Observations/Outputs
 
-- [Transpiration](tbm-RHESSys-Obs-main/models/water/observations/Transpiration.md) - Plant water flux
-- [Soil Moisture](Soil_Moisture.md) - Water content in soil
-- [Evapotranspiration](ET.md) - Total water flux to atmosphere
-- [Water Table Depth](Water_Table_Depth.md) - Groundwater level
+- [Transpiration](water/observations/Transpiration) - Plant water flux
+- [Soil Moisture](water/observations/Soil_Moisture) - Water content in soil
+- [Evapotranspiration](water/observations/ET) - Total water flux to atmosphere
+- [Water Table Depth](water/observations/Water_Table_Depth) - Groundwater level
 
 ## Model Inputs
 
