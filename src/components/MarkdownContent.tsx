@@ -2,8 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 import { remark } from 'remark';
-import html from 'remark-html';
+
 import gfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkRehype from 'remark-rehype';
+import rehypeKatex from 'rehype-katex';
+import rehypeStringify from 'rehype-stringify';
+import 'katex/dist/katex.min.css';
 
 interface MarkdownContentProps {
   content: string;
@@ -18,9 +23,12 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
 
       try {
         const processed = await remark()
-          .use(gfm)
-          .use(html, { sanitize: false })
-          .process(content);
+  .use(gfm)
+  .use(remarkMath)        // enables $...$ and $$...$$
+  .use(remarkRehype)      // convert Markdown AST → HTML AST
+  .use(rehypeKatex)       // render LaTeX math
+  .use(rehypeStringify)   // convert HTML AST → string
+  .process(content);
 
         let htmlString = processed.toString();
 
