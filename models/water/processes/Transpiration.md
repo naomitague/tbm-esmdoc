@@ -13,19 +13,20 @@ Scaling from leaf transpiration to tree to stand requires making assumptions abo
 Penman-Monteith equation
 
 # Equation as used in target ESM
-$E = \frac{\Delta (R_n - G) + \rho_a c_p \text{VPD} / r_a}{\Delta + \gamma (1 + r_s/r_a)} \]$
+
+$$ E = \frac{\Delta (R_n - G) + \rho_a c_p \text{VPD} / r_a}{\Delta + \gamma (1 + r_s/r_a)}  $$
 
 Where:
-- \( E \): transpiration (mm/day)
-- \( \Delta \): slope of saturation vapor pressure curve
-- \( R_n \): net radiation
-- \( G \): soil heat flux (often 0 for daily timestep)
-- \( \rho_a \): air density
-- \( c_p \): specific heat of air
+- $ E $: transpiration 
+- $ \Delta $: slope of saturation vapor pressure curve
+- $ R_n $: net radiation
+- $ G $: soil heat flux (often 0 for daily timestep)
+- $ \rho_a $: air density
+- $ c_p $: specific heat of air
 - VPD: vapor pressure deficit
-- \( r_a \): aerodynamic resistance
-- [[process_stomatal_conductance]]\( r_s \): surface resistance (includes stomatal conductance)
-- \( \gamma \): psychrometric constant
+- $ r_a $: aerodynamic resistance
+- [[process_stomatal_conductance]]$ r_s $: surface resistance (includes stomatal conductance)
+- $ \gamma $: psychrometric constant
 
 #  References
 ## References for model in Target ESM

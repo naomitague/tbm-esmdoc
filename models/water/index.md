@@ -21,7 +21,7 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 ## Key Processes
 
 ### Evapotranspiration
-- [Transpiration](water/processes/Transpiration) - Plant water loss through stomata
+- [Transpiration](water/processes/process_transpiration) - Plant water loss through stomata
 - [Stomatal Conductance](water/processes/Stomatal_Conductance) - Regulation of plant water loss
 - [Soil Evaporation](water/processes/Soil_Evaporation) - Direct evaporation from soil surface
 - Litter Evaporation - Evaporation from litter layer

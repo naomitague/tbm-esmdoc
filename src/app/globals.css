@@ -343,3 +343,24 @@ h1, h2, h3, h4, h5, h6 {
 .badge-overview {
   background-color: #57534e;
 }
+/* Make all KaTeX math a bit larger (inline + display) */
+.katex {
+  font-size: 1.2em; /* scale inline math relative to surrounding text */
+  line-height: 1.1;
+}
+
+/* Make display equations larger and give comfortable spacing */
+.katex-display {
+  font-size: 1.6em; /* larger for display math */
+  margin: 0.8rem 0;
+  display: block;
+  text-align: center;
+}
+
+/* Responsive scaling example (optional) */
+.katex {
+  font-size: clamp(1rem, 1.1rem + 0.8vw, 1.4rem);
+}
+.katex-display {
+  font-size: clamp(1.2rem, 1.6rem + 1vw, 2rem);
+}

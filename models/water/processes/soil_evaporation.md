@@ -9,21 +9,25 @@ Penman-Monteith (modified), with surface resistance based on soil moisture avail
 
 # Equation as used in target ESM
 
-\[
+
+$$
+
 E_{soil} = \frac{\Delta (R_n - G) + \rho_a c_p \frac{VPD}{r_a}}{\Delta + \gamma (1 + \frac{r_s}{r_a})}
-\]
+
+$$
+
 
 Where:
-- \( E_{soil} \): Soil evaporation rate (kg m\(^{-2}\) s\(^{-1}\))
-- \( R_n \): Net radiation at the soil surface (W m\(^{-2}\))
-- \( G \): Ground heat flux (W m\(^{-2}\))
-- \( \rho_a \): Air density (kg m\(^{-3}\))
-- \( c_p \): Specific heat of air (J kg\(^{-1}\) K\(^{-1}\))
-- \( VPD \): Vapor pressure deficit (Pa)
-- \( r_a \): Aerodynamic resistance (s m\(^{-1}\))
-- \( r_s \): Surface (soil) resistance, function of soil moisture (s m\(^{-1}\))
-- \( \Delta \): Slope of saturation vapor pressure curve (Pa K\(^{-1}\))
-- \( \gamma \): Psychrometric constant (Pa K\(^{-1}\))
+- $ E_{soil} $: Soil evaporation rate (kg m$^{-2}$ s$^{-1}$)
+- $ R_n $: Net radiation at the soil surface (W m$^{-2}$)
+- $ G $: Ground heat flux (W m$^{-2}$)
+- $ \rho_a $: Air density (kg m$^{-3}$)
+- $ c_p $: Specific heat of air (J kg$^{-1}$ K$^{-1}$)
+- $ VPD $: Vapor pressure deficit (Pa)
+- $ r_a $: Aerodynamic resistance (s m$^{-1}$)
+- $ r_s $: Surface (soil) resistance, function of soil moisture (s m$^{-1}$)
+- $ \Delta $: Slope of saturation vapor pressure curve (Pa K$^{-1}$)
+- $ \gamma $: Psychrometric constant (Pa K$^{-1}$)
 
 # Literature References
 
@@ -49,7 +53,7 @@ Or, Dani, Peter Lehmann, Ebrahim Shahraeeni, and Nima Shokri. "Advances in soil 
 # Details  from target ESM model code
 ##  Variables
 ### flux variable names
-- `evaporation` (kg m\(^{-2}\) s\(^{-1}\))
+- `evaporation` (kg m$^{-2}$ s$^{-1}$)
 
 ### stores/state variable names
 - `soil_theta`

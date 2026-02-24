@@ -37,7 +37,7 @@ Where:
 
 ## References for model in Target ESM
 
-- Tague, C. & Band, L. (2004). RHESSys: Regional Hydro-Ecologic Simulation System—An Object-Oriented Approach to Spatially Distributed Modeling of Carbon, Water, and Nutrient Cycling. _Earth Interactions_, 8(19), 1-42. [https://doi.org/10.1175/1087-3562(2004)8](https://doi.org/10.1175/1087-3562\(2004\)8)<1:RRHSSO>2.0.CO;2
+- Tague, C. & Band, L. (2004). RHESSys: Regional Hydro-Ecologic Simulation System—An Object-Oriented Approach to Spatially Distributed Modeling of Carbon, Water, and Nutrient Cycling. _Earth Interactions_, 8(19), 1-42. [https://doi.org/10.1175/1087-3562(2004)8](https://doi.org/10.1175/1087-3562$2004$8)<1:RRHSSO>2.0.CO;2
     
 
 ## Alternative Model References
