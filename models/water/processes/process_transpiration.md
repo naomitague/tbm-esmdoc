@@ -1,4 +1,6 @@
- Tags
+Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
+
+# Tags
 process
 
 alias:: [transpiration, plant water loss], T
@@ -9,11 +11,11 @@ Transpiration is the process by which water is transported from the soil by plan
 Scaling from leaf transpiration to tree to stand requires making assumptions about how energy and water availability and diffuse gradients vary through canopies. Response tend to be highly non-linear so simple averaging leads to significant errors. Most models accounts for differential radiation exposure in sunlit and shaded leaves and assume exponential (or other) declines in radiation, windspeed and other diffuse parameters, from the top of canopies to ground surface.
 
 
-# Model Name 
+# Model Name (as implemented in the target ESM if there is a standard name e.g Penman monteith)
 Penman-Monteith equation
 
 # Equation as used in target ESM
-$E = \frac{\Delta (R_n - G) + \rho_a c_p \text{VPD} / r_a}{\Delta + \gamma (1 + r_s/r_a)} \]$
+\[ E = \frac{\Delta (R_n - G) + \rho_a c_p \text{VPD} / r_a}{\Delta + \gamma (1 + r_s/r_a)} \]
 
 Where:
 - \( E \): transpiration (mm/day)
