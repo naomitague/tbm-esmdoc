@@ -2,6 +2,12 @@
 parameter_name: field_capacity
 
 aliases: $\theta$_fc, $\psi$_fc, $\psi$_field_capacity, S_fc
+
+
+status: todo
+
+Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
+
 # If used to create other parameters, list here
 
 # Dynamically computed:  
@@ -100,5 +106,7 @@ Equations used in RHESSys above
 Clapp, Roger B., and George M. Hornberger. "Empirical equations for some soil hydraulic properties." _Water resources research_ 14, no. 4 (1978): 601-604.
 
 Van Genuchten, M. Th, and D. R. Nielsen. "On describing and predicting the hydraulic properties." In _Annales Geophysicae_, vol. 3, no. 5, pp. 615-628. 1985.
+
+
 
 See general references for [[Soil Hydraulic Parameters]]

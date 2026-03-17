@@ -1,7 +1,12 @@
-xz
+
 parameter_name:  Rd
 
 aliases:
+
+status: todo
+Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
+
+tags: [parameter]
 # If used to create other parameters, list here
 [[Root water storage capacity]]
 
@@ -53,8 +58,7 @@ Many models assume that rooting depth is fixed and does not valry through time (
 Dynamic rooting depth models can be linked with carbon
 
 
-## 🌱 Root Depth Estimation from Root Carbon (Arora and Boer, 2003 )
-
+## 🌱 Root Depth Estimation from Root Carbon
 For **trees**:
 $$
 z_{root} = \frac{3.0 \cdot \left( \frac{2.0 \cdot C_{root}}{\rho_{stem}} \right)^{rgd}}{rdp}
@@ -119,15 +123,13 @@ $$
 ## 📚 References
 
 
-
 ### Root depth / carbon relationships
 
+#### Current Model
 Arora, Vivek K., and George J. Boer. "A representation of variable root distribution in dynamic vegetation models." _Earth Interactions_ 7, no. 6 (2003): 1-19.
-
+#### Alternatives
 Niu, Guo‐Yue, Yuan‐Hao Fang, Li‐Ling Chang, Jiming Jin, Hua Yuan, and Xubin Zeng. "Enhancing the Noah‐MP ecosystem response to droughts with an explicit representation of plant water storage supplied by dynamic root water uptake." _Journal of Advances in Modeling Earth Systems_ 12, no. 11 (2020): e2020MS002062.
-
-
-### General Rooting Depth
+### Current related reviews
 Tumber‐Dávila, S. J., Schenk, H. J., Du, E., & Jackson, R. B. (2022). Plant sizes and shapes above and belowground and their interactions with climate. _New Phytologist_, _235_(3), 1032-1056.
 
 Gao, Hongkai, Markus Hrachowitz, Lan Wang-Erlandsson, Fabrizio Fenicia, Qiaojuan Xi, Jianyang Xia, Wei Shao, Ge Sun, and Hubert HG Savenije. "Root zone in the Earth system." _Hydrology and Earth System Sciences_ 28, no. 19 (2024): 4477-4499.

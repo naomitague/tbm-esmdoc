@@ -3,6 +3,9 @@ parameter_name: $S_rmax$, $rootzone.potential_{sat}$
 
 aliases: $S_Q$
 
+status: todo
+Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
+
 tags: [parameter]
 # If used to create other parameters, list here
 

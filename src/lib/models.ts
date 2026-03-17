@@ -170,7 +170,8 @@ function parseProcess(fileContent: string, slug: string, modelSlug: string, fron
       .filter(Boolean);
   };
 
-  const descMatch = fileContent.match(/# # Description\/Conceptual model\s*([\s\S]*?)(?=\n#|$)/);
+  // Accept either "# Description/Conceptual model" or "## Description/Conceptual model" headings
+  const descMatch = fileContent.match(/^(?:#|##)\s*Description\/Conceptual model\s*([\s\S]*?)(?=\n#|$)/m);
   const description = descMatch ? descMatch[1].trim() : frontMatter.description || '';
 
   const modelMatch = fileContent.match(/# Model Name[^\n]*\s*([^\n]+)/);

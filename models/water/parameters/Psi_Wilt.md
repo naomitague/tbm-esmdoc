@@ -3,6 +3,7 @@ parameter_name:  $\psi$ _wilt
 
 aliases: $\psi$_threshold, $\psi$_wilt, $\psi$_wilting, $\psi$_close
 
+Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
 # If used to create other parameters, list here
 
 
