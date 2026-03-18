@@ -2,8 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import { remark } from 'remark';
-import html from 'remark-html';
 import gfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import remarkRehype from 'remark-rehype';
+import rehypeKatex from 'rehype-katex';
+import rehypeStringify from 'rehype-stringify';
 
 interface MarkdownContentProps {
   content: string;
@@ -16,11 +19,19 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     async function processMarkdown() {
       if (!contentRef.current) return;
 
+      // Normalize common LaTeX delimiters used in documentation to remark-math-compatible delimiters
+      const normalizedContent = content
+        .replace(/\\\[\s*([\s\S]*?)\s*\\\]/g, (_, expr) => `$$${expr}$$`)
+        .replace(/\\\(\s*([\s\S]*?)\s*\\\)/g, (_, expr) => `$${expr}$`);
+
       try {
         const processed = await remark()
           .use(gfm)
-          .use(html, { sanitize: false })
-          .process(content);
+          .use(remarkMath)
+          .use(remarkRehype)
+          .use(rehypeKatex)
+          .use(rehypeStringify)
+          .process(normalizedContent);
 
         let htmlString = processed.toString();
 
