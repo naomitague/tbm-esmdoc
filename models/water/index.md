@@ -21,9 +21,8 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 ## Key Processes
 
 ### Evapotranspiration
-- [Transpiration](water/processes/Transpiration) - Plant water loss through stomata
-- [Stomatal Conductance](water/processes/Stomatal_Conductance) - Regulation of plant water loss
-- [Soil Evaporation](water/processes/Soil_Evaporation) - Direct evaporation from soil surface
+- [Transpiration](water/processes/Process_transpiration) - Plant water loss through stomata
+- [Soil Evaporation](water/processes/process_soil_evaporation) - Direct evaporation from soil surface
 - Litter Evaporation - Evaporation from litter layer
 - Canopy Evaporation - Interception and evaporation from canopy
 
@@ -34,20 +33,11 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 - Saturation excess runoff
 - Infiltration excess runoff
 
-## Key Parameters
+## Common Observations/Outputs
 
-- [Field Capacity](water/parameters/Field_Capacity) - Soil water holding capacity
-- [Rooting Depth](water/parameters/Rooting_Depth) - Plant root extent
-- [Wilting Point](water/parameters/Psi_Wilt) - Minimum plant-accessible water
-- [Hydraulic Conductivity](water/parameters/saturated_hydraulic_conductivity) - Soil water transmission
-- [Water Storage Capacity](water/Root_Water_Storage_Capacity) - Available water for plants
-
-## Key Observations/Outputs
-
-- [Transpiration](water/observations/Transpiration) - Plant water flux
-- [Soil Moisture](water/observations/Soil_Moisture) - Water content in soil
-- [Evapotranspiration](water/observations/ET) - Total water flux to atmosphere
-- [Water Table Depth](water/observations/Water_Table_Depth) - Groundwater level
+- [ET](water/observations/output_et) - Plant water flux
+- [Soil Moisture](water/observations/output_soil_moisture) - Water content in soil
+- [Water Table Depth](water/observations/output_water_table_depth) - Groundwater level
 
 ## Model Inputs
 
