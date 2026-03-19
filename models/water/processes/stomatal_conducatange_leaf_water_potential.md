@@ -1,7 +1,7 @@
 # Tags
 process, stomatal conductance, leaf water potential, RHESSys, LWP
 
-
+alias:: [gs-f(LWP)]
 # Description/Conceptual model
 
 Stomatal conductance in RHESSys is influenced by leaf water potential (LWP) through a curve-based multiplier on potential conductance. This represents the physiological decline in stomatal conductance as water stress increases (i.e., as LWP becomes more negative).

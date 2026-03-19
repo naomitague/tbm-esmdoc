@@ -1,7 +1,7 @@
 
-parameter_name: $S_rmax$, $rootzone.potential_{sat}$
+parameter_name: root water storage capacity
 
-aliases: $S_Q$
+aliases: [$S_Q$ $S_rmax$, $rootzone.potential_{sat}$]
 
 tags: [parameter]
 # If used to create other parameters, list here

@@ -1,5 +1,7 @@
 # Tags
-process, soil evaporation, E_s
+process
+
+alias:: [soil_evaporation, E_soil]
 
 # Description/Conceptual Model
 Soil evaporation is computed as part of the energy balance and moisture fluxes. Energy (radiation) fluxes for soil evaporation must often account for the attenuation of radiation by canopy, litter and in some cases snow cover.  Soil moisture controls water availability for evaporatiN but soil texture (as subsurface conductivity/resistivity) can also limit evaporation rates. There is some evidence of a critical soil moisture below which evaporation cannot occur. Soil moisture is often a small component of ET, but in bare soil or recently disturbed vegetated site it can be a significant contributor.

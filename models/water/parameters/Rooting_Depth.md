@@ -1,9 +1,10 @@
-xz
-parameter_name:  Rd
+parameter_name:  rooting depth
 
-aliases:
+aliases: [rd, rooting_depth]
+
+
 # If used to create other parameters, list here
-[[Root water storage capacity]]
+[[Root_water_storage_Capacity]]
 
 
 # Dynamically computed:  

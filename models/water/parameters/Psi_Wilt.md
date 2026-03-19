@@ -1,5 +1,5 @@
 
-parameter_name:  $\psi$ _wilt
+parameter_name:  psi_wilt
 
 aliases: $\psi$_threshold, $\psi$_wilt, $\psi$_wilting, $\psi$_close
 

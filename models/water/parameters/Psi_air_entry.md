@@ -1,5 +1,5 @@
 
-parameter_name: $\psi$_air_entry
+parameter_name: psi_air_entry
 
 aliases:, $\psi$_a, air_entry_pressure
 
