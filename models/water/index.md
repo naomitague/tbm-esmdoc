@@ -17,5 +17,5 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 - Litter evaporation
 - Soil moisture dynamics
 - Groundwater interactions
-
+(place holder for image with clickable links)
 
