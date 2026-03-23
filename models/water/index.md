@@ -10,49 +10,30 @@ scale: [plot, patch, stand]
 
 ## Conceptual Picture of Processes
 
-The water model in RHESSys simulates the complete hydrological cycle at the patch/plot scale, including:
-- Plant water uptake and transpiration
-- Soil evaporation
-- Canopy interception and evaporation
-- Litter evaporation
-- Soil moisture dynamics
-- Groundwater interactions
+{{include:primary-water.md}}
 
-## Key Processes
 
-### Evapotranspiration
-- [Transpiration](water/fluxes/Process_transpiration) - Plant water loss through stomata
-- [Soil Evaporation](water/fluxes/flux_soil_evaporation) - Direct evaporation from soil surface
-- Litter Evaporation - Evaporation from litter layer
-- Canopy Evaporation - Interception and evaporation from canopy
+## Alternative viz
 
-### Water Movement
-- Infiltration - Water entry into soil
-- Drainage - Vertical water movement
-- Lateral flow - Subsurface lateral water movement
-- Saturation excess runoff
-- Infiltration excess runoff
+- show just water fluxes
+- show just water stores
+- show both
+- show parameters
+- show first connections to other stores - e.g LAI, height
+- highlight only fluxes/stores/parameters that have measurement pages
 
-## Common Observations/Outputs
+## Dependencies and Details
 
-- [ET](water/observations/output_et) - Plant water flux
-- [Soil Moisture](water/observations/output_soil_moisture) - Water content in soil
-- [Water Table Depth](water/observations/output_water_table_depth) - Groundwater level
+- show dependencies for any flux or store (hierarchical graphs)
 
-## Model Inputs
+## Theory / papers on what are key controls or how patterns are organized
 
-- Precipitation - Rainfall and snowfall
-- Air temperature - Drives evaporative demand
-- Vapor pressure deficit - Atmospheric moisture gradient
-- Solar radiation - Energy for evaporation
-
-## Connections to Other Models
-
-The water model interacts with:
-- **Carbon Model**: Water stress affects photosynthesis and plant growth
-- **Nitrogen Model**: Water movement transports nutrients
-- **Energy Model**: Evaporation affects surface energy balance
+- user can select from left (fluxes, stores, parameters)
+- user can identify
+    - space (scale, location)
+    - time (scale, location)
+    (these are based on tags)
 
 ## References
 
-- Tague, C.L. and Band, L.E., 2004. RHESSys: Regional Hydro-Ecologic Simulation System—An object-oriented approach to spatially distributed modeling of carbon, water, and nutrient cycling. Earth Interactions, 8(19), pp.1-42.
+search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)

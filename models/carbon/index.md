@@ -8,26 +8,47 @@ scale: [plant, plot, patch]
 
 # Carbon Model Overview
 
-## Conceptual Overview
+## Conceptual Picture of Processes
 
-## Key Processes
+{{include:primary-carbon.md}}
 
-### Carbon Fixation
+## Alternative viz
 
-### Carbon Allocation
-### Carbon Loss
+- show just carbon fluxes
+- show just carbon stores
+- show both
+- show parameters
+- show first connections to other stores - e.g LAI, height
+- highlight only fluxes/stores/parameters that have measurement pages
 
-### Decomposition
+## Dependencies and Details
 
-## Key Parameters
+- show dependencies for any flux or store (hierarchical graphs)
 
-## Key Observations/Outputs
+## Theory / papers on what are key controls or how patterns are organized
 
-## Model Inputs
-
-## Connections to Other Models
+- user can select from left (fluxes, stores, parameters)
+- user can identify
+    - space (scale, location)
+    - time (scale, location)
+    (these are based on tags)
 
 ## References
 
-- Tague, C.L. and Band, L.E., 2004. RHESSys: Regional Hydro-Ecologic Simulation System—An object-oriented approach to spatially distributed modeling of carbon, water, and nutrient cycling.
-- White, M.A., Thornton, P.E., Running, S.W. and Nemani, R.R., 2000. Parameterization and sensitivity analysis of the BIOME–BGC terrestrial ecosystem model.
+search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)
+
+## Dependencies and Details
+
+- show dependencies for any flux or store (hierarchical graphs)
+
+## Theory / papers on what are key controls or how patterns are organized
+
+- user can select from left (fluxes, stores, parameters)
+- user can identify
+    - space (scale, location)
+    - time (scale, location)
+    (these are based on tags)
+
+## References
+
+search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)

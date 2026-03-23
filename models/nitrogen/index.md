@@ -8,15 +8,34 @@ scale: [plot, patch, watershed]
 
 # Nitrogen Model Overview
 
-## Conceptual Overview
+## Conceptual Picture of Processes
 
-## Key Processes
+{{include:primary-nitrogen.md}}
 
-### Nitrogen Inputs
+## Alternative viz
 
-### Plant Uptake
+- show just nitrogen fluxes
+- show just nitrogen stores
+- show both
+- show parameters
+- show first connections to other stores - e.g LAI, height
+- highlight only fluxes/stores/parameters that have measurement pages
 
-### Soil Nitrogen Transformations
+## Dependencies and Details
+
+- show dependencies for any flux or store (hierarchical graphs)
+
+## Theory / papers on what are key controls or how patterns are organized
+
+- user can select from left (fluxes, stores, parameters)
+- user can identify
+    - space (scale, location)
+    - time (scale, location)
+    (these are based on tags)
+
+## References
+
+search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)
 
 ### Nitrogen Losses
 

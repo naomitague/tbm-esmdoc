@@ -30,6 +30,19 @@ export function extractWikiLinks(content: string): string[] {
 }
 
 /**
+ * Process include directives like {{include:path.md}}
+ */
+function processIncludes(content: string, basePath: string): string {
+  return content.replace(/\{\{include:([^\}]+)\}\}/g, (match, includePath) => {
+    const fullPath = path.resolve(basePath, includePath);
+    if (fs.existsSync(fullPath)) {
+      return fs.readFileSync(fullPath, 'utf8');
+    }
+    return match; // Keep the include if file not found
+  });
+}
+
+/**
  * Convert wiki-style links to Next.js links with model context
  */
 export function convertWikiLinksToNextLinks(content: string, modelSlug: string): string {
@@ -124,6 +137,8 @@ export function getModelBySlug(slug: string): ContentMetadata | null {
   const fileContent = fs.readFileSync(modelPath, 'utf8');
   const { data, content } = matter(fileContent);
 
+  const processedContent = processIncludes(content, path.dirname(modelPath));
+
   const metadata: ModelMetadata = {
     slug,
     title: data.title || slug,
@@ -139,7 +154,7 @@ export function getModelBySlug(slug: string): ContentMetadata | null {
   return {
     type: 'model',
     metadata,
-    content: convertWikiLinksToNextLinks(content, slug),
+    content: convertWikiLinksToNextLinks(processedContent, slug),
     model: slug
   };
 }

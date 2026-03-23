@@ -8,16 +8,34 @@ scale: [canopy, plot, patch]
 
 # Energy Model Overview
 
-Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
+## Conceptual Picture of Processes
 
-## Conceptual Overview
+{{include:primary-energy.md}}
 
-The energy model in RHESSys simulates the surface energy balance, radiation transfer through the canopy, and temperature dynamics that control many ecosystem fluxes.
+## Alternative viz
 
-## Key Processes
+- show just energy fluxes
+- show just energy stores
+- show both
+- show parameters
+- show first connections to other stores - e.g LAI, height
+- highlight only fluxes/stores/parameters that have measurement pages
 
-### Radiation Transfer
-- Shortwave radiation absorption
+## Dependencies and Details
+
+- show dependencies for any flux or store (hierarchical graphs)
+
+## Theory / papers on what are key controls or how patterns are organized
+
+- user can select from left (fluxes, stores, parameters)
+- user can identify
+    - space (scale, location)
+    - time (scale, location)
+    (these are based on tags)
+
+## References
+
+search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)
 - Longwave radiation exchange
 - Canopy radiation interception
 - Albedo and reflectance
