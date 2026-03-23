@@ -11,6 +11,61 @@ export function InfoBox({ content }: InfoBoxProps) {
       <div className="infobox mb-6 float-right ml-6 w-80">
         <div className="infobox-title">{metadata.title}</div>
 
+        {metadata.fluxType && (
+          <div className="infobox-row">
+            <div className="infobox-label">Type</div>
+            <div className="text-sm text-stone-700">{metadata.fluxType}</div>
+          </div>
+        )}
+
+        {metadata.cycle && (
+          <div className="infobox-row">
+            <div className="infobox-label">Cycle</div>
+            <div className="text-sm text-stone-700">{metadata.cycle}</div>
+          </div>
+        )}
+
+        {metadata.symbol && (
+          <div className="infobox-row">
+            <div className="infobox-label">Symbol</div>
+            <div className="text-sm text-stone-700">{metadata.symbol}</div>
+          </div>
+        )}
+
+        {metadata.units && (
+          <div className="infobox-row">
+            <div className="infobox-label">Units</div>
+            <div className="text-sm text-stone-700">{metadata.units}</div>
+          </div>
+        )}
+
+        {metadata.typicalRange && (
+          <div className="infobox-row">
+            <div className="infobox-label">Typical Range</div>
+            <div className="text-sm text-stone-700">{metadata.typicalRange}</div>
+          </div>
+        )}
+
+        {metadata.targetESM && (
+          <div className="infobox-row">
+            <div className="infobox-label">Target ESM</div>
+            <div className="text-sm text-stone-700">{metadata.targetESM}</div>
+          </div>
+        )}
+
+        {metadata.dependsOn && metadata.dependsOn.length > 0 && (
+          <div className="infobox-row">
+            <div className="infobox-label">Depends on</div>
+            <div>
+              <ul className="text-sm text-stone-700 list-disc list-inside">
+                {metadata.dependsOn.map(item => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {metadata.modelName && (
           <div className="infobox-row">
             <div className="infobox-label">Model</div>

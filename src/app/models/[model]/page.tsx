@@ -7,8 +7,12 @@ import { ModelMetadata, ContentMetadata } from '@/types';
 import { Droplets, Sprout, FlaskConical, Sun, BarChart3 } from 'lucide-react';
 
 function getTitle(item: ContentMetadata): string {
-  if ('parameterName' in item.metadata) return item.metadata.parameterName;
-  return (item.metadata as { title: string }).title;
+  const meta = item.metadata as any;
+
+  if (meta.parameterName) return meta.parameterName;
+  if (meta.name) return meta.name;
+  if (meta.title) return meta.title;
+  return meta.slug || '';
 }
 
 interface PageProps {

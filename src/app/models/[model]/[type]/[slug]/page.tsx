@@ -8,8 +8,12 @@ import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { ContentMetadata } from '@/types';
 
 function getTitle(item: ContentMetadata): string {
-  if ('parameterName' in item.metadata) return item.metadata.parameterName;
-  return (item.metadata as { title: string }).title;
+  const meta = item.metadata as any;
+
+  if (meta.parameterName) return meta.parameterName;
+  if (meta.name) return meta.name;
+  if (meta.title) return meta.title;
+  return meta.slug || '';
 }
 
 interface PageProps {
@@ -70,9 +74,8 @@ export default async function ContentPage({ params }: PageProps) {
 
   const allContent = getAllModelContent(modelSlug);
 
-  const displayTitle = 'parameterName' in content.metadata
-    ? content.metadata.parameterName
-    : (content.metadata as { title: string }).title;
+  const meta = content.metadata as any;
+  const displayTitle = meta.parameterName || meta.name || meta.title || meta.slug || '';
 
   return (
     <div className="min-h-screen bg-stone-50">

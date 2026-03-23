@@ -14,6 +14,13 @@ export interface FluxMetadata {
   modelName?: string;
   equation?: string;
   references?: string[];
+  fluxType?: string;
+  cycle?: string;
+  symbol?: string;
+  units?: string;
+  typicalRange?: string;
+  targetESM?: string;
+  dependsOn?: string[];
   variables: {
     flux: string[];
     state: string[];

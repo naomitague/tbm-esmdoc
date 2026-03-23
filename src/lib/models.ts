@@ -41,7 +41,10 @@ function processIncludes(content: string, basePath: string): string {
     return match; // Keep the include if file not found
   });
 }
-
+function getNameFromContent(content: string): string | undefined {
+  const match = content.match(/^name:\s*(.+)$/im);
+  return match ? match[1].trim() : undefined;
+}
 /**
  * Convert wiki-style links to Next.js links with model context
  */
@@ -192,13 +195,38 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
   const modelMatch = fileContent.match(/# Model Name[^\n]*\s*([^\n]+)/);
   const modelName = modelMatch ? modelMatch[1].trim() : undefined;
 
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
+  const typeMatch = fileContent.match(/^type:\s*(.+)$/im);
+  const cycleMatch = fileContent.match(/^cycle:\s*(.+)$/im);
+  const symbolMatch = fileContent.match(/^symbol:\s*(.+)$/im);
+  const unitsMatch = fileContent.match(/^units:\s*(.+)$/im);
+  const typicalRangeMatch = fileContent.match(/^typical_range:\s*(.+)$/im);
+  const targetEsmMatch = fileContent.match(/^Target ESM:\s*(.+)$/im);
+
+  const dependsOnMatch = fileContent.match(/^depends_on:\s*([\s\S]*?)(?=\n^[A-Za-z0-9_-]+\s*\:|\n#|$)/im);
+  const dependsOn = dependsOnMatch
+    ? dependsOnMatch[1]
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.startsWith('-'))
+        .map(line => line.replace(/^[-\s]*/g, '').trim())
+        .filter(Boolean)
+    : [];
+
   const aliasMatch = fileContent.match(/alias::\s*\[([^\]]+)\]/);
-  const title = frontMatter.title || (aliasMatch ? aliasMatch[1].split(',')[0].trim() : slug.replace(/_/g, ' '));
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || (aliasMatch ? aliasMatch[1].split(',')[0].trim() : slug.replace(/_/g, ' '));
 
   return {
     slug,
     title,
     model: modelSlug,
+    fluxType: frontMatter.type || (typeMatch ? typeMatch[1].trim() : undefined),
+    cycle: frontMatter.cycle || (cycleMatch ? cycleMatch[1].trim() : undefined),
+    symbol: frontMatter.symbol || (symbolMatch ? symbolMatch[1].trim() : undefined),
+    units: frontMatter.units || (unitsMatch ? unitsMatch[1].trim() : undefined),
+    typicalRange: frontMatter.typical_range || (typicalRangeMatch ? typicalRangeMatch[1].trim() : undefined),
+    targetESM: frontMatter['Target ESM'] || (targetEsmMatch ? targetEsmMatch[1].trim() : undefined),
+    dependsOn,
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
     tags: frontMatter.tags || ['flux'],
     description,
@@ -225,6 +253,7 @@ function parseParameter(fileContent: string, slug: string, modelSlug: string, fr
   }));
 
   const paramNameMatch = fileContent.match(/parameter_name:\s*([^\n]+)/);
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
   const dynamicMatch = fileContent.match(/# Dynamically computed:\s*\n(Yes|No)/i);
   const classMatch = fileContent.match(/parameter_classification\s*\[([^\]]*)\]/);
   const timeScaleMatch = fileContent.match(/parameter_time_scale:\s*([^\n]+)/);
@@ -241,7 +270,7 @@ function parseParameter(fileContent: string, slug: string, modelSlug: string, fr
 
   return {
     slug,
-    parameterName: frontMatter.title || (paramNameMatch ? paramNameMatch[1].trim() : slug),
+    parameterName: frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || (paramNameMatch ? paramNameMatch[1].trim() : slug),
     model: modelSlug,
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['parameter'],
@@ -273,7 +302,8 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
   const descMatch = fileContent.match(/# Description\s*([\s\S]*?)(?=\n#|$)/);
   const description = descMatch ? descMatch[1].trim() : frontMatter.description || '';
 
-  const title = frontMatter.title || slug.replace(/^output_/, '').replace(/_/g, ' ');
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^output_/, '').replace(/_/g, ' ');
 
   return {
     slug,
@@ -289,6 +319,15 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
 /**
  * Get content from model subdirectory (fluxes, parameters, observations)
  */
+function getDisplayContentFromMarkdown(content: string): string {
+  const headingMatch = content.match(/^\s*#+\s*#*\s*Description(?:\/Conceptual\s*model)?/im);
+  if (!headingMatch) {
+    return content;
+  }
+  const headingIndex = headingMatch.index ?? 0;
+  return content.slice(headingIndex);
+}
+
 export function getModelContent(
   modelSlug: string,
   contentType: 'fluxes' | 'parameters' | 'observations',
@@ -297,6 +336,33 @@ export function getModelContent(
   const filePath = path.join(modelsDirectory, modelSlug, contentType, `${slug}.md`);
 
   if (!fs.existsSync(filePath)) {
+    // fallback: find content by name/alias if slug isn't exact
+    const dirPath = path.join(modelsDirectory, modelSlug, contentType);
+    if (fs.existsSync(dirPath)) {
+      const normalizedQuery = slug.toLowerCase().replace(/[-\s]+/g, '_');
+      const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.md'));
+
+      for (const f of files) {
+        const candidateSlug = f.replace('.md', '');
+        const candidatePath = path.join(dirPath, f);
+        const candidateContent = fs.readFileSync(candidatePath, 'utf8');
+        const { data: candidateFrontMatter } = matter(candidateContent);
+        const candidateName = (candidateFrontMatter.name as string) || getNameFromContent(candidateContent);
+        const candidateTitle = (candidateFrontMatter.title as string) || candidateName || candidateSlug;
+        const candidateAliases = candidateFrontMatter.aliases || [];
+
+        const normalizedNames = [
+          candidateSlug.toLowerCase(),
+          candidateTitle.toLowerCase().replace(/[-\s]+/g, '_'),
+          ...candidateAliases.map((a: string) => a.toLowerCase().replace(/[-\s]+/g, '_'))
+        ];
+
+        if (normalizedNames.includes(normalizedQuery)) {
+          return getModelContent(modelSlug, contentType, candidateSlug);
+        }
+      }
+    }
+
     return null;
   }
 
@@ -317,10 +383,12 @@ export function getModelContent(
     type = 'observation';
   }
 
+  const displayContent = getDisplayContentFromMarkdown(content);
+
   return {
     type,
     metadata,
-    content: convertWikiLinksToNextLinks(content, modelSlug),
+    content: convertWikiLinksToNextLinks(displayContent, modelSlug),
     model: modelSlug
   };
 }

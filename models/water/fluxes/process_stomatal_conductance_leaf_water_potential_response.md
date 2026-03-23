@@ -1,7 +1,17 @@
-# Tags
-flux, stomatal conductance, leaf water potential, RHESSys, LWP
-
-
+name: Stomatal response to leaf water potential
+alias:: [gs-lwp-curve]
+type: parameter
+cycle: water
+symbol: 
+units: 0-1
+typical_range: [0-1]
+tags: [parameter, evapotranspiration, hydrology,  vegetation, canopy]
+Target ESM: RHESSys, [https://github.com/RHESSys/RHESSys.git](https://github.com/RHESSys/RHESSys.git), develop branch
+depends_on:
+	-  $\Psi$: Current leaf water potential
+     -$\Psi_{\text{threshold}}$: Value above which stomata are fully open
+	- $\Psi_{\text{wilting}}$: Permanent wilting point
+	- 
 # Description/Conceptual model
 
 Stomatal conductance in RHESSys is influenced by leaf water potential (LWP) through a curve-based multiplier on potential conductance. This represents the physiological decline in stomatal conductance as water stress increases (i.e., as LWP becomes more negative).
@@ -83,33 +93,7 @@ $m_{LWP}$  Multiplies on conductance due to water potential
 
 # Observations
 
-not observable directly but calibrated from observations of [[flux_stomatal_conductance]], #stomatal_conductance
-
-
-
-
-
-# Details from target ESM model code
-## Variables
-### flux names
-- gs (stomatal conductance, as modulated by LWP multiplier)
-
-### stores/state variable names
-- leaf_water_potential (inferred or estimated from soil water status and transpiration)
-- LWP_predawn, psi_predawn
-
-
-### multipliers
-	. m_LWP
-
-
-## parameters
-- `psi_threshold`  
-- `psi_wilting
-- psi_open
-
-# inputs
-
+not observable directly but calibrated from observations of  [[obs_stomatal conductance]]] and [[obs_soil_moisture]] or output_lwp
 
 ## Code source file and function names in which flux is updated
 - `leaf_conductance_LWP_curve  

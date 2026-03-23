@@ -1,5 +1,25 @@
-Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
 
+
+name: soil evaporation
+aliases: [soil_ET, soil water loss]
+type: flux
+cycle: water
+symbol: $E_{soil}$
+units: m/day
+typical_range: [0, .010]
+tags: [flux, evapotranspiration, hydrology,  soil]
+Target ESM: RHESSys, [https://github.com/RHESSys/RHESSys.git](https://github.com/RHESSys/RHESSys.git), develop branch
+depends_on:
+    - \( E_{soil} \): Soil evaporation rate (kg m\(^{-2}\) s\(^{-1}\))
+	- \( R_net_soil \): Net radiation at the soil surface (W m\(^{-2}\))
+	- \( G \): Ground heat flux (W m\(^{-2}\))
+	- \( \rho_a \): Air density (kg m\(^{-3}\))
+	- \( c_p \): Specific heat of air (J kg\(^{-1}\) K\(^{-1}\))
+	- \( VPD \): Vapor pressure deficit (Pa)
+	- \( r_a \): Aerodynamic resistance (s m\(^{-1}\))
+	- \( r_s \): Surface (soil) resistance, function of soil moisture (s m\(^{-1}\))
+	- \( \Delta \): Slope of saturation vapor pressure curve (Pa K\(^{-1}\))
+	- \( \gamma \): Psychrometric constant (Pa K\(^{-1}\))
 # Tags
 flux, soil evaporation, E_s
 
@@ -17,7 +37,7 @@ E_{soil} = \frac{\Delta (R_n - G) + \rho_a c_p \frac{VPD}{r_a}}{\Delta + \gamma 
 
 Where:
 - \( E_{soil} \): Soil evaporation rate (kg m\(^{-2}\) s\(^{-1}\))
-- \( R_n \): Net radiation at the soil surface (W m\(^{-2}\))
+- \( R_net_soil \): Net radiation at the soil surface (W m\(^{-2}\))
 - \( G \): Ground heat flux (W m\(^{-2}\))
 - \( \rho_a \): Air density (kg m\(^{-3}\))
 - \( c_p \): Specific heat of air (J kg\(^{-1}\) K\(^{-1}\))
@@ -48,30 +68,10 @@ Or, Dani, Peter Lehmann, Ebrahim Shahraeeni, and Nima Shokri. "Advances in soil 
 
 
 
-# Details  from target ESM model code
-##  Variables
-### flux variable names
-- `evaporation` (kg m\(^{-2}\) s\(^{-1}\))
-
-### stores/state variable names
-- `soil_theta`
-- `soil_water_storage`
-
-### parameters
-- `soil_alpha`: parameter for soil resistance function
-- `soil_beta`: empirical shape parameter for soil evaporation response
-
-###inputs
-- `PET`
-- `radiation`
-- `vpd`
-- `soil moisture`
-- `aerodynamic resistance`
-
 ## Code source file and function names in which flux is updated
 - `compute_potential_evaporation.c`: `compute_soil_evaporation()`
 
-## Code source file in which code is called updated variables are used directly (limit to 4 if used in multiple places)
+## Code source file in which code is called (limit to 4 if used in multiple places)
 - `daily_patch.c`
 - `compute_N_scaling.c`
 - `output_patch.c`

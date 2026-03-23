@@ -1,12 +1,22 @@
 
+
+name: Evapotranspiration
+aliases: [ET, evapotranspiration, total surface water loss]
+type: flux
+cycle: water
+symbol: ET_t
+units: mm/day
+typical_range: [0, 0.010]
+tags: [flux, evapotranspiration, hydrology,  vegetation, canopy, soil, litter]
 Target ESM: RHESSys, [https://github.com/RHESSys/RHESSys.git](https://github.com/RHESSys/RHESSys.git), develop branch
-
-alias:: [Process Evapotranspiration]
-
-# Tags
-
-flux, evapotranspiration, hydrology vegetation,canopy, soil, litter
-
+depends_on:
+    - [[flux_soil_evaporation]]]
+    - [[flux_litter_evaporation]]
+    - overstory transpiration
+    - understory transpiration
+    - overstory interception evaporation
+    - understory interception evaporation
+    
 ## Description/Conceptual model
 
 Evapotranspiration (ET) represents the combined loss of water to the atmosphere through plant transpiration and evaporation from soil, litter, and canopy surfaces. 
@@ -63,12 +73,10 @@ challenging to parameterize.
 # Observations
 
 [[output_et]]
-    
 
-# Details from target ESM model code
 
-## Variables
+## Code source file and function names in which flux is updated
+	- post processing addition see components
 
-### flux variable names
+## Code source file in which code is called (limit to 4 if used in multiple places)
 
-- (add flux variable names here)

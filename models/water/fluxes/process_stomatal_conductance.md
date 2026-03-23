@@ -1,10 +1,23 @@
 
-Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
-
-# Tags
-flux
-
+name: Stomatal Conductance
 alias:: [gs, stomatal conductance]
+type: flux
+cycle: water
+symbol: gs
+units: m/s
+typical_range: []
+tags: [flux, evapotranspiration, hydrology,  vegetation, canopy, soil, litter]
+Target ESM: RHESSys, [https://github.com/RHESSys/RHESSys.git](https://github.com/RHESSys/RHESSys.git), develop branch
+depends_on:
+	  - gₛ_max: maximum stomatal conductance (vegetation-specific)
+	- f(PAR): function of photosynthetically active radiation
+	- f(CO₂): scalar for CO₂ effect 
+	- f(VPD): vapor pressure deficit modifier
+	- [[flux_stomatal_conductance_leaf_water_potential_response|f(LWP)]]: function of leaf water potential (soil-moisture mediated)
+	- f(t_avg) function of daily average air temperature
+	- f(t_min) function of minimum daily air temperature
+	- LAI - leaf area index
+	- stomatal_fraction - density of stomates on the leaf
 
 # Description/Conceptual model
 Stomatal conductance is the rate of  water and carbon exchange between the leaf and surrounding air through small pores in the leaf called stomates. The exchange is a diffusive flux and thus varies with gradients (in water, O2 and CO2) and energy. However, the stomates  can open and close to  regulate this rate.  Stomatal conductance (gₛ) is modeled in RHESSys using a Jarvis-type multiplicative approach. where a species specific maximum value (gs_max) is scalaed based on environmental modifiers for light (PPFD), vapor pressure deficit (VPD), air temperature, CO₂ concentration, and root access to water via leaf water potential.
@@ -54,28 +67,6 @@ Where:
 
 ## datasets
 
-# Details of  from target ESM model code
-##  Variables
-
-
-	
-### flux names
-- stratum_conductance, gs_sunlit,  gs_shade
-
-
-
-
-## parameter 
-- gs_max
-- stomatal_fraction
-- Multiplier parameters (all epc structure)
-	- vpd  vpd_close, vpd_open
-	- psi - psi_close, psi_open (LWP_min_spring), LWP_threshold, LWP_slp, LWP_intercpt
-	- tavg - topt, tcoef
-	- -epc.ppfd_coef
-- co2_scalar (stubbed or unity)
-
-### inputs
 
 
 

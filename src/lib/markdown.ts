@@ -38,6 +38,13 @@ export function convertWikiLinksToNextLinks(content: string): string {
   });
 }
 
+function getDisplayContentFromMarkdown(content: string): string {
+  const headingMatch = content.match(/^\s*#+\s*#*\s*Description(?:\/Conceptual\s*model)?/im);
+  if (!headingMatch) return content;
+  const start = headingMatch.index ?? 0;
+  return content.slice(start);
+}
+
 /**
  * Determine content type based on directory or tags
  */
@@ -84,16 +91,17 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
   };
 
   // Extract description
-  const descMatch = fileContent.match(/# # Description\/Conceptual model\s*([\s\S]*?)(?=\n#|$)/);
+  const descMatch = fileContent.match(/# Description\/Conceptual model\s*([\s\S]*?)(?=\n#|$)/);
   const description = descMatch ? descMatch[1].trim() : '';
 
   // Extract model name
   const modelMatch = fileContent.match(/# Model Name[^\n]*\s*([^\n]+)/);
   const modelName = modelMatch ? modelMatch[1].trim() : undefined;
 
-  // Extract title from aliases or filename
+  // Extract explicit name if present, then alias/title/slug fallback
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
   const aliasMatch = fileContent.match(/alias::\s*\[([^\]]+)\]/);
-  const title = aliasMatch ? aliasMatch[1].split(',')[0].trim() : slug.replace(/_/g, ' ');
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || (aliasMatch ? aliasMatch[1].split(',')[0].trim() : slug.replace(/_/g, ' '));
 
   return {
     slug,
@@ -125,6 +133,7 @@ function parseParameter(fileContent: string, slug: string, frontMatter: any): Pa
 
   // Extract metadata
   const paramNameMatch = fileContent.match(/parameter_name:\s*([^\n]+)/);
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
   const dynamicMatch = fileContent.match(/# Dynamically computed:\s*\n(Yes|No)/i);
   const classMatch = fileContent.match(/parameter_classification\s*\[([^\]]*)\]/);
   const timeScaleMatch = fileContent.match(/parameter_time_scale:\s*([^\n]+)/);
@@ -145,7 +154,7 @@ function parseParameter(fileContent: string, slug: string, frontMatter: any): Pa
 
   return {
     slug,
-    parameterName: paramNameMatch ? paramNameMatch[1].trim() : slug,
+    parameterName: frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || (paramNameMatch ? paramNameMatch[1].trim() : slug),
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['parameter'],
     status: frontMatter.status,
@@ -176,7 +185,8 @@ function parseObservation(fileContent: string, slug: string, frontMatter: any): 
   const descMatch = fileContent.match(/# Description\s*([\s\S]*?)(?=\n#|$)/);
   const description = descMatch ? descMatch[1].trim() : '';
 
-  const title = slug.replace(/^output_/, '').replace(/_/g, ' ');
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^output_/, '').replace(/_/g, ' ');
 
   return {
     slug,
@@ -201,10 +211,11 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
 
   const descMatch = fileContent.match(/# Description\s*([\s\S]*?)(?=\n#|$)/);
   const description = descMatch ? descMatch[1].trim() : '';
+  const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
 
   return {
     slug,
-    title: slug.replace(/_/g, ' '),
+    title: frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/_/g, ' '),
     tags: frontMatter.tags || ['overview'],
     description,
     connections
@@ -264,8 +275,9 @@ export function parseMarkdownFile(filePath: string): ContentMetadata | null {
         break;
     }
 
-    // Convert wiki links to Next.js links
-    const convertedContent = convertWikiLinksToNextLinks(content);
+    // Convert wiki links to Next.js links; display starts at description section
+    const displayContent = getDisplayContentFromMarkdown(content);
+    const convertedContent = convertWikiLinksToNextLinks(displayContent);
 
     return {
       type: contentType,
