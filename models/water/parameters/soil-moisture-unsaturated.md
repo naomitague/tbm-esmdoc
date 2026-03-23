@@ -17,7 +17,7 @@ parameter_units: mm
 parameter_function: store
 
 # Description  
-Represents the volume of water stored in the unsaturated soil zone above the water table but below the root zone. It reflects infiltration, drainage, and retention processes within the soil profile.
+Represents the volume of water stored in the unsaturated soil zone above the water table but below the root zone. It reflects infiltration, drainage, and retention fluxes within the soil profile.
 
 # Range  
 Typically 0 to the porosity times depth of unsaturated zone, e.g., 0 – 300 mm.

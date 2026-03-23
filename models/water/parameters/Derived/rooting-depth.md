@@ -69,7 +69,7 @@ $$
 z_{root} = \frac{3.0 \cdot \left( 2.0 \cdot C_{root} \right)^{rgd}}{rdp} 
 $$
 
-With post-processing constraints:
+With post-fluxing constraints:
 
 $$
 z_{root}=min⁡(z_{root},z_{max_{root}},z_{soil})

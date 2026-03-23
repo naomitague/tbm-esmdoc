@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import {
   ContentMetadata,
   ModelMetadata,
-  ProcessMetadata,
+  FluxMetadata,
   ParameterMetadata,
   ObservationMetadata,
   ModelConnection,
@@ -15,7 +15,7 @@ import {
 const modelsDirectory = path.join(process.cwd(), 'models');
 
 /**
- * Extract wiki-style links like [[process_stomatal_conductance]] from markdown
+ * Extract wiki-style links like [[flux_stomatal_conductance]] from markdown
  */
 export function extractWikiLinks(content: string): string[] {
   const linkRegex = /\[\[([^\]]+)\]\]/g;
@@ -35,9 +35,9 @@ export function extractWikiLinks(content: string): string[] {
 export function convertWikiLinksToNextLinks(content: string, modelSlug: string): string {
   return content.replace(/\[\[([^\]]+)\]\]/g, (match, link) => {
     const slug = link.toLowerCase().replace(/\s+/g, '_');
-    // Try to determine if it's a process, parameter, or observation
-    if (link.toLowerCase().startsWith('process_')) {
-      return `[${link}](/models/${modelSlug}/processes/${slug.replace('process_', '')})`;
+    // Try to determine if it's a flux, parameter, or observation
+    if (link.toLowerCase().startsWith('flux_')) {
+      return `[${link}](/models/${modelSlug}/fluxes/${slug.replace('flux_', '')})`;
     } else if (link.toLowerCase().startsWith('output_')) {
       return `[${link}](/models/${modelSlug}/observations/${slug.replace('output_', '')})`;
     } else if (link.toLowerCase().startsWith('parameter_')) {
@@ -88,8 +88,8 @@ export function getAllModels(): ModelCard[] {
       description = data.description || description;
     }
 
-    // Count processes, parameters, observations
-    const processCount = countFiles(path.join(modelsDirectory, modelDir, 'processes'));
+    // Count fluxes, parameters, observations
+    const fluxCount = countFiles(path.join(modelsDirectory, modelDir, 'fluxes'));
     const parameterCount = countFiles(path.join(modelsDirectory, modelDir, 'parameters'));
     const observationCount = countFiles(path.join(modelsDirectory, modelDir, 'observations'));
 
@@ -99,7 +99,7 @@ export function getAllModels(): ModelCard[] {
       description,
       icon: modelIcons[modelDir] || '📊',
       color: modelColors[modelDir] || 'gray',
-      processCount,
+      fluxCount,
       parameterCount,
       observationCount
     };
@@ -131,7 +131,7 @@ export function getModelBySlug(slug: string): ContentMetadata | null {
     description: data.description || '',
     aliases: data.aliases || [],
     scale: data.scale || [],
-    processCount: countFiles(path.join(modelsDirectory, slug, 'processes')),
+    fluxCount: countFiles(path.join(modelsDirectory, slug, 'fluxes')),
     parameterCount: countFiles(path.join(modelsDirectory, slug, 'parameters')),
     observationCount: countFiles(path.join(modelsDirectory, slug, 'observations'))
   };
@@ -145,9 +145,9 @@ export function getModelBySlug(slug: string): ContentMetadata | null {
 }
 
 /**
- * Parse process markdown file
+ * Parse flux markdown file
  */
-function parseProcess(fileContent: string, slug: string, modelSlug: string, frontMatter: any): ProcessMetadata {
+function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMatter: any): FluxMetadata {
   const links = extractWikiLinks(fileContent);
   const connections: ModelConnection[] = links.map(link => ({
     source: slug,
@@ -185,7 +185,7 @@ function parseProcess(fileContent: string, slug: string, modelSlug: string, fron
     title,
     model: modelSlug,
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
-    tags: frontMatter.tags || ['process'],
+    tags: frontMatter.tags || ['flux'],
     description,
     modelName,
     variables: {
@@ -272,11 +272,11 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
 }
 
 /**
- * Get content from model subdirectory (processes, parameters, observations)
+ * Get content from model subdirectory (fluxes, parameters, observations)
  */
 export function getModelContent(
   modelSlug: string,
-  contentType: 'processes' | 'parameters' | 'observations',
+  contentType: 'fluxes' | 'parameters' | 'observations',
   slug: string
 ): ContentMetadata | null {
   const filePath = path.join(modelsDirectory, modelSlug, contentType, `${slug}.md`);
@@ -291,9 +291,9 @@ export function getModelContent(
   let metadata;
   let type: ContentType;
 
-  if (contentType === 'processes') {
-    metadata = parseProcess(fileContent, slug, modelSlug, frontMatter);
-    type = 'process';
+  if (contentType === 'fluxes') {
+    metadata = parseFlux(fileContent, slug, modelSlug, frontMatter);
+    type = 'flux';
   } else if (contentType === 'parameters') {
     metadata = parseParameter(fileContent, slug, modelSlug, frontMatter);
     type = 'parameter';
@@ -314,24 +314,24 @@ export function getModelContent(
  * Get all content for a specific model
  */
 export function getAllModelContent(modelSlug: string): {
-  processes: ContentMetadata[];
+  fluxes: ContentMetadata[];
   parameters: ContentMetadata[];
   observations: ContentMetadata[];
 } {
   const result = {
-    processes: [] as ContentMetadata[],
+    fluxes: [] as ContentMetadata[],
     parameters: [] as ContentMetadata[],
     observations: [] as ContentMetadata[]
   };
 
-  const processesDir = path.join(modelsDirectory, modelSlug, 'processes');
+  const fluxesDir = path.join(modelsDirectory, modelSlug, 'fluxes');
   const parametersDir = path.join(modelsDirectory, modelSlug, 'parameters');
   const observationsDir = path.join(modelsDirectory, modelSlug, 'observations');
 
-  if (fs.existsSync(processesDir)) {
-    const files = fs.readdirSync(processesDir).filter(f => f.endsWith('.md'));
-    result.processes = files
-      .map(f => getModelContent(modelSlug, 'processes', f.replace('.md', '')))
+  if (fs.existsSync(fluxesDir)) {
+    const files = fs.readdirSync(fluxesDir).filter(f => f.endsWith('.md'));
+    result.fluxes = files
+      .map(f => getModelContent(modelSlug, 'fluxes', f.replace('.md', '')))
       .filter((c): c is ContentMetadata => c !== null);
   }
 

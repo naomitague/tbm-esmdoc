@@ -38,7 +38,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
 
   const groupedItems = {
     overview: items.filter(item => item.type === 'overview'),
-    process: items.filter(item => item.type === 'process'),
+    process: items.filter(item => item.type === 'flux'),
     parameter: items.filter(item => item.type === 'parameter'),
     observation: items.filter(item => item.type === 'observation'),
   };

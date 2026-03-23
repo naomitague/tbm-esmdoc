@@ -9,8 +9,8 @@ The project has been reorganized from a flat structure to a hierarchical, model-
 ### Old Structure
 ```
 ├── Processes/
-│   ├── process_transpiration.md
-│   ├── process_soil_evaporation.md
+│   ├── flux_transpiration.md
+│   ├── flux_soil_evaporation.md
 │   └── ...
 ├── ParameterorState/
 │   ├── rooting_depth.md
@@ -29,7 +29,7 @@ The project has been reorganized from a flat structure to a hierarchical, model-
 models/
 ├── water/
 │   ├── index.md                 # Model overview
-│   ├── processes/               # Water processes
+│   ├── fluxes/               # Water fluxes
 │   │   ├── transpiration.md
 │   │   └── soil_evaporation.md
 │   ├── parameters/              # Water parameters
@@ -51,13 +51,13 @@ models/
 2. **Better Navigation**: Clear hierarchy from model → type → content
 3. **Scalability**: Easy to add new models or expand existing ones
 4. **Context**: Users always know which model they're exploring
-5. **Cleaner URLs**: `/models/water/processes/transpiration` vs `/wiki/process_transpiration`
+5. **Cleaner URLs**: `/models/water/fluxes/transpiration` vs `/wiki/flux_transpiration`
 
 ## URL Changes
 
 | Old URL                       | New URL                                    |
 | ----------------------------- | ------------------------------------------ |
-| `/wiki/process_transpiration` | `/models/water/processes/transpiration`    |
+| `/wiki/flux_transpiration` | `/models/water/fluxes/transpiration`    |
 | `/wiki/rooting_depth`         | `/models/water/parameters/rooting_depth`   |
 | `/wiki/output_transpiration`  | `/models/water/observations/transpiration` |
 | `/` (basic list)              | `/` (model gallery)                        |
@@ -67,20 +67,20 @@ models/
 ### Add Content to Existing Model
 
 ```
-# Example: Add a new process to the water model
-cd models/water/processes
-touch new_process.md
+# Example: Add a new flux to the water model
+cd models/water/fluxes
+touch new_flux.md
 ```
 
 Add frontmatter and content:
 ```
 ---
 title: New Process Name
-tags: [process]
+tags: [flux]
 ---
 
 # Description
-Your process description here...
+Your flux description here...
 
 # References
 Citations...
@@ -90,7 +90,7 @@ Citations...
 
 1. Create directory structure:
 ```
-mkdir -p models/newmodel/{processes,parameters,observations}
+mkdir -p models/newmodel/{fluxes,parameters,observations}
 ```
 
 2. Create overview file `models/newmodel/index.md`:
@@ -139,7 +139,7 @@ const colorClasses: Record<string, string> = {
 The water model has been populated with examples. To migrate more content:
 
 1. Identify which model the content belongs to (water, carbon, nitrogen, energy)
-2. Determine the type (process, parameter, or observation)
+2. Determine the type (flux, parameter, or observation)
 3. Copy the file to the appropriate location:
    ```
    cp ParameterorState/some_param.md models/[model]/parameters/some_param.md

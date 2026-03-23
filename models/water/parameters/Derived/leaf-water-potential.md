@@ -8,7 +8,7 @@ Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
 tags: [parameter, plant, hydrology, water_potential]
 
 # If used to create other parameters, list here
-[[process_stomatal_conductance_leaf_water_potential_response]]
+[[flux_stomatal_conductance_leaf_water_potential_response]]
 # Dynamically computed:  
 Yes
 
@@ -46,7 +46,7 @@ Typical values range from 0 MPa (saturated) to −2.5 MPa or lower during drough
 
 ## Function in the model
 
-RHESSys uses predawn LWP to regulate plant processes through [[process_stomatal_conductance]] 
+RHESSys uses predawn LWP to regulate plant fluxes through [[flux_stomatal_conductance]] 
 
 
 ## Conceptual or mathematical model of parameter variation or controls
@@ -75,7 +75,7 @@ The `−0.01` factor ensures unit compatibility for RHESSys internal scaling.
 
 
 ### From Model Calibration Papers
-- Tague, C. L., & Band, L. E. (2004). *RHESSys: Regional Hydro-Ecologic Simulation System — process implementation*. *Earth Interactions*, 8(19).  
+- Tague, C. L., & Band, L. E. (2004). *RHESSys: Regional Hydro-Ecologic Simulation System — flux implementation*. *Earth Interactions*, 8(19).  
 - Clapp, R. B., & Hornberger, G. M. (1978). *Empirical equations for some soil hydraulic properties*. *Water Resources Research*.  
 - van Genuchten, M. T. (1980). *A closed-form equation for predicting the hydraulic conductivity of unsaturated soils*. *Soil Sci. Soc. Am. J.*
 

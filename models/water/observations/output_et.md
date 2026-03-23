@@ -13,7 +13,7 @@ output_units: [mm/day]
 Evapotranspiration is the flux of water from the earth surface to the atmosphere - it is the balance of energy availability, water availability and diffusion limits. Evapotranspiration include evaporation from surfaces (including litter, soil , canopy interception, water bodies), sublimation from snow and transpiration
 
 # Process Links
-[[process_transpiration]][[process_soil_evaporation]][[process_litter_evaporation]][[process_interception_evaporation]][[process_sublimation]]
+[[flux_transpiration]][[flux_soil_evaporation]][[flux_litter_evaporation]][[flux_interception_evaporation]][[flux_sublimation]]
 
 # Measurements
 

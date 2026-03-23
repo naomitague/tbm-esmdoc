@@ -1,12 +1,12 @@
-import { ContentMetadata, ProcessMetadata, ParameterMetadata } from '@/types';
+import { ContentMetadata, FluxMetadata, ParameterMetadata } from '@/types';
 
 interface InfoBoxProps {
   content: ContentMetadata;
 }
 
 export function InfoBox({ content }: InfoBoxProps) {
-  if (content.type === 'process') {
-    const metadata = content.metadata as ProcessMetadata;
+  if (content.type === 'flux') {
+    const metadata = content.metadata as FluxMetadata;
     return (
       <div className="infobox mb-6 float-right ml-6 w-80">
         <div className="infobox-title">{metadata.title}</div>

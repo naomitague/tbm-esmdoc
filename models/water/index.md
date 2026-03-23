@@ -1,7 +1,7 @@
 ---
 title: Water Model
 model: water
-description: Hydrological processes and water cycling in RHESSys
+description: Hydrological fluxes and water cycling in RHESSys
 aliases: [hydro, hydrology]
 scale: [plot, patch, stand]
 ---
@@ -21,8 +21,8 @@ The water model in RHESSys simulates the complete hydrological cycle at the patc
 ## Key Processes
 
 ### Evapotranspiration
-- [Transpiration](water/processes/Process_transpiration) - Plant water loss through stomata
-- [Soil Evaporation](water/processes/process_soil_evaporation) - Direct evaporation from soil surface
+- [Transpiration](water/fluxes/Process_transpiration) - Plant water loss through stomata
+- [Soil Evaporation](water/fluxes/flux_soil_evaporation) - Direct evaporation from soil surface
 - Litter Evaporation - Evaporation from litter layer
 - Canopy Evaporation - Interception and evaporation from canopy
 

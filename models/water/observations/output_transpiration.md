@@ -14,7 +14,7 @@ Transpiration represents the flux of water vapor from plant surfaces to the atmo
 Importantly, transpiration is not evaporation - so observations of ET [[output_et]] needed to be combined with the partitioning of water flux between transpiration and evaporation
 
 # Process Links
-[[process_transpiration]]
+[[flux_transpiration]]
 
 # Measurements
 

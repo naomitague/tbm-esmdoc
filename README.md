@@ -6,7 +6,7 @@ A modern, Wikipedia-style documentation site for environmental models, built wit
 
 - **Model-Based Organization**: Content organized by major model components (Water, Carbon, Nitrogen, Energy)
 - **Interactive Gallery Homepage**: Beautiful card-based interface with model statistics
-- **Dynamic Page Generation**: Automatically creates pages for models, processes, parameters, and observations
+- **Dynamic Page Generation**: Automatically creates pages for models, fluxes, parameters, and observations
 - **Top Navigation Bar**: Easy access to Models, About, Profile, and Settings
 - **Sidebar Navigation**: Context-aware navigation within each model
 - **Connection Visualization**: See relationships between model components
@@ -21,7 +21,7 @@ tbm-RHESSys-Obs-main/
 ├── models/                   # Model-based content organization
 │   ├── water/               # Water model
 │   │   ├── index.md        # Water model overview
-│   │   ├── processes/      # Water-related processes
+│   │   ├── fluxes/      # Water-related fluxes
 │   │   ├── parameters/     # Water-related parameters
 │   │   └── observations/   # Water-related observations
 │   ├── carbon/             # Carbon model
@@ -62,12 +62,12 @@ Content is now organized by model components in the `models/` directory:
 models/
 ├── water/                   # Water Model
 │   ├── index.md            # Water model overview
-│   ├── processes/          # Transpiration, evaporation, etc.
+│   ├── fluxes/          # Transpiration, evaporation, etc.
 │   ├── parameters/         # Rooting depth, field capacity, etc.
 │   └── observations/       # Soil moisture, ET, etc.
 ├── carbon/                 # Carbon Model
 │   ├── index.md            # Carbon model overview
-│   ├── processes/          # Photosynthesis, respiration, etc.
+│   ├── fluxes/          # Photosynthesis, respiration, etc.
 │   ├── parameters/         # Growth rates, allocation, etc.
 │   └── observations/       # GPP, NPP, LAI, etc.
 ├── nitrogen/               # Nitrogen Model
@@ -123,7 +123,7 @@ pnpm start
 ```
 /                                    # Homepage (model gallery)
 /models/water                        # Water model overview
-/models/water/processes/transpiration    # Transpiration process
+/models/water/fluxes/transpiration    # Transpiration flux
 /models/water/parameters/rooting_depth   # Rooting depth parameter
 /models/water/observations/soil_moisture # Soil moisture observation
 /about                               # About page
@@ -157,14 +157,14 @@ Customize the UI by editing components in `src/components/`:
 
 The system uses:
 - `gray-matter` - Parses frontmatter metadata
-- `remark` - Markdown processing
+- `remark` - Markdown fluxing
 - `remark-html` - HTML conversion
 - `remark-gfm` - GitHub Flavored Markdown support
 
 ### Link Conversion
 
 Wiki-style links `[[target]]` are automatically converted to Next.js routes:
-- `[[process_transpiration]]` → `/wiki/process_transpiration`
+- `[[flux_transpiration]]` → `/wiki/flux_transpiration`
 - Preserves the original text as link label
 - Handles spaces and special characters
 
@@ -180,7 +180,7 @@ Pages are statically generated at build time using:
 To add content to an existing model:
 
 1. Navigate to the appropriate model directory: `models/[model]/`
-2. Choose the content type folder: `processes/`, `parameters/`, or `observations/`
+2. Choose the content type folder: `fluxes/`, `parameters/`, or `observations/`
 3. Create a new markdown file
 4. Add frontmatter and content following the examples
 5. Use wiki-style `[[links]]` to reference other content
@@ -190,13 +190,13 @@ To add content to an existing model:
 To add an entirely new model (e.g., "soil"):
 
 1. Create a new directory: `models/soil/`
-2. Create subdirectories: `processes/`, `parameters/`, `observations/`
+2. Create subdirectories: `fluxes/`, `parameters/`, `observations/`
 3. Create an overview file: `models/soil/index.md` with:
    ```markdown
    ---
    title: Soil Model
    model: soil
-   description: Soil physical and chemical processes
+   description: Soil physical and chemical fluxes
    ---
    ```
 4. Add icon and color mapping in `src/lib/models.ts`

@@ -17,7 +17,7 @@ parameter_units: m or m^3
 parameter_function: store
 
 # Description  
-Represents the amount of water stored within the soil that is accessible to plant roots. Root accessible moisture depends on the balance of water input (infiltration or lateral drainage), output ([[process_soil_evaporation]], [[process_transpiration]]) and storage capacity [[root storage capacity]]- storage capacity depends on both  physical properties of the soil  (see [[Soil Hydraulic Parameters]]) but also the distribution of roots.  In many locations this water is primarily water stored as [[Field Capacity]] after gravity drainage has occurred. However when water tables are close to the surface this storage may also included [[Saturated Water Storage]]rated water
+Represents the amount of water stored within the soil that is accessible to plant roots. Root accessible moisture depends on the balance of water input (infiltration or lateral drainage), output ([[flux_soil_evaporation]], [[flux_transpiration]]) and storage capacity [[root storage capacity]]- storage capacity depends on both  physical properties of the soil  (see [[Soil Hydraulic Parameters]]) but also the distribution of roots.  In many locations this water is primarily water stored as [[Field Capacity]] after gravity drainage has occurred. However when water tables are close to the surface this storage may also included [[Saturated Water Storage]]rated water
 # Range  
 
 Because of the multiple controls on root accessible soil moisture its range is wide
@@ -45,7 +45,7 @@ Where:
 - $\Delta_{rz_storage}$ = Change in root zone soil water storage (mm/day)  
 - $I$ = Infiltration into the root zone (mm/day)  
 - $E_s$ = Soil evaporation from the root zone (mm/day)  [[output_soil_evaporation]]
-- $T$ = Transpiration (mm/day)  [[process_transpiration]]
+- $T$ = Transpiration (mm/day)  [[flux_transpiration]]
 - $D$ = Drainage to the unsaturated or saturated zone drainage occurs until [[Field Capacity]] is reached
 - S = any saturated water that enters the rooting zone from below
 

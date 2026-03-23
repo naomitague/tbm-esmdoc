@@ -1,7 +1,7 @@
 ---
 title: Energy Model
 model: energy
-description: Energy balance and radiation processes in RHESSys
+description: Energy balance and radiation fluxes in RHESSys
 aliases: [energy balance, radiation, heat flux]
 scale: [canopy, plot, patch]
 ---
@@ -12,7 +12,7 @@ Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
 
 ## Conceptual Overview
 
-The energy model in RHESSys simulates the surface energy balance, radiation transfer through the canopy, and temperature dynamics that control many ecosystem processes.
+The energy model in RHESSys simulates the surface energy balance, radiation transfer through the canopy, and temperature dynamics that control many ecosystem fluxes.
 
 ## Key Processes
 
@@ -81,4 +81,4 @@ The energy model interacts with:
 ## References
 
 - Tague, C.L. and Band, L.E., 2004. RHESSys: Regional Hydro-Ecologic Simulation System.
-- Running, S.W. and Coughlan, J.C., 1988. A general model of forest ecosystem processes for regional applications.
+- Running, S.W. and Coughlan, J.C., 1988. A general model of forest ecosystem fluxes for regional applications.

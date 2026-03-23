@@ -38,7 +38,7 @@ src/
 ## Common Tasks
 
 ### Add a New Process
-1. Navigate to `models/[model]/processes/`
+1. Navigate to `models/[model]/fluxes/`
 2. Create new markdown document in format of template
 
 ### Add a New Parameter
@@ -63,7 +63,7 @@ pnpm start
 2. Fix formatting in link names and equations
 3. Add connection graph showing links between parameters
 4. Add images to each model
-5. Add more processes, parameters, and observations
+5. Add more fluxes, parameters, and observations
 6. Customize colors and icons in `src/lib/models.ts`
 7. Add features to settings and profile (not currently working)
 8. Deploy to Vercel, Netlify, or your preferred host

@@ -67,8 +67,8 @@ export default async function ModelPage({ params }: PageProps) {
 
           <div className="flex gap-8 mt-6 text-white/90">
             <div>
-              <div className="text-2xl font-semibold">{metadata.processCount}</div>
-              <div className="text-xs uppercase tracking-wide opacity-75">Processes</div>
+              <div className="text-2xl font-semibold">{metadata.fluxCount}</div>
+              <div className="text-xs uppercase tracking-wide opacity-75">Fluxes</div>
             </div>
             <div>
               <div className="text-2xl font-semibold">{metadata.parameterCount}</div>
@@ -93,20 +93,20 @@ export default async function ModelPage({ params }: PageProps) {
 
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-5">
-            {allContent.processes.length > 0 && (
+            {allContent.fluxes.length > 0 && (
               <div className="bg-white rounded-lg border border-stone-200 p-5">
                 <h3 className="font-heading text-base mb-3 flex items-center gap-2">
-                  <span className="badge badge-process">Process</span>
-                  Processes
+                  <span className="badge badge-flux">Flux</span>
+                  Fluxes
                 </h3>
                 <ul className="space-y-1.5">
-                  {allContent.processes.map(proc => (
-                    <li key={proc.metadata.slug}>
+                  {allContent.fluxes.map(flx => (
+                    <li key={flx.metadata.slug}>
                       <Link
-                        href={`/models/${modelSlug}/processes/${proc.metadata.slug}`}
+                        href={`/models/${modelSlug}/fluxes/${flx.metadata.slug}`}
                         className="text-sm text-primary hover:underline block py-0.5"
                       >
-                        {getTitle(proc)}
+                        {getTitle(flx)}
                       </Link>
                     </li>
                   ))}

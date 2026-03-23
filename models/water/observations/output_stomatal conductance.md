@@ -14,12 +14,12 @@ output_kind: [m/s,]
 
 # Description
 
-Stomatal conductance is the rate of  water and carbon exchange between the leaf and surrounding air through small pores in the leaf called stomates. The exchange is a diffusive process and thus varies with gradients (in water, O2 and CO2) and energy. However, the stomates  can open and close to  regulate this rate.
+Stomatal conductance is the rate of  water and carbon exchange between the leaf and surrounding air through small pores in the leaf called stomates. The exchange is a diffusive flux and thus varies with gradients (in water, O2 and CO2) and energy. However, the stomates  can open and close to  regulate this rate.
 
 
 # Process Links
 
-[[process_stomatal_conductance]]
+[[flux_stomatal_conductance]]
 
 # Measurements
 

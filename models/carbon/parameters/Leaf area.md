@@ -32,7 +32,7 @@ parameter_units: dimensionless
 parameter_function: ratio  
 
 # Description  
-Leaf Area Index (LAI) is the one-sided green leaf area per unit ground surface area. It is a key parameter in modeling canopy processes such as transpiration, interception, and photosynthesis. RHESSys partitions LAI into *sunlit* and *shaded* components to account for differences in radiation interception, photosynthetic capacity, and transpiration.
+Leaf Area Index (LAI) is the one-sided green leaf area per unit ground surface area. It is a key parameter in modeling canopy fluxes such as transpiration, interception, and photosynthesis. RHESSys partitions LAI into *sunlit* and *shaded* components to account for differences in radiation interception, photosynthetic capacity, and transpiration.
 
 # Range  
 Typical values range from 0 (bare ground) to ~10 (dense tropical forest), with most natural vegetation falling within ~0.5–6.

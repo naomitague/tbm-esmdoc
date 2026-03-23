@@ -42,9 +42,9 @@ export default function ProfilePage() {
                 </Link>
               </div>
               <div className="border border-stone-200 rounded-lg p-3 hover:bg-stone-50 transition-colors">
-                <Link href="/models/water/processes/transpiration" className="block">
+                <Link href="/models/water/fluxes/transpiration" className="block">
                   <div className="flex items-center gap-3">
-                    <span className="badge badge-process">Process</span>
+                    <span className="badge badge-flux">Flux</span>
                     <div>
                       <h4 className="text-sm font-medium text-stone-800">Transpiration</h4>
                       <p className="text-xs text-stone-400">Last viewed: Today</p>
@@ -60,7 +60,7 @@ export default function ProfilePage() {
               Bookmarked Content
             </h3>
             <p className="text-sm text-stone-400 italic">
-              No bookmarks yet. Browse the models and bookmark your favorite processes and parameters.
+              No bookmarks yet. Browse the models and bookmark your favorite fluxes and parameters.
             </p>
           </section>
 

@@ -4,7 +4,7 @@ export interface ModelConnection {
   type: 'uses' | 'produces' | 'affects' | 'contains';
 }
 
-export interface ProcessMetadata {
+export interface FluxMetadata {
   slug: string;
   title: string;
   model?: string;
@@ -64,7 +64,7 @@ export interface OverviewMetadata {
   title: string;
   tags: string[];
   description: string;
-  relatedProcesses?: string[];
+  relatedFluxes?: string[];
   relatedParameters?: string[];
   connections: ModelConnection[];
 }
@@ -78,16 +78,16 @@ export interface ModelMetadata {
   scale?: string[];
   icon?: string;
   color?: string;
-  processCount?: number;
+  fluxCount?: number;
   parameterCount?: number;
   observationCount?: number;
 }
 
-export type ContentType = 'model' | 'process' | 'parameter' | 'observation' | 'overview';
+export type ContentType = 'model' | 'flux' | 'parameter' | 'observation' | 'overview';
 
 export interface ContentMetadata {
   type: ContentType;
-  metadata: ModelMetadata | ProcessMetadata | ParameterMetadata | ObservationMetadata | OverviewMetadata;
+  metadata: ModelMetadata | FluxMetadata | ParameterMetadata | ObservationMetadata | OverviewMetadata;
   content: string;
   model?: string; // Parent model for nested content
 }
@@ -111,7 +111,7 @@ export interface ModelCard {
   description: string;
   icon: string;
   color: string;
-  processCount: number;
+  fluxCount: number;
   parameterCount: number;
   observationCount: number;
 }

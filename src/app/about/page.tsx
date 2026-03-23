@@ -47,7 +47,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="font-medium text-stone-800 text-sm mb-1">Water Model</h3>
                   <p className="text-xs text-stone-500">
-                    Hydrological processes including evapotranspiration, infiltration, and runoff
+                    Hydrological fluxes including evapotranspiration, infiltration, and runoff
                   </p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ export default function AboutPage() {
                 <div>
                   <h3 className="font-medium text-stone-800 text-sm mb-1">Carbon Model</h3>
                   <p className="text-xs text-stone-500">
-                    Photosynthesis, respiration, allocation, and decomposition processes
+                    Photosynthesis, respiration, allocation, and decomposition fluxes
                   </p>
                 </div>
               </div>
@@ -87,12 +87,12 @@ export default function AboutPage() {
             </h2>
             <ul className="space-y-2 text-sm text-stone-600">
               <li>
-                <strong className="text-stone-800">Process Documentation:</strong> Detailed descriptions of model processes
-                with equations and conceptual models
+                <strong className="text-stone-800">Flux Documentation:</strong> Detailed descriptions of model fluxes
+                with equations and conceptual models, for inputs measurement techniques
               </li>
               <li>
-                <strong className="text-stone-800">Parameter Reference:</strong> Comprehensive parameter definitions including
-                units, ranges, and measurement methods
+                <strong className="text-stone-800">State/Parameter Documentation</strong> Comprehensive parameter/state definitions including
+                equations, conceptual models, units, ranges, and measurement methods
               </li>
               <li>
                 <strong className="text-stone-800">Observation Guide:</strong> Information on model outputs and how to measure
@@ -100,7 +100,7 @@ export default function AboutPage() {
               </li>
               <li>
                 <strong className="text-stone-800">Connection Visualization:</strong> Graphs showing relationships
-                between processes and parameters
+                between fluxes, states, and parameters
               </li>
               <li>
                 <strong className="text-stone-800">Code References:</strong> Links to specific functions and files in the
@@ -146,7 +146,7 @@ export default function AboutPage() {
             </p>
             <ul className="list-disc list-inside text-sm text-stone-600 space-y-1.5">
               <li>Submitting corrections or additions to the documentation</li>
-              <li>Adding new process descriptions or parameter definitions</li>
+              <li>Adding new flux descriptions or state/parameter definitions</li>
               <li>Contributing references to relevant scientific literature</li>
               <li>Improving code references and examples</li>
             </ul>

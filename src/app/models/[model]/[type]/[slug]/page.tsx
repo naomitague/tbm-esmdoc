@@ -27,11 +27,11 @@ export async function generateStaticParams() {
   for (const model of models) {
     const allContent = getAllModelContent(model.slug);
 
-    allContent.processes.forEach(proc => {
+    allContent.fluxes.forEach(flux => {
       params.push({
         model: model.slug,
-        type: 'processes',
-        slug: proc.metadata.slug,
+        type: 'fluxes',
+        slug: flux.metadata.slug,
       });
     });
 
@@ -58,7 +58,7 @@ export async function generateStaticParams() {
 export default async function ContentPage({ params }: PageProps) {
   const { model: modelSlug, type, slug } = await params;
 
-  if (type !== 'processes' && type !== 'parameters' && type !== 'observations') {
+  if (type !== 'fluxes' && type !== 'parameters' && type !== 'observations') {
     notFound();
   }
 
@@ -106,23 +106,23 @@ export default async function ContentPage({ params }: PageProps) {
                 {modelSlug.charAt(0).toUpperCase() + modelSlug.slice(1)} Model
               </Link>
 
-              {allContent.processes.length > 0 && (
+              {allContent.fluxes.length > 0 && (
                 <div className="mb-5">
                   <h3 className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-2">
-                    Processes
+                    Fluxes
                   </h3>
                   <ul className="space-y-0.5">
-                    {allContent.processes.map(proc => (
-                      <li key={proc.metadata.slug}>
+                    {allContent.fluxes.map(flux => (
+                      <li key={flux.metadata.slug}>
                         <Link
-                          href={`/models/${modelSlug}/processes/${proc.metadata.slug}`}
+                          href={`/models/${modelSlug}/fluxes/${flux.metadata.slug}`}
                           className={`block text-sm py-1 px-2 rounded transition-colors ${
-                            proc.metadata.slug === slug && type === 'processes'
+                            flux.metadata.slug === slug && type === 'fluxes'
                               ? 'text-primary bg-primary-light font-medium'
                               : 'text-stone-600 hover:text-primary hover:bg-stone-50'
                           }`}
                         >
-                          {getTitle(proc)}
+                          {getTitle(flux)}
                         </Link>
                       </li>
                     ))}

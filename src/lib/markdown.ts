@@ -3,7 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import {
   ContentMetadata,
-  ProcessMetadata,
+  FluxMetadata,
   ParameterMetadata,
   ObservationMetadata,
   OverviewMetadata,
@@ -14,7 +14,7 @@ import {
 const contentDirectory = path.join(process.cwd());
 
 /**
- * Extract wiki-style links like [[process_stomatal_conductance]] from markdown
+ * Extract wiki-style links like [[flux_stomatal_conductance]] from markdown
  */
 export function extractWikiLinks(content: string): string[] {
   const linkRegex = /\[\[([^\]]+)\]\]/g;
@@ -42,13 +42,13 @@ export function convertWikiLinksToNextLinks(content: string): string {
  * Determine content type based on directory or tags
  */
 function determineContentType(filePath: string, tags: string[]): ContentType {
-  if (filePath.includes('/Processes/')) return 'process';
+  if (filePath.includes('/Fluxes/')) return 'flux';
   if (filePath.includes('/ParameterorState/')) return 'parameter';
   if (filePath.includes('/ObsOutput/')) return 'observation';
   if (filePath.includes('/Overviews/')) return 'overview';
 
   // Fallback to tags
-  if (tags.includes('process')) return 'process';
+  if (tags.includes('flux')) return 'flux';
   if (tags.includes('parameter')) return 'parameter';
   if (tags.includes('observation') || tags.includes('output')) return 'observation';
   if (tags.includes('overview')) return 'overview';
@@ -57,9 +57,9 @@ function determineContentType(filePath: string, tags: string[]): ContentType {
 }
 
 /**
- * Parse process markdown file
+ * Parse flux markdown file
  */
-function parseProcess(fileContent: string, slug: string, frontMatter: any): ProcessMetadata {
+function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMetadata {
   const links = extractWikiLinks(fileContent);
   const connections: ModelConnection[] = links.map(link => ({
     source: slug,
@@ -99,7 +99,7 @@ function parseProcess(fileContent: string, slug: string, frontMatter: any): Proc
     slug,
     title,
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
-    tags: frontMatter.tags || ['process'],
+    tags: frontMatter.tags || ['flux'],
     description,
     modelName,
     variables: {
@@ -247,10 +247,10 @@ export function parseMarkdownFile(filePath: string): ContentMetadata | null {
     const contentType = determineContentType(filePath, tags);
 
     // Parse based on type
-    let metadata: ProcessMetadata | ParameterMetadata | ObservationMetadata | OverviewMetadata;
+    let metadata: FluxMetadata | ParameterMetadata | ObservationMetadata | OverviewMetadata;
     switch (contentType) {
-      case 'process':
-        metadata = parseProcess(fileContent, slug, frontMatter);
+      case 'flux':
+        metadata = parseFlux(fileContent, slug, frontMatter);
         break;
       case 'parameter':
         metadata = parseParameter(fileContent, slug, frontMatter);

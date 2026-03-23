@@ -32,7 +32,7 @@ export default function HomePage() {
             RHESSys Model Documentation
           </h1>
           <p className="text-lg text-stone-500 max-w-2xl mx-auto font-light">
-            Processes, parameters, and observations for water, carbon,
+            fluxes, states, parameters, and observations for water, carbon,
             nitrogen, and energy cycling.
           </p>
         </div>
@@ -68,10 +68,10 @@ export default function HomePage() {
                       <div className="grid grid-cols-3 gap-2 pt-3 border-t border-stone-100">
                         <div className="text-center">
                           <div className="text-lg font-semibold text-stone-800">
-                            {model.processCount}
+                            {model.fluxCount}
                           </div>
                           <div className="text-[0.65rem] text-stone-400 uppercase tracking-wide">
-                            Processes
+                            Fluxes
                           </div>
                         </div>
                         <div className="text-center">
