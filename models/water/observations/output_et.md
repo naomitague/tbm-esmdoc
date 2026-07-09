@@ -39,3 +39,7 @@ Miralles, D.G., Bonte, O., Koppa, A. _et al._ GLEAM4: global land evaporation 
 - Wang, Kaicun, and Robert E. Dickinson. "A review of global terrestrial evapotranspiration: Observation, modeling, climatology, and climatic variability." _Reviews of Geophysics_ 50, no. 2 (2012).
 
 Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang, Simone Fatichi, Xiangzhong Luo et al. "Evapotranspiration on a greening Earth." _Nature Reviews Earth & Environment_ 4, no. 9 (2023): 626-641.
+
+Comparison actoss models and remote sensing
+
+Pan, Shufen, Naiqing Pan, Hanqin Tian, Pierre Friedlingstein, Stephen Sitch, Hao Shi, Vivek K. Arora et al. "Evaluation of global terrestrial evapotranspiration using state-of-the-art approaches in remote sensing, machine learning and land surface modeling." _Hydrology and earth system sciences_ 24, no. 3 (2020): 1485-1509.

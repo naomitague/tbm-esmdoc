@@ -4,6 +4,7 @@ import { getContentBySlug, getAllSlugs, getConnectionGraph } from '@/lib/markdow
 import { Sidebar } from '@/components/Sidebar';
 import { ConnectionGraph } from '@/components/ConnectionGraph';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
 import { Leaf } from 'lucide-react';
 import { ContentMetadata } from '@/types';
@@ -53,7 +54,7 @@ export default async function WikiPage({ params }: PageProps) {
         <main className="flex-1 px-8 py-6">
           <article className="wiki-content max-w-4xl">
             <h1 className="text-3xl font-heading border-b-2 border-primary pb-2 mb-4 text-stone-900">
-              {getTitle(content)}
+              <MathText text={getTitle(content)} />
             </h1>
 
             <div className="flex gap-2 mb-4">

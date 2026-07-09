@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ContentType } from '@/types';
+import { MathText } from '@/components/MathText';
 import { PanelLeftOpen, PanelLeftClose } from 'lucide-react';
 
 interface SidebarProps {
@@ -101,7 +102,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
                       item.slug === currentSlug ? 'nav-item-active' : ''
                     }`}
                   >
-                    {item.title}
+                    <MathText text={item.title} />
                   </Link>
                 </li>
               ))}
@@ -119,7 +120,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
                       item.slug === currentSlug ? 'nav-item-active' : ''
                     }`}
                   >
-                    {item.title}
+                    <MathText text={item.title} />
                   </Link>
                 </li>
               ))}
@@ -137,7 +138,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
                       item.slug === currentSlug ? 'nav-item-active' : ''
                     }`}
                   >
-                    {item.title}
+                    <MathText text={item.title} />
                   </Link>
                 </li>
               ))}
@@ -160,7 +161,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
                       item.slug === currentSlug ? 'nav-item-active' : ''
                     }`}
                   >
-                    {item.title}
+                    <MathText text={item.title} />
                   </Link>
                 </li>
               ))}

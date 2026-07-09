@@ -29,7 +29,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-heading text-stone-900 mb-4">
-            RHESSys Model Documentation
+            Earth System Processes - Current State of Knowledge
           </h1>
           <p className="text-lg text-stone-500 max-w-2xl mx-auto font-light">
             fluxes, states, parameters, and observations for water, carbon,

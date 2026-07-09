@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getModelBySlug, getAllModels, getAllModelContent } from '@/lib/models';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { MathText } from '@/components/MathText';
 import { ModelMetadata, ContentMetadata } from '@/types';
 import { Droplets, Sprout, FlaskConical, Sun, BarChart3 } from 'lucide-react';
 
@@ -110,7 +111,7 @@ export default async function ModelPage({ params }: PageProps) {
                         href={`/models/${modelSlug}/fluxes/${flx.metadata.slug}`}
                         className="text-sm text-primary hover:underline block py-0.5"
                       >
-                        {getTitle(flx)}
+                        <MathText text={getTitle(flx)} />
                       </Link>
                     </li>
                   ))}
@@ -131,7 +132,7 @@ export default async function ModelPage({ params }: PageProps) {
                         href={`/models/${modelSlug}/parameters/${param.metadata.slug}`}
                         className="text-sm text-primary hover:underline block py-0.5"
                       >
-                        {getTitle(param)}
+                        <MathText text={getTitle(param)} />
                       </Link>
                     </li>
                   ))}
@@ -157,7 +158,7 @@ export default async function ModelPage({ params }: PageProps) {
                         href={`/models/${modelSlug}/observations/${obs.metadata.slug}`}
                         className="text-sm text-primary hover:underline block py-0.5"
                       >
-                        {getTitle(obs)}
+                        <MathText text={getTitle(obs)} />
                       </Link>
                     </li>
                   ))}

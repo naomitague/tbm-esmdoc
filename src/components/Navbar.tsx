@@ -30,7 +30,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2.5">
             <Leaf className="w-6 h-6 text-primary" strokeWidth={1.5} />
             <span className="text-lg font-heading text-stone-900">
-              RHESSys Docs
+              ESM Model and Obs 
             </span>
           </Link>
 

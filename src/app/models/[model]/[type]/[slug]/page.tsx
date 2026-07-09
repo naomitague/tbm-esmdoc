@@ -4,6 +4,7 @@ import { getModelContent, getAllModels, getAllModelContent } from '@/lib/models'
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { InfoBox } from '@/components/InfoBox';
+import { MathText } from '@/components/MathText';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { ContentMetadata } from '@/types';
 
@@ -94,7 +95,7 @@ export default async function ContentPage({ params }: PageProps) {
             {type}
           </Link>
           <ChevronRight className="w-3.5 h-3.5" strokeWidth={1.5} />
-          <span className="text-stone-800 font-medium">{displayTitle}</span>
+          <span className="text-stone-800 font-medium"><MathText text={displayTitle} /></span>
         </nav>
 
         <div className="grid lg:grid-cols-4 gap-6">
@@ -125,7 +126,7 @@ export default async function ContentPage({ params }: PageProps) {
                               : 'text-stone-600 hover:text-primary hover:bg-stone-50'
                           }`}
                         >
-                          {getTitle(flux)}
+                          <MathText text={getTitle(flux)} />
                         </Link>
                       </li>
                     ))}
@@ -149,7 +150,7 @@ export default async function ContentPage({ params }: PageProps) {
                               : 'text-stone-600 hover:text-primary hover:bg-stone-50'
                           }`}
                         >
-                          {getTitle(param)}
+                          <MathText text={getTitle(param)} />
                         </Link>
                       </li>
                     ))}
@@ -173,7 +174,7 @@ export default async function ContentPage({ params }: PageProps) {
                               : 'text-stone-600 hover:text-primary hover:bg-stone-50'
                           }`}
                         >
-                          {getTitle(obs)}
+                          <MathText text={getTitle(obs)} />
                         </Link>
                       </li>
                     ))}
@@ -187,7 +188,7 @@ export default async function ContentPage({ params }: PageProps) {
           <main className="lg:col-span-3">
             <article className="bg-white rounded-lg border border-stone-200 p-8">
               <h1 className="text-3xl font-heading mb-4 pb-4 border-b border-stone-200 text-stone-900">
-                {displayTitle}
+                <MathText text={displayTitle} />
               </h1>
 
               <div className="flex gap-2 mb-6">
