@@ -5,7 +5,7 @@
 ### 1. Install Dependencies
 ```bash
 pnpm install
-# or
+# or1
 npm install
 ```
 

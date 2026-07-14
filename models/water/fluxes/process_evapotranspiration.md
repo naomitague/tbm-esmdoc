@@ -143,31 +143,14 @@ Pan, Shufen, Naiqing Pan, Hanqin Tian, Pierre Friedlingstein, Stephen Sitch, Hao
 
 # Statistical/ML
 
+## Hybrid
+
 
 # Observations
 
 [[output_et]]
 
-# Patterns and Trends
 
-## Global
-### Trends
-	* papers estimating trends (extract rate), tag by method
-	* paper attributing cause ()
-
-# Within Global
-
-### Spatial Pattern 
-### Trends
-	
-
-## Within Region
-
-clickable map
-# Spatial Pattern
-
-	* papers attributing cause ()
-# Trends
 
 # Target ESMs
 

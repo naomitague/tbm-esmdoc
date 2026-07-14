@@ -1,4 +1,4 @@
-### Evapotranspiration
+### [Evapotranspiration](water/fluxes/process_evapotranspiration)
 - [Transpiration](water/fluxes/Process_transpiration) - Plant water loss through stomata
 - [Soil Evaporation](water/fluxes/flux_soil_evaporation) - Direct evaporation from soil surface
 - Litter Evaporation - Evaporation from litter layer

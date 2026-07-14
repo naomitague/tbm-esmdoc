@@ -1,6 +1,11 @@
 
+# Organization/Drivers
+
+## climate: water vs energy limitation
+(note storage, vegetation, disturbance all matter within region but are secondary in explaining coarse scale across [[Definitions#Region]]
+
 source: Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang, Simone Fatichi, Xiangzhong Luo et al. "Evapotranspiration on a greening Earth." _Nature Reviews Earth & Environment_ 4, no. 9 (2023): 626-641. #updatedreview
-## Global
+## Global Annual Estimates
 
 ## Mean annual evapotranspiration (ensemble mean ± SD)
 
@@ -39,7 +44,7 @@ source: Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang,
 - 1982–2011: 0.66 ± 0.38 mm year⁻² (range across data sets: 0.20–1.13 mm year⁻²) — Yuting et al., 2023
 - 2001–2020: 1.19 ± 0.31 mm year⁻² — Yuting et al., 2023
 
-Trends
+
 
 
 

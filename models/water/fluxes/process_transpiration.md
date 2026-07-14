@@ -24,10 +24,11 @@ Transpiration is the flux by which water is transported from the soil by plant r
 Scaling from leaf transpiration to tree to stand requires making assumptions about how energy and water availability and diffuse gradients vary through canopies. Response tend to be highly non-linear so simple averaging leads to significant errors. Most models accounts for differential radiation exposure in sunlit and shaded leaves and assume exponential (or other) declines in radiation, windspeed and other diffuse parameters, from the top of canopies to ground surface.
 
 
-# Model Name (as implemented in the target ESM if there is a standard name e.g Penman monteith)
+# Basic Physical Model/Theory
+
 Penman-Monteith equation
 
-# Equation as used in target ESM
+
 \[ E = \frac{\Delta (R_n - G) + \rho_a c_p \text{VPD} / r_a}{\Delta + \gamma (1 + r_s/r_a)} \]
 
 Where:
@@ -39,22 +40,25 @@ Where:
 - \( c_p \): specific heat of air
 - VPD: vapor pressure deficit
 - \( r_a \): aerodynamic resistance
-- [[flux_stomatal_conductance]]\( r_s \): surface resistance (includes stomatal conductance)
+- [[flux_stomatal_conductance]]\( r_s \): surface resistance  from stomatal conductance)
 - \( \gamma \): psychrometric constant
 
-#  References
-## References for model in Target ESM
+For transpiration, scaling variables in above equation from leaf to plant to stand depends on plant characteristics 
+
+-[[flux_stomatal_conductance]]\( r_s \) depends on plant response to atmospheric conditions  and internal states - important internal states include xylem water pressure (which is impacted by root access to water as well as atmospheric humidity),  carbon assimilation and specific ecophysiology parameters that influence stomatal regulation
+
+##  Theory References
+
+Foundation
 - Monteith, J.L. (1965). Evaporation and environment. Symposia of the Society for Experimental Biology, 19, 205-234.
-
-
-## Alternative Model References
-
 - Jones, H.G. (1992). Plants and Microclimate: A Quantitative Approach to Environmental Plant Physiology. Cambridge University Press.
+
+##  Model References
+
+
 - Mencuccini, M., Manzoni, S. and Christoffersen, B., 2019. Modelling water fluxes in plants: from tissues to biosphere. _New Phytologist_, _222_(3), pp.1207-1222.
 
-# Limitations of flux implementation used in target ESM
-- Assumes steady-state conditions and daily average climate drivers.
-- No explicit treatment of within canopy turbulence or feedback from leaf temperature.
+
 
 # Observations
 
@@ -62,14 +66,14 @@ Where:
 
 
 
-# Details from target ESM model code
-## Variables
 
+# Target ESMs
 
-## Code source file and function names in which flux is updated
+## RHESSys
+
+### Code source file and function names in which flux is updated
 - `penman_monteith.c`
-
-## Code source file in which code is called or updated variables are used directly (limit to 4 if used in multiple places)
+### Code source file in which code is called or updated variables are used directly (limit to 4 if used in multiple places)
 - `canopy_stratum_daily_F.c` (multiple places for overstory, understory)
-- 
+
 
