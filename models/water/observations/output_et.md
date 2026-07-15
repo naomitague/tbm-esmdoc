@@ -21,6 +21,9 @@ Evapotranspiration is the flux of water from the earth surface to the atmosphere
 
 - **Eddy covariance methods** for stand-scale evapotranspiration partitioning:
   - Wilson, K. B., Baldocchi, D. D., & Hanson, P. J. (2001). Leaf area index and light extinction coefficients. _Agricultural and Forest Meteorology_, 107(1), 93–115.
+  - 
+  - reducing biass in scaling - using eddy-covariance data (footprint issues across networks)
+   Chu, Housen, Stefan Metzger, Zutao Ouyang, Anne Griebel, Koong Yi, David Durden, Sebastian Wolf et al. "Flux Footprints: A Critical Link to Bridge Eddy‐Covariance Measurements With Models, Remote Sensing, and Other Observations." _Global Change Biology_ 32, no. 4 (2026): e70887.
 
 
 - **Remote sensing** using thermal imaging to infer transpiration rates:
