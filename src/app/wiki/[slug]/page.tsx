@@ -1,9 +1,12 @@
+import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getContentBySlug, getAllSlugs, getConnectionGraph } from '@/lib/markdown';
+import { readCsvRows } from '@/lib/csv';
 import { Sidebar } from '@/components/Sidebar';
 import { ConnectionGraph } from '@/components/ConnectionGraph';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { CsvHistogramSection } from '@/components/CsvHistogramSection';
 import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
 import { Leaf } from 'lucide-react';
@@ -16,6 +19,34 @@ function getTitle(item: ContentMetadata): string {
   if (meta.name) return meta.name;
   if (meta.title) return meta.title;
   return meta.slug || '';
+}
+
+/**
+ * A note opts into inline CSV histograms by declaring `histogram_data` in its
+ * frontmatter (csv path + a list of {heading, column, title} sections — see
+ * HistogramDataConfig). This splits the note's markdown at each configured
+ * heading, in order, so a chart can be spliced in right after it — the
+ * generic MarkdownContent pipeline renders static HTML and can't host a live
+ * component itself. Returns null (render the note as one block, unchanged)
+ * if any configured heading isn't found in the content.
+ */
+function splitAtHeadings(markdown: string, headings: string[]): string[] | null {
+  const indices = headings.map(heading => markdown.indexOf(heading));
+  if (indices.some(idx => idx === -1)) return null;
+  for (let i = 1; i < indices.length; i++) {
+    if (indices[i] < indices[i - 1]) return null;
+  }
+
+  const segments: string[] = [];
+  let cursor = 0;
+  headings.forEach((heading, i) => {
+    const idx = indices[i];
+    segments.push(markdown.slice(cursor, idx + heading.length));
+    cursor = idx + heading.length;
+  });
+  segments.push(markdown.slice(cursor));
+
+  return segments;
 }
 
 interface PageProps {
@@ -36,6 +67,11 @@ export default async function WikiPage({ params }: PageProps) {
   }
 
   const connections = getConnectionGraph(slug);
+  const histogramData = 'histogramData' in content.metadata ? content.metadata.histogramData : undefined;
+  const histogramSegments = histogramData
+    ? splitAtHeadings(content.content, histogramData.sections.map(section => section.heading))
+    : null;
+  const csvRows = histogramSegments && histogramData ? readCsvRows(histogramData.csv) : null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -71,7 +107,23 @@ export default async function WikiPage({ params }: PageProps) {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1">
                 <InfoBox content={content} />
-                <MarkdownContent content={content.content} />
+                {histogramSegments && histogramData && csvRows ? (
+                  histogramSegments.map((segment, i) => (
+                    <Fragment key={i}>
+                      <MarkdownContent content={segment} />
+                      {i < histogramData.sections.length && (
+                        <CsvHistogramSection
+                          title={histogramData.sections[i].title}
+                          column={histogramData.sections[i].column}
+                          rows={csvRows}
+                          tableColumns={histogramData.table_columns}
+                        />
+                      )}
+                    </Fragment>
+                  ))
+                ) : (
+                  <MarkdownContent content={content.content} />
+                )}
               </div>
 
               {(connections.incoming.length > 0 || connections.outgoing.length > 0) && (

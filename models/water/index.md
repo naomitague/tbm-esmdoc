@@ -33,6 +33,10 @@ scale: [plot, patch, stand]
     - space (scale, location)
     - time (scale, location)
     (these are based on tags)
+- [ET / streamflow response to vegetation change](/wiki/evapotranspiration_or_streamflow__vegetation_change) —
+  conceptual model, response metrics, and histograms of the literature-synthesis
+  catchments by Köppen–Geiger class and Whittaker biome (click a bar for the
+  underlying observations)
 
 ## References
 

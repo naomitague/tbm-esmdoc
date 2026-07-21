@@ -66,6 +66,33 @@ export interface ObservationMetadata {
   connections: ModelConnection[];
 }
 
+export interface HistogramTableColumn {
+  key: string;
+  label: string;
+  fallback_key?: string;
+  unit_key?: string;
+  min_key?: string;
+  max_key?: string;
+  caption_key?: string;
+  subtitle_key?: string;
+  numeric?: boolean;
+  wrap?: boolean;
+  muted?: boolean;
+}
+
+export interface HistogramSectionConfig {
+  heading: string;
+  column: string;
+  title: string;
+}
+
+/** Declared in a note's frontmatter (`histogram_data:`) to wire a CSV into that note's headings — see WikiPage. */
+export interface HistogramDataConfig {
+  csv: string;
+  sections: HistogramSectionConfig[];
+  table_columns?: HistogramTableColumn[];
+}
+
 export interface OverviewMetadata {
   slug: string;
   title: string;
@@ -74,6 +101,7 @@ export interface OverviewMetadata {
   relatedFluxes?: string[];
   relatedParameters?: string[];
   connections: ModelConnection[];
+  histogramData?: HistogramDataConfig;
 }
 
 export interface ModelMetadata {

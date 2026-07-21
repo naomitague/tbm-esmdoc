@@ -1,12 +1,4 @@
-
-
-# Vegetation change impact on ET
-
-It is well established that vegetation change impacts transpiration and evaporation (through canopy interception and shading and longwave impacts on surface evaporative fluxes).
-
-
-
-Studies vary in how vegetation changes is estimated (or modelled) and metrics used to summarize 'vegetation' change and similarly how evapotranspiration change is estimated or modelled and metrics used to summarizes change (e.g annual versus monthly evapotranspiration). Studies also vary across scale.  Different approach are used to describe the relationship - from  estimates of elasticity or sensitivity to predictive models of the change in ET with change in vegetation. 
+Studies vary in how vegetation changes is estimated (or modelled) and metrics used to summarize 'vegetation' change and similarly how evapotranspiration or streamflow change change is estimated or modelled and metrics used to summarizes change (e.g annual versus monthly evapotranspiration). Studies also vary across scale.  Different approach are used to describe the relationship - from  estimates of elasticity or sensitivity to predictive models of the change in ET with change in vegetation. 
 
 
 
@@ -107,21 +99,3 @@ flowchart TB
 ```
 
 
-```
-		
-
-
-## annual ET vs canopy cover
-[[table_cover_ET]]
-
-##  annual ET vs LAI change
-
-Analysis of global ET trends  in response to LAI increases suggest sensitivities of ET to the LAI show substantive difference in Remote Sensing - Machine Learning vs LSM
-Summary 0.19% change in ET for 1% change in Forest cover
-
-Source: Pan et al., 2020 (Table 2); per-model values, excluding the table's own pre-computed mean rows.
-
-| Category | n | Mean (mm yr⁻² m⁻² m²) | Range (mm yr⁻² m⁻² m²) |
-|---|---|---|---|
-| LSMs | 14 | 103.2 | 4.04–217.39 |
-| Machine learning / RS models | 4 | 92.6 | 35.86–143.43 |

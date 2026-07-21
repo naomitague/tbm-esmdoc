@@ -2,11 +2,12 @@
 What drives patterns within regions depends on r[[Definitions#Region]]
 
 
-# Organization/Drivers
+# Interactions/Dependencies/Drivers
+
+1
 
 ## Environmental & Biological Controls of λE — by Vegetation Type
 *(Source table: Table 4, Wang & Dickinson, 2012, Rev. Geophys.)*
-
 
 ## Environmental & Biological Controls of λE — by Köppen Classification, then Vegetation Type
 *(Source table: Table 4, Wang & Dickinson, 2012, Rev. Geophys.)*
@@ -199,9 +200,9 @@ What drives patterns within regions depends on r[[Definitions#Region]]
 
 **Wetland/Peatland**
 
-| Citation | Site | Location | Climate | Time Period | Metric | ET Estimation Method | Key Results | Review Source |
-|---|---|---|---|---|---|---|---|---|
-| Sun & Song, 2008 | Wetland | 47.60, 133.52 | P=600, Ta=1.9 | 2005 | TBD | TBD | Rn was main driver of λE; VPD influence relatively small; λE ∝ LAI linearly when LAI<1 | Wang & Dickinson, 2012 |
+| Citation         | Site    | Location      | Climate       | Time Period | Metric | ET Estimation Method | Key Results                                                                            | Review Source          |
+| ---------------- | ------- | ------------- | ------------- | ----------- | ------ | -------------------- | -------------------------------------------------------------------------------------- | ---------------------- |
+| Sun & Song, 2008 | Wetland | 47.60, 133.52 | P=600, Ta=1.9 | 2005        | TBD    | TBD                  | Rn was main driver of λE; VPD influence relatively small; λE ∝ LAI linearly when LAI<1 | Wang & Dickinson, 2012 |
 
 ### ET — Tundra/Alpine
 

@@ -218,7 +218,8 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     title: frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/_/g, ' '),
     tags: frontMatter.tags || ['overview'],
     description,
-    connections
+    connections,
+    histogramData: frontMatter.histogram_data
   };
 }
 
@@ -242,16 +243,52 @@ export function getAllMarkdownFiles(dir: string = contentDirectory, fileList: st
   return fileList;
 }
 
+function baseSlugFromPath(filePath: string): string {
+  return path.basename(filePath, '.md').toLowerCase().replace(/\s+/g, '_');
+}
+
+/**
+ * Bare filenames collide across directories (every models/*\/index.md, or two
+ * README.md files) — the wiki keys notes by slug, so a collision leaves one
+ * note permanently unreachable via getContentBySlug's first-match lookup and
+ * produces duplicate React keys in the sidebar. Give colliding files a
+ * path-qualified slug; leave every non-colliding file's slug (and any
+ * existing [[wikilink]] pointing at it) unchanged.
+ */
+function computeUniqueSlugs(filePaths: string[]): Map<string, string> {
+  const baseCounts = new Map<string, number>();
+  filePaths.forEach(fp => {
+    const base = baseSlugFromPath(fp);
+    baseCounts.set(base, (baseCounts.get(base) ?? 0) + 1);
+  });
+
+  const slugs = new Map<string, string>();
+  filePaths.forEach(fp => {
+    const base = baseSlugFromPath(fp);
+    if (baseCounts.get(base) === 1) {
+      slugs.set(fp, base);
+      return;
+    }
+    const qualified = path
+      .relative(contentDirectory, fp)
+      .replace(/\.md$/i, '')
+      .toLowerCase()
+      .replace(/[\\/\s]+/g, '_');
+    slugs.set(fp, qualified);
+  });
+
+  return slugs;
+}
+
 /**
  * Parse a markdown file and return structured content
  */
-export function parseMarkdownFile(filePath: string): ContentMetadata | null {
+export function parseMarkdownFile(filePath: string, slugOverride?: string): ContentMetadata | null {
   try {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     const { data: frontMatter, content } = matter(fileContent);
 
-    // Generate slug from filename
-    const slug = path.basename(filePath, '.md').toLowerCase().replace(/\s+/g, '_');
+    const slug = slugOverride ?? baseSlugFromPath(filePath);
 
     // Determine content type
     const tags = frontMatter.tags || [];
@@ -295,8 +332,9 @@ export function parseMarkdownFile(filePath: string): ContentMetadata | null {
  */
 export function getAllContent(): ContentMetadata[] {
   const files = getAllMarkdownFiles();
+  const slugs = computeUniqueSlugs(files);
   return files
-    .map(parseMarkdownFile)
+    .map(file => parseMarkdownFile(file, slugs.get(file)))
     .filter((content): content is ContentMetadata => content !== null);
 }
 

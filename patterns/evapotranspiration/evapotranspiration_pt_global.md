@@ -1,13 +1,11 @@
 
-# Organization/Drivers
 
-## climate: water vs energy limitation
-(note storage, vegetation, disturbance all matter within region but are secondary in explaining coarse scale across [[Definitions#Region]]
 
-source: Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang, Simone Fatichi, Xiangzhong Luo et al. "Evapotranspiration on a greening Earth." _Nature Reviews Earth & Environment_ 4, no. 9 (2023): 626-641. #updatedreview
 ## Global Annual Estimates
 
 ## Mean annual evapotranspiration (ensemble mean ± SD)
+
+source: Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang, Simone Fatichi, Xiangzhong Luo et al. "Evapotranspiration on a greening Earth." _Nature Reviews Earth & Environment_ 4, no. 9 (2023): 626-641. #updatedreview 
 
 | Region / biome | Mean annual ET (mm year⁻¹) | Citation |
 |---|---|---|
@@ -46,7 +44,10 @@ source: Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang,
 
 
 
+# Organization/Drivers
 
+## climate: water vs energy limitation
+(note storage, vegetation, disturbance all matter within region but are secondary in explaining coarse scale across [[Definitions#Region]]
 
 
 
