@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getAllModels } from '@/lib/models';
 import { Navbar } from '@/components/Navbar';
-import { Droplets, Sprout, FlaskConical, Sun, BookOpen, GitFork, GraduationCap, ArrowRight } from 'lucide-react';
+import { Droplets, Sprout, FlaskConical, Sun, BookOpen, GitFork, GraduationCap, ArrowRight, Boxes } from 'lucide-react';
 
 const modelIcons: Record<string, React.ElementType> = {
   water: Droplets,
@@ -102,6 +102,28 @@ export default function HomePage() {
               );
             })}
           </div>
+        </div>
+
+        {/* Earth System Models link */}
+        <div className="mb-20">
+          <Link href="/esms" className="group block">
+            <div className="bg-white rounded-lg border border-stone-200 shadow-sm hover:shadow-md transition-shadow duration-200 p-6 flex items-center gap-5">
+              <div className="bg-primary p-3 rounded-lg flex-shrink-0">
+                <Boxes className="w-6 h-6 text-white" strokeWidth={1.5} />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-heading text-stone-900 mb-1">Earth System Models</h3>
+                <p className="text-sm text-stone-500">
+                  Browse the models and versions referenced throughout the process
+                  documentation, and how each represents fluxes like evapotranspiration.
+                </p>
+              </div>
+              <ArrowRight
+                className="w-5 h-5 text-primary flex-shrink-0 group-hover:translate-x-1 transition-transform"
+                strokeWidth={1.5}
+              />
+            </div>
+          </Link>
         </div>
 
         {/* Info Section */}

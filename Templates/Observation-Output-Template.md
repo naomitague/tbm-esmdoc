@@ -3,13 +3,13 @@ Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
 
 
 #  consituent  - carbon, water, nitrogen, energy, other
-output_constituent: []
+obs_constituent: []
 
 #  kind - flux, store/state, count, other
-output_kind: []
+obs_kind: []
 
 #  units
-output_kind: []
+obs_units: []
 
 
 # Process links

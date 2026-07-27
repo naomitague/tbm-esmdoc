@@ -62,16 +62,16 @@ pnpm build         # <!-- fill in -->
 
 Part of the Heliopause project. This section documents standing decisions for
 the two-table dataset that underlies the vault's ET/forest-change literature
-synthesis (see `schema/observations.csv`, `schema/synthesis.csv`,
+synthesis (see `schema/veg_hydro_response_obs.csv`, `schema/veg_hydro_response_syn.csv`,
 `schema/README.md`). Decisions here were worked out in design sessions
 (web Claude) and should be treated as settled unless explicitly revisited —
 don't silently deviate from them when writing extraction/generation scripts.
 
 ### Two tables, not one
-- `observations.csv` — one row per individual catchment/study observation
+- `veg_hydro_response_obs.csv` — one row per individual catchment/study observation
   (a real ΔF→ΔET or ΔF→Δrunoff pair for one physical site, or a digitized
   point off a forest plot).
-- `synthesis.csv` — one row per synthesis/meta-analysis result (pooled effect
+- `veg_hydro_response_syn.csv` — one row per synthesis/meta-analysis result (pooled effect
   size, regression coefficient, subgroup comparison) — always derived across
   multiple observations, never a single raw data point.
 - Do not merge these into one wide table. The record types don't share a
@@ -82,17 +82,17 @@ don't silently deviate from them when writing extraction/generation scripts.
 
 ### Papers currently in the dataset
 - Yang et al., 2023 (*Evapotranspiration on a greening Earth*) — mostly
-  `observations.csv` rows (Table S5, 172 catchments), plus one
-  `synthesis.csv` row (Fig. S5 regression line, ΔET vs ΔF).
+  `veg_hydro_response_obs.csv` rows (Table S5, 172 catchments), plus one
+  `veg_hydro_response_syn.csv` row (Fig. S5 regression line, ΔET vs ΔF).
 - Zhang et al., 2017 (*J. Hydrol.*, forest change / annual runoff review) —
   **confirmed to have a full raw 312-watershed table in Appendix A** (name,
   area, precip, forest type, hydrol. regime, ΔF%, ΔQf%, method, source) —
   extracted from the supplementary docx. This means Zhang belongs mostly in
-  `observations.csv`, not synthesis — the subgroup means/CVs in the main
+  `veg_hydro_response_obs.csv`, not synthesis — the subgroup means/CVs in the main
   paper (Figs. 5–7, Tables 2–4) are *derived from* this same Appendix A pool
-  and go in `synthesis.csv` referencing back to it.
+  and go in `veg_hydro_response_syn.csv` referencing back to it.
 - del Campo et al., 2022 (*For. Ecol. Manag.*, thinning meta-analysis) —
-  almost entirely `synthesis.csv` (pooled ln(RoM) effect sizes, Table 2;
+  almost entirely `veg_hydro_response_syn.csv` (pooled ln(RoM) effect sizes, Table 2;
   mixed-effects regression intercepts, Table 4; heterogeneity diagnostics,
   Supp. Table SM1). No observation-level numeric table exists in its
   supplement — individual-study values are only visible as forest-plot
@@ -110,13 +110,13 @@ because papers report ranges (e.g. thinning intensity 14–97%) as often as
 single numbers, and collapsing a range into a fake point value loses
 information.
 
-**`ci_lower`/`ci_upper` only exist in `synthesis.csv`, and only ever bound
+**`ci_lower`/`ci_upper` only exist in `veg_hydro_response_syn.csv`, and only ever bound
 `value_point` in the *same row*.** A raw observation has no CI (it's not a
 statistical estimate). If a paper reports two different estimates for one
 process (e.g. a pooled ln(RoM) and a separate regression intercept), that's
 two rows, not one row with two CI pairs.
 
-**`site_id` (in `observations.csv`) is a canonical cross-review identity,
+**`site_id` (in `veg_hydro_response_obs.csv`) is a canonical cross-review identity,
 separate from `obs_id`.** Populate only once a cross-paper match is
 confirmed/probable (`site_match_confidence`: exact/probable/unconfirmed).
 **Never collapse matched rows into one value** — Yang and Zhang may report
@@ -133,7 +133,7 @@ mismatch). del Campo overlap with Yang/Zhang not yet systematically checked;
 expected low since thinning is a different intervention class than
 clearcut/afforestation, but not zero.
 
-**`model_id` groups `synthesis.csv` rows belonging to one overarching result**
+**`model_id` groups `veg_hydro_response_syn.csv` rows belonging to one overarching result**
 (e.g. all moderator tests for "del Campo stemflow", or "Zhang runoff-
 sensitivity in large watersheds"). Encode scale/subgroup splits as *separate*
 `model_id`s (`zhang2017_sensitivity_small` vs `_large`) rather than a shared
@@ -158,7 +158,7 @@ Kendall's τ but never a "% heterogeneity explained" figure). Never blend the
 two without this flag visible.
 
 **Both `forest_change_*` and `hydro_response_*` need metric-level
-descriptions in `synthesis.csv`**, not just bare labels — `forest_change_metric`
+descriptions in `veg_hydro_response_syn.csv`**, not just bare labels — `forest_change_metric`
 + `forest_change_description`, `hydro_response_metric` +
 `hydro_response_description` + `response_formula`. Bare labels like `Sf` or
 `ln(RoM)` aren't self-explanatory without the paper's notation in hand.
@@ -169,7 +169,7 @@ collapse the two.
 
 ## Open / unfinished work
 - Full extraction of all 312 Zhang rows and all 172 Yang rows into
-  `observations.csv` proper (currently only worked examples exist).
+  `veg_hydro_response_obs.csv` proper (currently only worked examples exist).
 - Fuzzy name/area/precip matching pass to populate more `site_id` links
   between Yang and Zhang.
 - del Campo × Yang/Zhang citation-overlap check (not yet done).

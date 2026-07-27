@@ -10,6 +10,7 @@ export interface FluxMetadata {
   model?: string;
   aliases?: string[];
   tags: string[];
+  topic?: string[];
   description: string;
   modelName?: string;
   equation?: string;
@@ -29,6 +30,7 @@ export interface FluxMetadata {
   };
   codeFiles?: string[];
   observations?: string[];
+  esmTable?: EsmTableConfig;
   connections: ModelConnection[];
 }
 
@@ -38,6 +40,7 @@ export interface ParameterMetadata {
   model?: string;
   aliases?: string[];
   tags: string[];
+  topic?: string[];
   status?: string;
   dynamicallyComputed: boolean;
   classification: string[];
@@ -59,6 +62,7 @@ export interface ObservationMetadata {
   model?: string;
   aliases?: string[];
   tags: string[];
+  topic?: string[];
   description: string;
   variables?: string[];
   methods?: string[];
@@ -81,16 +85,53 @@ export interface HistogramTableColumn {
 }
 
 export interface HistogramSectionConfig {
+  type?: 'histogram';
   heading: string;
   column: string;
   title: string;
 }
 
+/** A `histogram_data` section rendered as an x/y scatter instead of a bar histogram — same CSV, plotted rather than counted. */
+export interface ScatterSectionConfig {
+  type: 'scatter';
+  heading: string;
+  x_column: string;
+  y_column: string;
+  x_label: string;
+  y_label: string;
+  filter_column?: string;
+  filter_value?: string;
+  title: string;
+}
+
+export type HistogramDataSection = HistogramSectionConfig | ScatterSectionConfig;
+
 /** Declared in a note's frontmatter (`histogram_data:`) to wire a CSV into that note's headings — see WikiPage. */
 export interface HistogramDataConfig {
   csv: string;
-  sections: HistogramSectionConfig[];
+  sections: HistogramDataSection[];
   table_columns?: HistogramTableColumn[];
+}
+
+/** Declared in a note's frontmatter (`trend_data:`) to wire a numeric-trend CSV in after one heading — see WikiPage. */
+export interface TrendDataConfig {
+  csv: string;
+  heading: string;
+}
+
+/**
+ * Declared in a note's frontmatter (`esm_table:`) to splice an interactive
+ * ESM method-comparison table in after one heading (e.g. `## Physically-based`
+ * in a flux/process note). `csv` points at a per-version method table under
+ * `models/.../tabledata/` keyed by `version_id`; that table is joined against
+ * the shared ESM registries (`esms/esm_model.csv`, `esms/esm_model_versions.csv`)
+ * at render time — see readEsmTable and WikiPage.
+ */
+export interface EsmTableConfig {
+  csv: string;
+  heading: string;
+  /** Optional column override: which method columns to show, in order, with labels. Defaults to every non-provenance column, humanized. */
+  columns?: { key: string; label: string }[];
 }
 
 export interface OverviewMetadata {
@@ -102,6 +143,10 @@ export interface OverviewMetadata {
   relatedParameters?: string[];
   connections: ModelConnection[];
   histogramData?: HistogramDataConfig;
+  trendData?: TrendDataConfig;
+  esmTable?: EsmTableConfig;
+  topic?: string[];
+  kind?: 'pattern' | 'relationship';
 }
 
 export interface ModelMetadata {

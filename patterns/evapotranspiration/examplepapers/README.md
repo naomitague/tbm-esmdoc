@@ -4,7 +4,7 @@ Two tables. One row shape per table, deliberately not unified into a single wide
 table because the two record types answer different questions and mix badly
 (see rationale below).
 
-## Table 1 — `observations.csv`
+## Table 1 — `veg_hydro_response_obs.csv`
 One row = one individual catchment/study observation (a real ΔF → ΔET or ΔF →
 Δrunoff pair reported for one physical site, or one digitized point off a
 forest plot).
@@ -45,7 +45,7 @@ observation-level table is provided in that paper's supplement.
   ever apply to a modeled/pooled estimate, never to a single raw observation.
   That's Table 2's job.
 
-## Table 2 — `synthesis.csv`
+## Table 2 — `veg_hydro_response_syn.csv`
 One row = one synthesis/meta-analysis result: a pooled effect size, a
 regression/model coefficient, or a subgroup comparison — always something
 derived across multiple observations, never a single raw data point.

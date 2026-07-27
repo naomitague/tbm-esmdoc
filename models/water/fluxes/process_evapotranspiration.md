@@ -1,4 +1,9 @@
-
+---
+topic: [evapotranspiration]
+esm_table:
+  csv: models/water/fluxes/tabledata/et_method_reference.csv
+  heading: "## Physically-based"
+---
 
 name: Evapotranspiration
 aliases: [ET, evapotranspiration, total surface water loss]
@@ -17,6 +22,7 @@ Evapotranspiration rates depend on water availability, energy availability and d
 # Basic Physical Model/Theory
 
 ```mermaid
+%%{init: {'flowchart': {'padding': 6, 'nodeSpacing': 25, 'rankSpacing': 30, 'diagramPadding': 4}, 'themeVariables': {'fontSize': '20px'}}}%%
 flowchart BT
     ATM["☁️ Atmosphere<br/>(Total ET)"]
 
@@ -58,14 +64,14 @@ flowchart BT
     LIE --> ATM
     SE --> ATM
 
-    click OT "obsidian://open?vault=TBM-ESMDOC&file=process_transpiration"
-    click CIE "obsidian://open?vault=YourVaultName&file=Canopy%20Interception%20Evaporation"
-    click CIS "obsidian://open?vault=YourVaultName&file=Canopy%20Interception%20Sublimation"
-    click UT "obsidian://open?vault=YourVaultName&file=Understory%20Transpiration"
-    click UIE "obsidian://open?vault=YourVaultName&file=Understory%20Interception%20Evaporation"
-    click SS "obsidian://open?vault=YourVaultName&file=Snowpack%20Sublimation"
-    click LIE "obsidian://open?vault=YourVaultName&file=Litter%20Interception%20Evaporation"
-    click SE "obsidian://open?vault=YourVaultName&file=Soil%20Evaporation"
+    click OT "/wiki/process_transpiration" "Overstory Transpiration"
+    click CIE "/wiki/process_canopy_interception_evaporation" "Canopy Interception Evaporation"
+    click CIS "/wiki/process_canopy_interception_sublimation" "Canopy Interception Sublimation"
+    click UT "/wiki/process_transpiration" "Understory Transpiration"
+    click UIE "/wiki/process_understory_interception_evaporation" "Understory Interception Evaporation"
+    click SS "/wiki/process_snowpack_sublimation" "Snowpack Sublimation"
+    click LIE "/wiki/process_litter_interception_evaporation" "Litter Interception Evaporation"
+    click SE "/wiki/process_soil_evaporation" "Soil Evaporation"
 
     classDef transpiration fill:#eaf3de,stroke:#3b6d11,color:#173404
     classDef interception fill:#e6f1fb,stroke:#185fa5,color:#042c53
@@ -129,7 +135,7 @@ Where:
 
 ## Model References
 
-# General (physically-based, hybrid, statistical)
+# General Reviews of Models (physically-based, hybrid, statistical)
 
 Wang, Kaicun, and Robert E. Dickinson. "A review of global terrestrial evapotranspiration: Observation, modeling, climatology, and climatic variability." _Reviews of Geophysics_ 50, no. 2 (2012). #foundational
 
@@ -141,6 +147,11 @@ Pan, Shufen, Naiqing Pan, Hanqin Tian, Pierre Friedlingstein, Stephen Sitch, Hao
 
 ## Physically-based
 
+How individual Earth System Models represent evapotranspiration — the estimation
+approach, stomatal conductance scheme, ET components resolved, and canopy light
+partitioning for each model version. Use the selector to view all models or focus
+on one. See the full [ESM registry](/esms) for model details.
+
 # Statistical/ML
 
 ## Hybrid
@@ -148,24 +159,14 @@ Pan, Shufen, Naiqing Pan, Hanqin Tian, Pierre Friedlingstein, Stephen Sitch, Hao
 
 # Observations
 
-[[output_et]]
+[[obs_et]]
+
+# Patterns 
+* results from models/observations that provide insight into patterns of evapotranspiration and how they change
+[[evapotranspiration_patterns_overview]]
+[[evapotranspiration_patterns_global]]
+[[evapotranspiration_patterns_within_region]]
 
 
-
-# Target ESMs
-
-## RHESSys
-
-Target ESM: RHESSys, [https://github.com/RHESSys/RHESSys.git](https://github.com/RHESSys/RHESSys.git), develop branch
-depends_on:
-    - [[flux_soil_evaporation]]]
-    - [[flux_litter_evaporation]]
-    - overstory transpiration
-    - understory transpiration
-    - overstory interception evaporation
-    - understory interception evaporation
-
-For all the Penman-Monteith is used - see individual fluxes for details
-- Tague, C. & Band, L. (2004). RHESSys: Regional Hydro-Ecologic Simulation System—An Object-Oriented Approach to Spatially Distributed Modeling of Carbon, Water, and Nutrient Cycling. _Earth Interactions_, 8(19), 1-42. [https://doi.org/10.1175/1087-3562(2004)8](https://doi.org/10.1175/1087-3562\(2004\)8)<1:RRHSSO>2.0.CO;2
     
     

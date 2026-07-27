@@ -15,7 +15,9 @@ import {
 const modelsDirectory = path.join(process.cwd(), 'models');
 
 /**
- * Extract wiki-style links like [[flux_stomatal_conductance]] from markdown
+ * Extract wiki-style links like [[flux_stomatal_conductance]] or
+ * [[process_transpiration|Transpiration]] from markdown. Only the link
+ * target (before a `|Alias`) is returned — the alias is display text only.
  */
 export function extractWikiLinks(content: string): string[] {
   const linkRegex = /\[\[([^\]]+)\]\]/g;
@@ -23,10 +25,29 @@ export function extractWikiLinks(content: string): string[] {
   let match;
 
   while ((match = linkRegex.exec(content)) !== null) {
-    links.push(match[1]);
+    links.push(match[1].split('|')[0].trim());
   }
 
   return links;
+}
+
+/**
+ * A model's flux/parameter/observation files don't share one filename
+ * prefix (fluxes are `process_*`, observations `obs_*`, parameters
+ * unprefixed) — so a wikilink with no recognized prefix is resolved by
+ * checking which subdirectory actually contains a matching file, rather
+ * than guessing.
+ */
+function findModelSlugType(
+  modelSlug: string,
+  slug: string
+): 'fluxes' | 'parameters' | 'observations' | null {
+  const dirs: Array<'fluxes' | 'parameters' | 'observations'> = ['fluxes', 'parameters', 'observations'];
+  for (const dir of dirs) {
+    const filePath = path.join(modelsDirectory, modelSlug, dir, `${slug}.md`);
+    if (fs.existsSync(filePath)) return dir;
+  }
+  return null;
 }
 
 /**
@@ -46,21 +67,32 @@ function getNameFromContent(content: string): string | undefined {
   return match ? match[1].trim() : undefined;
 }
 /**
- * Convert wiki-style links to Next.js links with model context
+ * Convert wiki-style links to Next.js links with model context. Supports
+ * `[[Note Name|Alias]]` — the alias is shown as the link text while the
+ * note name still resolves the target.
  */
 export function convertWikiLinksToNextLinks(content: string, modelSlug: string): string {
-  return content.replace(/\[\[([^\]]+)\]\]/g, (match, link) => {
+  return content.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (match, rawLink, alias) => {
+    const link = rawLink.trim();
+    const displayText = (alias || link).trim();
     const slug = link.toLowerCase().replace(/\s+/g, '_');
+
     // Try to determine if it's a flux, parameter, or observation
     if (link.toLowerCase().startsWith('flux_')) {
-      return `[${link}](/models/${modelSlug}/fluxes/${slug.replace('flux_', '')})`;
-    } else if (link.toLowerCase().startsWith('output_')) {
-      return `[${link}](/models/${modelSlug}/observations/${slug.replace('output_', '')})`;
+      return `[${displayText}](/models/${modelSlug}/fluxes/${slug.replace('flux_', '')})`;
+    } else if (link.toLowerCase().startsWith('obs_')) {
+      return `[${displayText}](/models/${modelSlug}/observations/${slug.replace('obs_', '')})`;
     } else if (link.toLowerCase().startsWith('parameter_')) {
-      return `[${link}](/models/${modelSlug}/parameters/${slug.replace('parameter_', '')})`;
+      return `[${displayText}](/models/${modelSlug}/parameters/${slug.replace('parameter_', '')})`;
     }
-    // Default: link within same model context
-    return `[${link}](/models/${modelSlug}/${slug})`;
+
+    const foundType = findModelSlugType(modelSlug, slug);
+    if (foundType) {
+      return `[${displayText}](/models/${modelSlug}/${foundType}/${slug})`;
+    }
+
+    // Fall back to the general wiki — not every model-page link is a flux/parameter/observation
+    return `[${displayText}](/wiki/${slug})`;
   });
 }
 
@@ -229,6 +261,7 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
     dependsOn,
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
     tags: frontMatter.tags || ['flux'],
+    topic: frontMatter.topic || [],
     description,
     modelName,
     variables: {
@@ -274,6 +307,7 @@ function parseParameter(fileContent: string, slug: string, modelSlug: string, fr
     model: modelSlug,
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['parameter'],
+    topic: frontMatter.topic || [],
     status: frontMatter.status,
     dynamicallyComputed: dynamicMatch ? dynamicMatch[1].toLowerCase() === 'yes' : false,
     classification: classMatch ? classMatch[1].split(',').map(c => c.trim()).filter(Boolean) : [],
@@ -303,7 +337,7 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
   const description = descMatch ? descMatch[1].trim() : frontMatter.description || '';
 
   const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
-  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^output_/, '').replace(/_/g, ' ');
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^obs_/, '').replace(/_/g, ' ');
 
   return {
     slug,
@@ -311,6 +345,7 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
     model: modelSlug,
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['observation'],
+    topic: frontMatter.topic || [],
     description,
     connections
   };

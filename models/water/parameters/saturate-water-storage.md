@@ -31,7 +31,7 @@ Used to compute saturated zone extent and runoff production via saturation exces
 
 
 # Sources
-[[output_water_table_depth]]
+[[obs_water_table_depth]]
 # Conceptual or where available mathematical model of parameter variation or controls on the parameter  (for physical parameters only)  
 
 ## Saturation Deficit Calculation

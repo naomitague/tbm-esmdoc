@@ -359,3 +359,11 @@ h1, h2, h3, h4, h5, h6 {
 .badge-flux {
   background-color: #dc2626;
 }
+
+.badge-pattern {
+  background-color: #0369a1;
+}
+
+.badge-relationship {
+  background-color: #7c3aed;
+}

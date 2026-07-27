@@ -1,3 +1,7 @@
+---
+topic: [transpiration]
+---
+
 name: transpiration
 aliases: [transpiration, plant water loss]
 type: flux
@@ -53,16 +57,24 @@ Foundation
 - Monteith, J.L. (1965). Evaporation and environment. Symposia of the Society for Experimental Biology, 19, 205-234.
 - Jones, H.G. (1992). Plants and Microclimate: A Quantitative Approach to Environmental Plant Physiology. Cambridge University Press.
 
-##  Model References
+## Model References
 
+# General Reviews of Models (physically-based, hybrid, statistical)
 
 - Mencuccini, M., Manzoni, S. and Christoffersen, B., 2019. Modelling water fluxes in plants: from tissues to biosphere. _New Phytologist_, _222_(3), pp.1207-1222.
 
+## Physically-based
+
+Table of approaches used
+
+# Statistical/ML
+
+## Hybrid
 
 
 # Observations
 
-[[output_transpiration]]
+[[obs_transpiration]]
 
 
 

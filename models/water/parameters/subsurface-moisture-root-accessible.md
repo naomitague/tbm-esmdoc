@@ -26,7 +26,7 @@ Because of the multiple controls on root accessible soil moisture its range is w
 # Function in the model  
 Used to determine plant water availability for transpiration. 
 # Sources  
-. see [[output_soil_moisture]]
+. see [[obs_soil_moisture]]
 
 
 # Conceptual or where available mathematical model of parameter variation or controls on the parameter  (for physical parameters only)ls  
@@ -44,7 +44,7 @@ Where:
 
 - $\Delta_{rz_storage}$ = Change in root zone soil water storage (mm/day)  
 - $I$ = Infiltration into the root zone (mm/day)  
-- $E_s$ = Soil evaporation from the root zone (mm/day)  [[output_soil_evaporation]]
+- $E_s$ = Soil evaporation from the root zone (mm/day)  [[obs_soil_evaporation]]
 - $T$ = Transpiration (mm/day)  [[flux_transpiration]]
 - $D$ = Drainage to the unsaturated or saturated zone drainage occurs until [[Field Capacity]] is reached
 - S = any saturated water that enters the rooting zone from below

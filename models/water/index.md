@@ -21,23 +21,17 @@ scale: [plot, patch, stand]
 - show parameters
 - show first connections to other stores - e.g LAI, height
 - highlight only fluxes/stores/parameters that have measurement pages
-
-## Dependencies and Details
-
 - show dependencies for any flux or store (hierarchical graphs)
 
-## Theory / papers on what are key controls or how patterns are organized
+## Theory / papers on relationships of interest
 
 - user can select from left (fluxes, stores, parameters)
 - user can identify
     - space (scale, location)
     - time (scale, location)
     (these are based on tags)
-- [ET / streamflow response to vegetation change](/wiki/evapotranspiration_or_streamflow__vegetation_change) —
+- [ET / streamflow response to vegetation change](/wiki/evapotranspiration_or_streamflow__response_to_vegetation_change) —
   conceptual model, response metrics, and histograms of the literature-synthesis
   catchments by Köppen–Geiger class and Whittaker biome (click a bar for the
   underlying observations)
 
-## References
-
-search references database (or find by alternative models, current model), or find ones that occur frequently (cover many fluxes, etc)

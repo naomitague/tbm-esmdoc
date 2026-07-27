@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getModelBySlug, getAllModels, getAllModelContent } from '@/lib/models';
+import { getTopicIndex } from '@/lib/topics';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { MathText } from '@/components/MathText';
+import { ModelTopicOverview } from '@/components/ModelTopicOverview';
 import { ModelMetadata, ContentMetadata } from '@/types';
 import { Droplets, Sprout, FlaskConical, Sun, BarChart3 } from 'lucide-react';
 
@@ -50,6 +52,7 @@ export default async function ModelPage({ params }: PageProps) {
 
   const metadata = modelContent.metadata as ModelMetadata;
   const allContent = getAllModelContent(modelSlug);
+  const topicIndex = modelSlug === 'water' ? getTopicIndex(modelSlug) : null;
   const bgColor = metadata.color ? colorClasses[metadata.color] : 'bg-stone-500';
   const Icon = modelIcons[modelSlug] || BarChart3;
 
@@ -89,83 +92,89 @@ export default async function ModelPage({ params }: PageProps) {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg border border-stone-200 p-8 wiki-content">
-              <MarkdownContent content={modelContent.content} />
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1 space-y-5">
-            {allContent.fluxes.length > 0 && (
-              <div className="bg-white rounded-lg border border-stone-200 p-5">
-                <h3 className="font-heading text-base mb-3 flex items-center gap-2">
-                  <span className="badge badge-flux">Flux</span>
-                  Fluxes
-                </h3>
-                <ul className="space-y-1.5">
-                  {allContent.fluxes.map(flx => (
-                    <li key={flx.metadata.slug}>
-                      <Link
-                        href={`/models/${modelSlug}/fluxes/${flx.metadata.slug}`}
-                        className="text-sm text-primary hover:underline block py-0.5"
-                      >
-                        <MathText text={getTitle(flx)} />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+          {topicIndex ? (
+            <ModelTopicOverview modelSlug={modelSlug} content={modelContent.content} topicIndex={topicIndex} />
+          ) : (
+            <>
+              {/* Main Content */}
+              <div className="lg:col-span-2">
+                <div className="bg-white rounded-lg border border-stone-200 p-8 wiki-content">
+                  <MarkdownContent content={modelContent.content} />
+                </div>
               </div>
-            )}
 
-            {allContent.parameters.length > 0 && (
-              <div className="bg-white rounded-lg border border-stone-200 p-5">
-                <h3 className="font-heading text-base mb-3 flex items-center gap-2">
-                  <span className="badge badge-parameter">Parameter</span>
-                  Parameters
-                </h3>
-                <ul className="space-y-1.5">
-                  {allContent.parameters.slice(0, 10).map(param => (
-                    <li key={param.metadata.slug}>
-                      <Link
-                        href={`/models/${modelSlug}/parameters/${param.metadata.slug}`}
-                        className="text-sm text-primary hover:underline block py-0.5"
-                      >
-                        <MathText text={getTitle(param)} />
-                      </Link>
-                    </li>
-                  ))}
-                  {allContent.parameters.length > 10 && (
-                    <li className="text-xs text-stone-400 py-0.5">
-                      +{allContent.parameters.length - 10} more
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
+              {/* Sidebar */}
+              <div className="lg:col-span-1 space-y-5">
+                {allContent.fluxes.length > 0 && (
+                  <div className="bg-white rounded-lg border border-stone-200 p-5">
+                    <h3 className="font-heading text-base mb-3 flex items-center gap-2">
+                      <span className="badge badge-flux">Flux</span>
+                      Fluxes
+                    </h3>
+                    <ul className="space-y-1.5">
+                      {allContent.fluxes.map(flx => (
+                        <li key={flx.metadata.slug}>
+                          <Link
+                            href={`/models/${modelSlug}/fluxes/${flx.metadata.slug}`}
+                            className="text-sm text-primary hover:underline block py-0.5"
+                          >
+                            <MathText text={getTitle(flx)} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-            {allContent.observations.length > 0 && (
-              <div className="bg-white rounded-lg border border-stone-200 p-5">
-                <h3 className="font-heading text-base mb-3 flex items-center gap-2">
-                  <span className="badge badge-observation">Output</span>
-                  Observations
-                </h3>
-                <ul className="space-y-1.5">
-                  {allContent.observations.map(obs => (
-                    <li key={obs.metadata.slug}>
-                      <Link
-                        href={`/models/${modelSlug}/observations/${obs.metadata.slug}`}
-                        className="text-sm text-primary hover:underline block py-0.5"
-                      >
-                        <MathText text={getTitle(obs)} />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                {allContent.parameters.length > 0 && (
+                  <div className="bg-white rounded-lg border border-stone-200 p-5">
+                    <h3 className="font-heading text-base mb-3 flex items-center gap-2">
+                      <span className="badge badge-parameter">Parameter</span>
+                      Parameters
+                    </h3>
+                    <ul className="space-y-1.5">
+                      {allContent.parameters.slice(0, 10).map(param => (
+                        <li key={param.metadata.slug}>
+                          <Link
+                            href={`/models/${modelSlug}/parameters/${param.metadata.slug}`}
+                            className="text-sm text-primary hover:underline block py-0.5"
+                          >
+                            <MathText text={getTitle(param)} />
+                          </Link>
+                        </li>
+                      ))}
+                      {allContent.parameters.length > 10 && (
+                        <li className="text-xs text-stone-400 py-0.5">
+                          +{allContent.parameters.length - 10} more
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+
+                {allContent.observations.length > 0 && (
+                  <div className="bg-white rounded-lg border border-stone-200 p-5">
+                    <h3 className="font-heading text-base mb-3 flex items-center gap-2">
+                      <span className="badge badge-observation">Output</span>
+                      Observations
+                    </h3>
+                    <ul className="space-y-1.5">
+                      {allContent.observations.map(obs => (
+                        <li key={obs.metadata.slug}>
+                          <Link
+                            href={`/models/${modelSlug}/observations/${obs.metadata.slug}`}
+                            className="text-sm text-primary hover:underline block py-0.5"
+                          >
+                            <MathText text={getTitle(obs)} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
         </div>
       </div>
     </div>

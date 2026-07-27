@@ -1,13 +1,14 @@
+---
+topic: [evapotranspiration]
+kind: pattern
+---
 
-What drives patterns within regions depends on r[[Definitions#Region]]
+What drives patterns within regions depends on [[Definitions#Region]]
+
 
 
 # Interactions/Dependencies/Drivers
 
-1
-
-## Environmental & Biological Controls of λE — by Vegetation Type
-*(Source table: Table 4, Wang & Dickinson, 2012, Rev. Geophys.)*
 
 ## Environmental & Biological Controls of λE — by Köppen Classification, then Vegetation Type
 *(Source table: Table 4, Wang & Dickinson, 2012, Rev. Geophys.)*

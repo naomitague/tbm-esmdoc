@@ -1,3 +1,7 @@
+---
+topic: [transpiration]
+---
+
 name: Stomatal response to leaf water potential
 alias:: [gs-lwp-curve]
 type: parameter

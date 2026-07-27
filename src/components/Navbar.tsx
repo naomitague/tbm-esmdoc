@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { BookOpen, Info, User, Settings, Menu, X, Leaf } from 'lucide-react';
+import { BookOpen, Boxes, Info, User, Settings, Menu, X, Leaf } from 'lucide-react';
 
 export function Navbar() {
   const pathname = usePathname();
@@ -11,6 +11,7 @@ export function Navbar() {
 
   const navItems = [
     { href: '/', label: 'Models', icon: BookOpen },
+    { href: '/esms', label: 'ESMs', icon: Boxes },
     { href: '/about', label: 'About', icon: Info },
     { href: '/profile', label: 'Profile', icon: User },
     { href: '/settings', label: 'Settings', icon: Settings },

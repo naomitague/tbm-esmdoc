@@ -1,7 +1,27 @@
 ---
+topic: [evapotranspiration, streamflow, vegetation_change]
+kind: relationship
 histogram_data:
-  csv: patterns/evapotranspiration/examplepapers/observations.csv
+  csv: patterns/evapotranspiration/examplepapers/veg_hydro_response_obs.csv
   sections:
+    - heading: "## ET change vs forest-cover change"
+      type: scatter
+      x_column: forest_change_value_point
+      y_column: hydro_response_value_point
+      x_label: "Forest-cover change"
+      y_label: "ET change"
+      filter_column: hydro_response_metric
+      filter_value: ET
+      title: "% change in ET vs % change in forest cover"
+    - heading: "## Streamflow change vs forest-cover change"
+      type: scatter
+      x_column: forest_change_value_point
+      y_column: hydro_response_value_point
+      x_label: "Forest-cover change"
+      y_label: "Streamflow change"
+      filter_column: hydro_response_metric
+      filter_value: runoff
+      title: "% change in streamflow vs % change in forest cover"
     - heading: "## Histogram by climate category"
       column: koppen_geiger
       title: "Köppen–Geiger climate class"
@@ -55,6 +75,14 @@ It is well established that vegetation loss (through mortality, thinning, fuel t
 
 # Watershed studies
 
+## ET change vs forest-cover change
+
+
+
+## Streamflow change vs forest-cover change
+
+
+
 ## Histogram by climate category
 
 
@@ -67,6 +95,8 @@ It is well established that vegetation loss (through mortality, thinning, fuel t
 
 
 # Interactions/Dependencies
+
+
     * watershed size
     * aridity
     * snow-vs-rain

@@ -7,7 +7,7 @@ export const metadata = {
   title: 'ET / Forest-Change Observations',
 };
 
-const CSV_PATH = 'patterns/evapotranspiration/examplepapers/observations.csv';
+const CSV_PATH = 'patterns/evapotranspiration/examplepapers/veg_hydro_response_obs.csv';
 
 export default function EtObservationsPage() {
   const observations = readCsvRows(CSV_PATH);

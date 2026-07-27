@@ -1,0 +1,5 @@
+model_id,display_name,model_type,website_url,notes
+RHESSYS,RHESSys (Regional Hydro-Ecologic Simulation System),ecohydrological_model,https://rhessys.github.io/,"Distributed, physically based watershed-scale model coupling hydrology with ecosystem carbon/nutrient cycling."
+ORCHIDEE,ORCHIDEE,land_surface_model,https://orchidee.ipsl.fr/,"Coupled/standalone versions exist; full source access requires a request through the official site's contact page rather than an open public repo."
+CLM,CLM (Community Land Model),land_surface_model,https://www.cesm.ucar.edu/models/clm,"Developed within the CTSM (Community Terrestrial Systems Model) codebase. Version distinctions matter: stomatal conductance scheme differs materially between CLM4.5 (Ball-Berry-type) and CLM5.0 (Medlyn optimality-based) -- see model_versions.csv."
+LPJGUESS,LPJ-GUESS,dynamic_global_vegetation_model,https://web.nateko.lu.se/lpj-guess/,"Source code available on request from Lund University rather than an open public repository."

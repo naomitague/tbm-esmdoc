@@ -1,20 +1,26 @@
+import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getModelContent, getAllModels, getAllModelContent } from '@/lib/models';
+import { buildPageOutline } from '@/lib/pageOutline';
+import { readEsmTable } from '@/lib/esm';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
+import { EsmMethodTable } from '@/components/EsmMethodTable';
+import { PageOutline } from '@/components/PageOutline';
 import { InfoBox } from '@/components/InfoBox';
 import { MathText } from '@/components/MathText';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import { ContentMetadata } from '@/types';
 
-function getTitle(item: ContentMetadata): string {
-  const meta = item.metadata as any;
-
-  if (meta.parameterName) return meta.parameterName;
-  if (meta.name) return meta.name;
-  if (meta.title) return meta.title;
-  return meta.slug || '';
+/**
+ * Mirror of WikiPage's heading splitter: an `esm_table` note has an interactive
+ * comparison table spliced in after its configured heading. Returns null (render
+ * as one block) if the heading isn't present.
+ */
+function splitAtHeading(markdown: string, heading: string): string[] | null {
+  const idx = markdown.indexOf(heading);
+  if (idx === -1) return null;
+  return [markdown.slice(0, idx + heading.length), markdown.slice(idx + heading.length)];
 }
 
 interface PageProps {
@@ -73,10 +79,14 @@ export default async function ContentPage({ params }: PageProps) {
     notFound();
   }
 
-  const allContent = getAllModelContent(modelSlug);
+  const outline = buildPageOutline(content.content);
 
   const meta = content.metadata as any;
   const displayTitle = meta.parameterName || meta.name || meta.title || meta.slug || '';
+
+  const esmTable = meta.esmTable;
+  const esmSegments = esmTable ? splitAtHeading(content.content, esmTable.heading) : null;
+  const esmData = esmSegments && esmTable ? readEsmTable(esmTable.csv, esmTable.columns) : null;
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -110,77 +120,7 @@ export default async function ContentPage({ params }: PageProps) {
                 {modelSlug.charAt(0).toUpperCase() + modelSlug.slice(1)} Model
               </Link>
 
-              {allContent.fluxes.length > 0 && (
-                <div className="mb-5">
-                  <h3 className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-2">
-                    Fluxes
-                  </h3>
-                  <ul className="space-y-0.5">
-                    {allContent.fluxes.map(flux => (
-                      <li key={flux.metadata.slug}>
-                        <Link
-                          href={`/models/${modelSlug}/fluxes/${flux.metadata.slug}`}
-                          className={`block text-sm py-1 px-2 rounded transition-colors ${
-                            flux.metadata.slug === slug && type === 'fluxes'
-                              ? 'text-primary bg-primary-light font-medium'
-                              : 'text-stone-600 hover:text-primary hover:bg-stone-50'
-                          }`}
-                        >
-                          <MathText text={getTitle(flux)} />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {allContent.parameters.length > 0 && (
-                <div className="mb-5">
-                  <h3 className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-2">
-                    Parameters
-                  </h3>
-                  <ul className="space-y-0.5">
-                    {allContent.parameters.slice(0, 8).map(param => (
-                      <li key={param.metadata.slug}>
-                        <Link
-                          href={`/models/${modelSlug}/parameters/${param.metadata.slug}`}
-                          className={`block text-sm py-1 px-2 rounded transition-colors ${
-                            param.metadata.slug === slug && type === 'parameters'
-                              ? 'text-primary bg-primary-light font-medium'
-                              : 'text-stone-600 hover:text-primary hover:bg-stone-50'
-                          }`}
-                        >
-                          <MathText text={getTitle(param)} />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {allContent.observations.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-medium uppercase tracking-wide text-stone-400 mb-2">
-                    Observations
-                  </h3>
-                  <ul className="space-y-0.5">
-                    {allContent.observations.map(obs => (
-                      <li key={obs.metadata.slug}>
-                        <Link
-                          href={`/models/${modelSlug}/observations/${obs.metadata.slug}`}
-                          className={`block text-sm py-1 px-2 rounded transition-colors ${
-                            obs.metadata.slug === slug && type === 'observations'
-                              ? 'text-primary bg-primary-light font-medium'
-                              : 'text-stone-600 hover:text-primary hover:bg-stone-50'
-                          }`}
-                        >
-                          <MathText text={getTitle(obs)} />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <PageOutline outline={outline} />
             </div>
           </aside>
 
@@ -205,7 +145,22 @@ export default async function ContentPage({ params }: PageProps) {
               <InfoBox content={content} />
 
               <div className="wiki-content">
-                <MarkdownContent content={content.content} />
+                {esmSegments && esmData ? (
+                  esmSegments.map((segment, i) => (
+                    <Fragment key={i}>
+                      <MarkdownContent content={segment} />
+                      {i === 0 && (
+                        <EsmMethodTable
+                          rows={esmData.rows}
+                          models={esmData.models}
+                          columns={esmData.columns}
+                        />
+                      )}
+                    </Fragment>
+                  ))
+                ) : (
+                  <MarkdownContent content={content.content} />
+                )}
               </div>
             </article>
           </main>

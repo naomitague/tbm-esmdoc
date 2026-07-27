@@ -13,9 +13,10 @@ mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose
 
 interface MarkdownContentProps {
   content: string;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-export function MarkdownContent({ content }: MarkdownContentProps) {
+export function MarkdownContent({ content, onClick }: MarkdownContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,5 +88,5 @@ export function MarkdownContent({ content }: MarkdownContentProps) {
     processMarkdown();
   }, [content]);
 
-  return <div ref={contentRef} className="wiki-content" />;
+  return <div ref={contentRef} className="wiki-content" onClick={onClick} />;
 }

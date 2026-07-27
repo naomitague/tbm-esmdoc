@@ -3,10 +3,16 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getContentBySlug, getAllSlugs, getConnectionGraph } from '@/lib/markdown';
 import { readCsvRows } from '@/lib/csv';
+import { buildPageOutline } from '@/lib/pageOutline';
 import { Sidebar } from '@/components/Sidebar';
+import { PageOutline } from '@/components/PageOutline';
 import { ConnectionGraph } from '@/components/ConnectionGraph';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { CsvHistogramSection } from '@/components/CsvHistogramSection';
+import { CsvScatterSection } from '@/components/CsvScatterSection';
+import { TrendComparisonExplorer } from '@/components/TrendComparisonExplorer';
+import { EsmMethodTable } from '@/components/EsmMethodTable';
+import { readEsmTable } from '@/lib/esm';
 import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
 import { Leaf } from 'lucide-react';
@@ -73,19 +79,38 @@ export default async function WikiPage({ params }: PageProps) {
     : null;
   const csvRows = histogramSegments && histogramData ? readCsvRows(histogramData.csv) : null;
 
+  const trendData = 'trendData' in content.metadata ? content.metadata.trendData : undefined;
+  const trendSegments = trendData ? splitAtHeadings(content.content, [trendData.heading]) : null;
+  const trendRows = trendSegments && trendData ? readCsvRows(trendData.csv) : null;
+
+  const esmTable = 'esmTable' in content.metadata ? content.metadata.esmTable : undefined;
+  const esmSegments = esmTable ? splitAtHeadings(content.content, [esmTable.heading]) : null;
+  const esmData = esmSegments && esmTable ? readEsmTable(esmTable.csv, esmTable.columns) : null;
+
+  const kind = 'kind' in content.metadata ? content.metadata.kind : undefined;
+  const isPattern = kind === 'pattern' || kind === 'relationship';
+  const outline = isPattern ? buildPageOutline(content.content) : [];
+
   return (
     <div className="min-h-screen bg-white">
       <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <Link href="/" className="inline-flex items-center gap-2 text-primary hover:underline">
             <Leaf className="w-5 h-5" strokeWidth={1.5} />
-            <span className="text-lg font-heading">RHESSys Docs</span>
+            <span className="text-lg font-heading">ESM Model and Obs</span>
           </Link>
         </div>
       </header>
 
       <div className="flex max-w-7xl mx-auto">
-        <Sidebar currentSlug={slug} contentType={content.type} />
+        {!isPattern && <Sidebar currentSlug={slug} contentType={content.type} />}
+        {isPattern && outline.length > 0 && (
+          <aside className="hidden lg:block w-64 flex-shrink-0 px-4 py-6">
+            <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
+              <PageOutline outline={outline} />
+            </div>
+          </aside>
+        )}
 
         <main className="flex-1 px-8 py-6">
           <article className="wiki-content max-w-4xl">
@@ -108,15 +133,51 @@ export default async function WikiPage({ params }: PageProps) {
               <div className="flex-1">
                 <InfoBox content={content} />
                 {histogramSegments && histogramData && csvRows ? (
-                  histogramSegments.map((segment, i) => (
+                  histogramSegments.map((segment, i) => {
+                    const section = histogramData.sections[i];
+                    return (
+                      <Fragment key={i}>
+                        <MarkdownContent content={segment} />
+                        {section && (
+                          section.type === 'scatter' ? (
+                            <CsvScatterSection
+                              title={section.title}
+                              xColumn={section.x_column}
+                              yColumn={section.y_column}
+                              xLabel={section.x_label}
+                              yLabel={section.y_label}
+                              filterColumn={section.filter_column}
+                              filterValue={section.filter_value}
+                              rows={csvRows}
+                            />
+                          ) : (
+                            <CsvHistogramSection
+                              title={section.title}
+                              column={section.column}
+                              rows={csvRows}
+                              tableColumns={histogramData.table_columns}
+                            />
+                          )
+                        )}
+                      </Fragment>
+                    );
+                  })
+                ) : trendSegments && trendData && trendRows ? (
+                  trendSegments.map((segment, i) => (
                     <Fragment key={i}>
                       <MarkdownContent content={segment} />
-                      {i < histogramData.sections.length && (
-                        <CsvHistogramSection
-                          title={histogramData.sections[i].title}
-                          column={histogramData.sections[i].column}
-                          rows={csvRows}
-                          tableColumns={histogramData.table_columns}
+                      {i === 0 && <TrendComparisonExplorer rows={trendRows} />}
+                    </Fragment>
+                  ))
+                ) : esmSegments && esmData ? (
+                  esmSegments.map((segment, i) => (
+                    <Fragment key={i}>
+                      <MarkdownContent content={segment} />
+                      {i === 0 && (
+                        <EsmMethodTable
+                          rows={esmData.rows}
+                          models={esmData.models}
+                          columns={esmData.columns}
                         />
                       )}
                     </Fragment>

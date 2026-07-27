@@ -14,7 +14,9 @@ import {
 const contentDirectory = path.join(process.cwd());
 
 /**
- * Extract wiki-style links like [[flux_stomatal_conductance]] from markdown
+ * Extract wiki-style links like [[flux_stomatal_conductance]] or
+ * [[process_transpiration|Transpiration]] from markdown. Only the link
+ * target (before a `|Alias`) is returned — the alias is display text only.
  */
 export function extractWikiLinks(content: string): string[] {
   const linkRegex = /\[\[([^\]]+)\]\]/g;
@@ -22,19 +24,23 @@ export function extractWikiLinks(content: string): string[] {
   let match;
 
   while ((match = linkRegex.exec(content)) !== null) {
-    links.push(match[1]);
+    links.push(match[1].split('|')[0].trim());
   }
 
   return links;
 }
 
 /**
- * Convert wiki-style links to Next.js links
+ * Convert wiki-style links to Next.js links. Supports `[[Note Name|Alias]]`
+ * — the alias is shown as the link text while the note name still resolves
+ * the target.
  */
 export function convertWikiLinksToNextLinks(content: string): string {
-  return content.replace(/\[\[([^\]]+)\]\]/g, (match, link) => {
+  return content.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (match, rawLink, alias) => {
+    const link = rawLink.trim();
+    const displayText = (alias || link).trim();
     const slug = link.toLowerCase().replace(/\s+/g, '_');
-    return `[${link}](/wiki/${slug})`;
+    return `[${displayText}](/wiki/${slug})`;
   });
 }
 
@@ -116,6 +122,7 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
       parameters: extractListItems(paramMatch?.[1]),
       inputs: extractListItems(inputMatch?.[1])
     },
+    esmTable: frontMatter.esm_table,
     connections
   };
 }
@@ -186,7 +193,7 @@ function parseObservation(fileContent: string, slug: string, frontMatter: any): 
   const description = descMatch ? descMatch[1].trim() : '';
 
   const nameMatch = fileContent.match(/^name:\s*(.+)$/im);
-  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^output_/, '').replace(/_/g, ' ');
+  const title = frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || slug.replace(/^obs_/, '').replace(/_/g, ' ');
 
   return {
     slug,
@@ -219,7 +226,11 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     tags: frontMatter.tags || ['overview'],
     description,
     connections,
-    histogramData: frontMatter.histogram_data
+    histogramData: frontMatter.histogram_data,
+    trendData: frontMatter.trend_data,
+    esmTable: frontMatter.esm_table,
+    topic: frontMatter.topic || [],
+    kind: frontMatter.kind
   };
 }
 

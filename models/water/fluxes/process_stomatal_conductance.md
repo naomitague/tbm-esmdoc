@@ -1,3 +1,6 @@
+---
+topic: [transpiration]
+---
 
 name: Stomatal Conductance
 alias:: [gs, stomatal conductance]
@@ -22,7 +25,8 @@ depends_on:
 # Description/Conceptual model
 Stomatal conductance is the rate of  water and carbon exchange between the leaf and surrounding air through small pores in the leaf called stomates. The exchange is a diffusive flux and thus varies with gradients (in water, O2 and CO2) and energy. However, the stomates  can open and close to  regulate this rate.  Stomatal conductance (gₛ) is modeled in RHESSys using a Jarvis-type multiplicative approach. where a species specific maximum value (gs_max) is scalaed based on environmental modifiers for light (PPFD), vapor pressure deficit (VPD), air temperature, CO₂ concentration, and root access to water via leaf water potential.
 
-# Model Name (as implemented in the target ESM if there is a standard name e.g Penman monteith)
+# Basic Physical Model/Theory
+
 Jarvis multiplicative stomatal conductance model (after Jarvis 1976, via BIOME-BGC formulation)
 
 # Equation as used in target ESM
@@ -61,7 +65,7 @@ Where:
 
 # Observations
 
-[[output_stomatal conductance]]
+[[obs_stomatal conductance]]
 
 
 

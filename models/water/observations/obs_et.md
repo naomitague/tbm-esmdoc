@@ -1,13 +1,15 @@
-Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch
+---
+topic: [evapotranspiration]
+---
 
 # constituent
-output_constituent: [water]
+obs_constituent: [water]
 
 # kind
-output_kind: [flux]
+obs_kind: [flux]
 
 # units
-output_units: [mm/day]
+obs_units: [mm/day]
 
 # Description
 Evapotranspiration is the flux of water from the earth surface to the atmosphere - it is the balance of energy availability, water availability and diffusion limits. Evapotranspiration include evaporation from surfaces (including litter, soil , canopy interception, water bodies), sublimation from snow and transpiration
@@ -15,13 +17,10 @@ Evapotranspiration is the flux of water from the earth surface to the atmosphere
 # Process Links
 [[flux_transpiration]][[flux_soil_evaporation]][[flux_litter_evaporation]][[flux_interception_evaporation]][[flux_sublimation]]
 
-# Measurements
-
 ## Techniques, Product Evaluation, Error/Uncertainty Papers
 
 - **Eddy covariance methods** for stand-scale evapotranspiration partitioning:
   - Wilson, K. B., Baldocchi, D. D., & Hanson, P. J. (2001). Leaf area index and light extinction coefficients. _Agricultural and Forest Meteorology_, 107(1), 93–115.
-  - 
   - reducing biass in scaling - using eddy-covariance data (footprint issues across networks)
    Chu, Housen, Stefan Metzger, Zutao Ouyang, Anne Griebel, Koong Yi, David Durden, Sebastian Wolf et al. "Flux Footprints: A Critical Link to Bridge Eddy‐Covariance Measurements With Models, Remote Sensing, and Other Observations." _Global Change Biology_ 32, no. 4 (2026): e70887.
 
@@ -37,12 +36,3 @@ Satellite ET estimates https://www.earthdata.nasa.gov/topics/atmosphere/evapotra
 
 Miralles, D.G., Bonte, O., Koppa, A. _et al._ GLEAM4: global land evaporation and soil moisture dataset at 0.1° resolution from 1980 to near present. _Sci Data_ **12**, 416 (2025). https://doi.org/10.1038/s41597-025-04610-y
 
-# Model Output Paper Examples
-## References
-- Wang, Kaicun, and Robert E. Dickinson. "A review of global terrestrial evapotranspiration: Observation, modeling, climatology, and climatic variability." _Reviews of Geophysics_ 50, no. 2 (2012).
-
-Yang, Yuting, Michael L. Roderick, Hui Guo, Diego G. Miralles, Lu Zhang, Simone Fatichi, Xiangzhong Luo et al. "Evapotranspiration on a greening Earth." _Nature Reviews Earth & Environment_ 4, no. 9 (2023): 626-641.
-
-Comparison actoss models and remote sensing
-
-Pan, Shufen, Naiqing Pan, Hanqin Tian, Pierre Friedlingstein, Stephen Sitch, Hao Shi, Vivek K. Arora et al. "Evaluation of global terrestrial evapotranspiration using state-of-the-art approaches in remote sensing, machine learning and land surface modeling." _Hydrology and earth system sciences_ 24, no. 3 (2020): 1485-1509.
