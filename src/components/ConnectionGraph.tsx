@@ -10,20 +10,36 @@ interface ConnectionGraphProps {
   outgoing: ModelConnection[];
 }
 
+/** A note can wikilink the same target more than once (e.g. overstory and understory transpiration both link to process_transpiration) — that's the same edge, so collapse repeats rather than rendering/keying duplicates. */
+function dedupeConnections<T extends { type: string }>(connections: T[], keyOf: (conn: T) => string): T[] {
+  const seen = new Set<string>();
+  const result: T[] = [];
+  for (const conn of connections) {
+    const key = keyOf(conn);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(conn);
+  }
+  return result;
+}
+
 export function ConnectionGraph({ incoming, outgoing }: ConnectionGraphProps) {
   if (incoming.length === 0 && outgoing.length === 0) {
     return null;
   }
 
+  const dedupedOutgoing = dedupeConnections(outgoing, conn => `${conn.target}-${conn.type}`);
+  const dedupedIncoming = dedupeConnections(incoming, conn => `${conn.source}-${conn.type}`);
+
   return (
     <div className="bg-white rounded-lg border border-stone-200 p-5">
       <h2 className="text-lg font-semibold mb-3">Connections</h2>
 
-      {outgoing.length > 0 && (
+      {dedupedOutgoing.length > 0 && (
         <div className="mb-4">
           <h3 className="text-sm font-semibold mb-2">Uses</h3>
           <ul className="space-y-1">
-            {outgoing.map(conn => (
+            {dedupedOutgoing.map(conn => (
               <li key={`${conn.target}-${conn.type}`}>
                 <Link
                   href={`/wiki/${conn.target}`}
@@ -38,11 +54,11 @@ export function ConnectionGraph({ incoming, outgoing }: ConnectionGraphProps) {
         </div>
       )}
 
-      {incoming.length > 0 && (
+      {dedupedIncoming.length > 0 && (
         <div>
           <h3 className="text-sm font-semibold mb-2">Used by</h3>
           <ul className="space-y-1">
-            {incoming.map(conn => (
+            {dedupedIncoming.map(conn => (
               <li key={`${conn.source}-${conn.type}`}>
                 <Link
                   href={`/wiki/${conn.source}`}

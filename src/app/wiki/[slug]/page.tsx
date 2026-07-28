@@ -95,7 +95,7 @@ export default async function WikiPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-white">
       <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-3">
+        <div className="max-w-screen-2xl mx-auto px-4 py-3">
           <Link href="/" className="inline-flex items-center gap-2 text-primary hover:underline">
             <Leaf className="w-5 h-5" strokeWidth={1.5} />
             <span className="text-lg font-heading">ESM Model and Obs</span>
@@ -103,7 +103,7 @@ export default async function WikiPage({ params }: PageProps) {
         </div>
       </header>
 
-      <div className="flex max-w-7xl mx-auto">
+      <div className="flex max-w-screen-2xl mx-auto">
         {!isPattern && <Sidebar currentSlug={slug} contentType={content.type} />}
         {isPattern && (outline.length > 0 || backModel) && (
           <aside className="hidden lg:block w-64 flex-shrink-0 px-4 py-6">
@@ -122,8 +122,8 @@ export default async function WikiPage({ params }: PageProps) {
           </aside>
         )}
 
-        <main className="flex-1 px-8 py-6">
-          <article className="wiki-content max-w-4xl">
+        <main className="flex-1 min-w-0 px-8 py-6">
+          <article className="wiki-content max-w-7xl">
             <h1 className="text-3xl font-heading border-b-2 border-primary pb-2 mb-4 text-stone-900">
               <MathText text={getTitle(content)} />
             </h1>
@@ -140,7 +140,7 @@ export default async function WikiPage({ params }: PageProps) {
             </div>
 
             <div className="flex flex-col lg:flex-row gap-6">
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <InfoBox content={content} />
                 {histogramSegments && histogramData && csvRows ? (
                   histogramSegments.map((segment, i) => {
