@@ -1,6 +1,7 @@
 ---
 topic: [evapotranspiration]
 kind: pattern
+model: water
 ---
 
 What drives patterns within regions depends on [[Definitions#Region]]

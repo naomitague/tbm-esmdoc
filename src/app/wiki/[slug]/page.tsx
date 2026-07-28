@@ -15,7 +15,7 @@ import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { readEsmTable } from '@/lib/esm';
 import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
-import { Leaf } from 'lucide-react';
+import { Leaf, ArrowLeft } from 'lucide-react';
 import { ContentMetadata } from '@/types';
 
 function getTitle(item: ContentMetadata): string {
@@ -90,6 +90,7 @@ export default async function WikiPage({ params }: PageProps) {
   const kind = 'kind' in content.metadata ? content.metadata.kind : undefined;
   const isPattern = kind === 'pattern' || kind === 'relationship';
   const outline = isPattern ? buildPageOutline(content.content) : [];
+  const backModel = 'model' in content.metadata ? content.metadata.model : undefined;
 
   return (
     <div className="min-h-screen bg-white">
@@ -104,9 +105,18 @@ export default async function WikiPage({ params }: PageProps) {
 
       <div className="flex max-w-7xl mx-auto">
         {!isPattern && <Sidebar currentSlug={slug} contentType={content.type} />}
-        {isPattern && outline.length > 0 && (
+        {isPattern && (outline.length > 0 || backModel) && (
           <aside className="hidden lg:block w-64 flex-shrink-0 px-4 py-6">
             <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
+              {backModel && (
+                <Link
+                  href={`/models/${backModel}`}
+                  className="flex items-center gap-1.5 text-primary text-sm font-medium mb-4 pb-3 border-b border-stone-100"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  {backModel.charAt(0).toUpperCase() + backModel.slice(1)} Model
+                </Link>
+              )}
               <PageOutline outline={outline} />
             </div>
           </aside>

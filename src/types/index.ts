@@ -147,6 +147,8 @@ export interface OverviewMetadata {
   esmTable?: EsmTableConfig;
   topic?: string[];
   kind?: 'pattern' | 'relationship';
+  /** Biophysical model this pattern/relationship belongs under (e.g. "water"); drives the "back to model" link on pattern pages. */
+  model?: string;
 }
 
 export interface ModelMetadata {

@@ -1,27 +1,28 @@
 ---
-topic: [evapotranspiration, streamflow, vegetation_change]
+topic: [evapotranspiration, transpiration, streamflow, vegetation_change]
 kind: relationship
+model: water
 histogram_data:
   csv: patterns/evapotranspiration/examplepapers/veg_hydro_response_obs.csv
   sections:
-    - heading: "## ET change vs forest-cover change"
-      type: scatter
+    - type: scatter
+      heading: "## Land cover change vs. Annual ET change"
       x_column: forest_change_value_point
       y_column: hydro_response_value_point
-      x_label: "Forest-cover change"
-      y_label: "ET change"
+      x_label: "Forest/land cover change (%)"
+      y_label: "ET change (%)"
       filter_column: hydro_response_metric
       filter_value: ET
-      title: "% change in ET vs % change in forest cover"
-    - heading: "## Streamflow change vs forest-cover change"
-      type: scatter
+      title: "Land cover change vs. Annual ET change"
+    - type: scatter
+      heading: "## Land cover change vs. Annual streamflow change"
       x_column: forest_change_value_point
       y_column: hydro_response_value_point
-      x_label: "Forest-cover change"
-      y_label: "Streamflow change"
+      x_label: "Forest/land cover change (%)"
+      y_label: "Streamflow change (%)"
       filter_column: hydro_response_metric
       filter_value: runoff
-      title: "% change in streamflow vs % change in forest cover"
+      title: "Land cover change vs. Annual streamflow change"
     - heading: "## Histogram by climate category"
       column: koppen_geiger
       title: "Köppen–Geiger climate class"
@@ -69,19 +70,15 @@ It is well established that vegetation loss (through mortality, thinning, fuel t
 
 # Methods used to quantify relationship
 
-[[Metrics_for_ETstreamflow_responses_tovegchange]]
+[[Metrics_for_ETstreamflow_responses_tovegchange|Metrics]]
 
 # Summary global scale statistics
 
 # Watershed studies
 
-## ET change vs forest-cover change
+## Land cover change vs. Annual ET change
 
-
-
-## Streamflow change vs forest-cover change
-
-
+## Land cover change vs. Annual streamflow change
 
 ## Histogram by climate category
 

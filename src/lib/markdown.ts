@@ -230,7 +230,8 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     trendData: frontMatter.trend_data,
     esmTable: frontMatter.esm_table,
     topic: frontMatter.topic || [],
-    kind: frontMatter.kind
+    kind: frontMatter.kind,
+    model: frontMatter.model
   };
 }
 

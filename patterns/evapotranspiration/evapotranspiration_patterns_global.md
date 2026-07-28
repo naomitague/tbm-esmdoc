@@ -1,6 +1,7 @@
 ---
 topic: [evapotranspiration]
 kind: pattern
+model: water
 trend_data:
   csv: patterns/evapotranspiration/examplepapers/et_trend_comparison.csv
   heading: "## Global ET trends by model"
