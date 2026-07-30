@@ -270,6 +270,7 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
       parameters: extractListItems(paramMatch?.[1]),
       inputs: extractListItems(inputMatch?.[1])
     },
+    esmTable: frontMatter.esm_table,
     connections
   };
 }

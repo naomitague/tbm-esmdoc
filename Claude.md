@@ -1,69 +1,294 @@
-# Project: Obsidian Vault Interface
+# Project: Environmental Model Wiki (RHESSys / ESM documentation)
 
-# What this project does
-A pnpm-based interface for reading/writing an Obsidian vault programmatically —
-parsing markdown notes, frontmatter, wikilinks, and vault structure.
+## What this project does
+A Next.js documentation site that renders a collection of Obsidian-style
+markdown notes — biophysical model documentation (fluxes, parameters,
+observations), cross-cutting patterns/relationships, and a comparison
+registry of Earth System Models — into a browsable, cross-linked wiki with
+interactive, CSV-backed tables and charts spliced into specific sections.
 
 ## Tech stack
-- Package manager: pnpm (workspace — fill in if using `pnpm-workspace.yaml` with multiple packages)
-- Language: <!-- TypeScript / JavaScript? -->
-- Key dependencies: <!-- e.g. gray-matter for frontmatter, remark for markdown parsing -->
+- Package manager: pnpm (single package; `pnpm-workspace.yaml` only sets
+  build-approval flags, not a multi-package workspace)
+- Language: TypeScript, Next.js 16 (App Router), React 19, Tailwind
+- Key dependencies: `gray-matter` (frontmatter), `remark`/`remark-gfm`/
+  `remark-math` + `rehype-katex`/`rehype-stringify` (markdown → HTML,
+  client-side, in `MarkdownContent.tsx`), `mermaid` (diagrams)
 
 ## Project structure
-<!-- Fill in your actual layout, e.g.: -->
 ```
-models/ # biophysical categories
+models/<domain>/                  # water, carbon, nitrogen, energy
+  index.md                        # model overview page
+  fluxes/       process_*.md      # one per flux
+    tabledata/*.csv                # per-flux ESM method-comparison tables (see esm_table below)
+  parameters/   <Name>.md          # one per parameter/state var (no fixed prefix)
+  observations/ obs_*.md          # one per observation/output
 
-model-techniques/ # application of models
+patterns/<topic>/                 # cross-cutting pattern & relationship pages
+  examplepapers/                  # literature-synthesis CSVs + their README backing a topic's patterns
+  *.md                            # kind: pattern | relationship (see Tagging protocol below)
 
-figures/ # graphics for interface
+esms/                             # shared ESM registry, joined into every esm_table
+  esm_model.csv                   # one row per model (RHESSys, ORCHIDEE, CLM, ...)
+  esm_model_versions.csv          # one row per model version, FKs into esm_model.csv
 
-Templates/ # templates for creating model pages
- 
+specificESMs/<Model>/             # narrative writeups of one specific ESM's implementation
+Templates/                        # one template per content type; new notes should follow the
+                                   # matching template (e.g. models/water/fluxes/*.md ~ Templates/Flux-Template.md)
+
 src/
-	app/ # pages and routs 
-	components/ # reusable UI components
-	lib/  # utility functions
-	tyoes/ # typscript definitions
-
+  app/
+    wiki/[slug]/                  # renders ANY note by slug (patterns, overviews, and also
+                                   # fluxes/parameters/observations reachable this way)
+    models/[model]/[type]/[slug]/ # renders fluxes/parameters/observations scoped under a model
+                                   # — the route the site's own navigation actually uses
+  components/                     # UI, notably the CSV-driven ones (Csv*, EsmMethodTable, TrendComparisonExplorer)
+  lib/
+    markdown.ts                   # parses notes for the /wiki/[slug] route
+    models.ts                     # SEPARATE parser for the /models/[model]/[type]/[slug] route — see gotcha below
+    csv.ts, csvHistogram.ts, csvScatter.ts, csvTrend.ts, esm.ts   # CSV reading/summarizing helpers
+    topics.ts, pageOutline.ts     # tagging index + in-page outline builders
+  types/                          # TypeScript definitions, including the frontmatter config shapes below
 ```
 
-The Templates create the style for the Models. For example,
-all of the md in model/water/fluxes should be structured based on Templates/Flux-Template.md
-
-## Obsidian vault conventions this code relies on
-- Frontmatter format: <!-- YAML? any custom fields Claude should know about -->
-- Wikilink syntax: `[[Note Name]]` and `[[Note Name|Alias]]` <!-- adjust if you support block refs, embeds, etc -->
-- File naming: <!-- any conventions, e.g. notes may contain spaces, special chars -->
-- Folder structure significance: <!-- do folders mean anything (tags, categories) or are they just organization? -->
+## Obsidian-style content conventions
+- **Frontmatter**: YAML, parsed with `gray-matter`. Recognized keys vary by
+  note type — see "Tagging protocol" and "Interactive content protocols"
+  below for the ones that drive rendering.
+- **Wikilinks**: `[[Note Name]]` and `[[Note Name|Alias]]` (alias is display
+  text only). Resolved to `/wiki/<slug>` from `markdown.ts`, or to
+  `/models/<model>/<fluxes|parameters|observations>/<slug>` from `models.ts`
+  when the target is found in that model's own subdirectories (falls back to
+  `/wiki/<slug>` otherwise).
+- **File naming**: fluxes are `process_*.md`, observations are `obs_*.md`,
+  parameters have no fixed prefix. Slugs are the filename (lowercased,
+  spaces → underscores); if two files anywhere in the vault share a bare
+  slug, `markdown.ts` path-qualifies the losing one (see
+  `computeUniqueSlugs`) — prefer distinct filenames over relying on that.
+- **Folder structure is significant**: `models/<domain>/{fluxes,parameters,observations}/`
+  determines content type and drives both routing and which template a note
+  should follow. `patterns/<topic>/` groups pattern/relationship pages by
+  topic; `patterns/<topic>/examplepapers/` holds the literature-derived CSVs
+  (and a `README.md` documenting that CSV's schema) that back that topic's
+  interactive tables/charts.
 
 ## Commands
 ```bash
 pnpm install       # install deps
-pnpm dev           # <!-- fill in -->
-pnpm test          # <!-- fill in -->
-pnpm build         # <!-- fill in -->
+pnpm dev           # start Next dev server at http://localhost:3000
+pnpm build         # production build (also type-checks)
+pnpm start         # run a production build
+pnpm lint          # next lint
+```
+No test suite exists yet. See `QUICKSTART.md` for local setup from scratch.
+
+## URL structure
+```
+/                                              # homepage (model gallery)
+/models/<model>                                # model overview (water, carbon, nitrogen, energy)
+/models/<model>/fluxes/<slug>                  # a flux, scoped under its model
+/models/<model>/parameters/<slug>              # a parameter, scoped under its model
+/models/<model>/observations/<slug>            # an observation, scoped under its model
+/wiki/<slug>                                   # any note by slug — patterns/relationships live only
+                                                # here; fluxes/parameters/observations are ALSO reachable
+                                                # here (see the dual-parser gotcha below)
+/esms                                          # the shared ESM registry (esm_model.csv + versions)
+/patterns/et-observations                      # standalone example of a full CSV browsing page (not
+                                                # spliced into a note — built as its own route instead)
+/about, /profile, /settings                    # mostly placeholder pages
 ```
 
-## Conventions / style
-- <!-- e.g. prefer functional style, error handling pattern, testing framework used -->
+## Adding new content
+
+**A flux/parameter/observation to an existing model:**
+1. Create `models/<model>/{fluxes,parameters,observations}/<name>.md`, following
+   the matching file in `Templates/` (`Flux-Template.md`, `Parameter-Family-Template.md`
+   or `Parameter-State-Template.md`, `Observation-Output-Template.md`).
+2. Fill in frontmatter, including `topic: [...]` if it should show up in that
+   model's Topics panel (see Tagging protocol).
+3. It's picked up automatically — no registration step, `getAllModelContent`/
+   `getAllContent` scan the directories at request time.
+
+**A new pattern or relationship page:**
+1. Create `patterns/<topic>/<name>.md` (new topic → new subfolder; add an
+   `examplepapers/` subfolder alongside it if it needs backing CSVs).
+2. Set `kind: pattern` or `kind: relationship`, `topic: [...]`, and
+   `model: <domain>` in frontmatter (see Tagging protocol).
+3. Wire up `histogram_data` / `trend_data` / `esm_table` if it needs
+   interactive tables/charts (see below) — remember the heading-text-must-
+   match-exactly rule.
+
+**A new model** (e.g. "soil") — three separate places need updating, only one
+of which is content:
+1. `mkdir -p models/soil/{fluxes,parameters,observations}` and create
+   `models/soil/index.md` with `title`, `model: soil`, `description` in
+   frontmatter.
+2. In `src/lib/models.ts`, add `soil` to the `modelIcons` and `modelColors`
+   maps in `getAllModels()` (the color name — `blue`/`green`/`purple`/
+   `orange`/a new one — becomes `ModelCard.color`).
+3. In `src/app/page.tsx`, add `soil` to its own separate `modelIcons` map
+   (slug → actual Lucide icon component — this is what really renders on the
+   homepage; `src/lib/models.ts`'s `modelIcons` strings aren't currently
+   wired to anything) and, if you used a new color name in step 2, add its
+   Tailwind classes to `page.tsx`'s `modelColors` map too, or it'll silently
+   fall back to gray.
+
+## Interactive content protocols
+
+Three frontmatter keys splice a live React component into a note's rendered
+markdown, positioned right after a specific heading. All three work the same
+way under the hood: the target heading text is located in the raw markdown
+with a plain string match (`splitAtHeadings` / `splitAtHeading` in the page
+components — not an AST match), the markdown is rendered as normal up to and
+including that heading, the component is inserted, and the rest of the
+markdown renders after it.
+
+**This means the heading string in frontmatter must match the heading in the
+note body exactly** — same `#`-level, same text, same punctuation. A
+mismatch doesn't error, it just silently falls back to plain rendering with
+no visible sign anything was supposed to be there. If a table/chart "isn't
+showing up," check this first.
+
+### 1. `histogram_data` — bar histograms, scatter plots, and a shared drill-down table
+```yaml
+histogram_data:
+  csv: patterns/<topic>/examplepapers/<file>.csv
+  sections:
+    - heading: "## Histogram by climate category"   # exact heading text
+      column: koppen_geiger                          # CSV column to bucket rows by
+      title: "Köppen–Geiger climate class"
+    - type: scatter                                  # omit for a bar histogram
+      heading: "## Land cover change vs. Annual ET change"
+      x_column: forest_change_value_point
+      y_column: hydro_response_value_point
+      x_label: "Forest/land cover change (%)"
+      y_label: "ET change (%)"
+      filter_column: hydro_response_metric            # optional row filter
+      filter_value: ET
+      title: "Land cover change vs. Annual ET change"
+  table_columns:            # optional: the row-level table shown when a histogram bar is clicked
+    - key: location_name
+      label: "Site / study"
+      fallback_key: obs_id      # used when `key` is blank on a row
+      subtitle_key: study_citation
+      unit_key: forest_change_unit         # for numeric "value unit" cells
+      min_key: forest_change_value_min     # renders "min–max unit" when the point value is blank
+      max_key: forest_change_value_max
+      caption_key: forest_change_metric    # small muted line above the cell value
+      numeric: true              # right-align, tabular numerals
+      wrap: true                 # allow wrapping (for long notes columns)
+      muted: true                # de-emphasized text color
+```
+`sections` render in list order, each spliced after its heading — the number
+and order of `sections` entries must line up with the matching headings'
+order in the note body. See
+`patterns/evapotranspiration/evapotranspiration or streamflow _response_to_vegetation_change.md`
+for a live example combining both section types plus `table_columns`.
+
+### 2. `trend_data` — summary + query panel over one-row-per-estimate numeric data
+```yaml
+trend_data:
+  csv: patterns/<topic>/examplepapers/<file>.csv
+  heading: "## Global ET trends by model"
+```
+Renders a summary card (min/max value, full period span, distinct set of
+models) plus a query panel (filter by model, filter by year range). Expects
+fixed CSV columns — `trend_id, et_product, product_category, period_start,
+period_end, trend_value, trend_unit, significance_marker, source_citation` —
+hard-coded in `csvTrend.ts`/`TrendComparisonExplorer.tsx`, not configurable
+via frontmatter. A second use of this pattern (a different metric than ET
+trends) would need those column names generalized first. Current example:
+`patterns/evapotranspiration/evapotranspiration_pt_global.md` +
+`patterns/evapotranspiration/examplepapers/et_trend_comparison.csv`.
+
+### 3. `esm_table` — per-flux ESM method-comparison table
+```yaml
+esm_table:
+  csv: models/<domain>/fluxes/tabledata/<file>.csv   # one row per model VERSION
+  heading: "## Physically-based"
+  columns:                       # optional: restrict/relabel which columns are shown
+    - key: et_estimation_approach
+      label: "ET estimation approach"
+```
+The method CSV's `version_id` column is the join key into
+`esms/esm_model_versions.csv` (`version_id` → `model_id`), which in turn
+joins into `esms/esm_model.csv` — so model name, type, website, and code-repo
+links live once in the shared registry rather than being repeated per flux.
+Columns named `version_id`, `documentation_url`, `extraction_source`, and
+`confidence` in the method CSV are treated as provenance (shown as a
+"Source" cell + confidence badge) rather than comparison columns; every other
+column is shown as a comparison column by default. Current example:
+`models/water/fluxes/process_evapotranspiration.md` +
+`models/water/fluxes/tabledata/et_method_reference.csv`. When adding a new
+model version to an existing method CSV, add matching rows to both
+`esm_model_versions.csv` (and `esm_model.csv`, if it's a new model) —
+otherwise the joined row will show blank model name/type/links.
+
+### ⚠️ Gotcha: two parsers, one frontmatter contract
+Flux/parameter/observation notes are reachable via two different routes,
+each with its **own independent parser**:
+- `/wiki/[slug]` → `src/lib/markdown.ts`
+- `/models/[model]/[type]/[slug]` → `src/lib/models.ts` (the route the
+  site's own navigation actually links to)
+
+Both read the same markdown files but have separate `parseFlux` /
+`parseParameter` / `parseObservation` functions with separately-maintained
+lists of which frontmatter fields get copied into the returned metadata.
+**Any frontmatter field a page component reads at render time (`esm_table`,
+`topic`, a future new key, etc.) must be added to both parsers**, or the
+feature works on one route and silently no-ops on the other. This has
+already caused one real bug: `esm_table` was wired into `markdown.ts` but
+not `models.ts`, so the ESM table rendered at `/wiki/process_evapotranspiration`
+but not at `/models/water/fluxes/process_evapotranspiration` — which is the
+one users actually land on by clicking through the site.
+
+## Tagging protocol: `topic` / `kind` / `model`
+- **`topic: [tag1, tag2]`** — on flux/parameter/observation notes *and* on
+  pattern/relationship notes. Drives the Topics panel
+  (`TopicExplorer`/`ModelTopicOverview`, via `src/lib/topics.ts`) shown on
+  each model's overview page: a topic only appears there if at least one
+  flux/parameter/observation/pattern actually carries it.
+- **`kind: pattern | relationship`** — only on notes under `patterns/`.
+  `pattern` = a topic-scoped page, grouped under its topic(s) in the Topics
+  panel and given the outline-sidebar layout on `/wiki/[slug]`.
+  `relationship` = a page connecting multiple topics/processes (e.g. the
+  ET/streamflow/vegetation-change page) — listed separately as
+  "Relationships of interest" rather than filed under one topic.
+- **`model: water | carbon | nitrogen | energy`** — on pattern/relationship
+  notes, drives the "← <Model> Model" back-link in the pattern-page sidebar
+  on `/wiki/[slug]`.
+
+Fluxes/parameters/observations only need `topic` (their kind is implicit
+from which subfolder they live in). Pattern/relationship notes under
+`patterns/**/*.md` should set all three.
 
 ## Things to be careful about
-- Never write to the vault directly during tests — use a fixture/mock vault directory
-- <!-- any other gotchas, e.g. large vaults, symlinks, .obsidian config folder to ignore -->
+- Never write to the vault/content directories from tests or scripts — this
+  repo has no test suite yet, but if one is added, point it at a fixture
+  directory rather than `models/`/`patterns/`.
+- Heading-string matches for the interactive content protocols above are
+  exact and case-sensitive with no fuzzy fallback — see the gotcha above.
+- A frontmatter change that's only wired into one of `markdown.ts` /
+  `models.ts` will appear to work in ad-hoc testing (whichever route you
+  happen to test) and then fail for real users on the other route.
 
 ## Current focus / in-progress work
+Expanding the CSV-backed interactive content pattern (histograms, scatter
+plots, trend queries, ESM method tables) beyond evapotranspiration to other
+water-model fluxes, once method-reference CSVs exist for them
+(`process_transpiration.md`, `process_stomatal_conductance.md`,
+`process_soil_evaporation.md`, `process_stomatal_conductance_leaf_water_potential_response.md`
+don't have `esm_table` frontmatter yet).
 
-
-## File Data Bases strucutre for examplepapers under patterns
-
+## File Data Bases structure for examplepapers under patterns
 
 ### ET / Forest-Change Literature Database — Schema & Conventions
 
 Part of the Heliopause project. This section documents standing decisions for
 the two-table dataset that underlies the vault's ET/forest-change literature
-synthesis (see `schema/veg_hydro_response_obs.csv`, `schema/veg_hydro_response_syn.csv`,
-`schema/README.md`). Decisions here were worked out in design sessions
+synthesis (see `patterns/evapotranspiration/examplepapers/veg_hydro_response_obs.csv`,
+`patterns/evapotranspiration/examplepapers/veg_hydro_response_syn.csv`,
+`patterns/evapotranspiration/examplepapers/README.md`). Decisions here were worked out in design sessions
 (web Claude) and should be treated as settled unless explicitly revisited —
 don't silently deviate from them when writing extraction/generation scripts.
 
@@ -182,3 +407,6 @@ collapse the two.
   lack of lat/lon in the source table — will need a secondary geocoding step
   from watershed name + region, flagged as lower-confidence than Yang's
   coordinate-based assignments.
+- `esm_table` needs method-reference CSVs for the remaining water fluxes
+  (transpiration, stomatal conductance, soil evaporation) before it can be
+  wired onto those pages the same way it now is for evapotranspiration.
