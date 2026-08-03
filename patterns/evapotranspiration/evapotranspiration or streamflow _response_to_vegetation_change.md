@@ -170,7 +170,9 @@ flowchart TD
 
 # Methods used to quantify relationship
 
-[[Metrics_for_ETstreamflow_responses_tovegchange|Metrics]] covers how vegetation change and hydrologic response are estimated across studies.
+Below are some summaries of available studies organized by different categries - click on metric to see available studies and for some metrics summaries of relationship between vegetation change and hydrologic response
+
+
 
 ## Studies by response metric
 
