@@ -1,4 +1,4 @@
-# Project: Environmental Model Wiki (RHESSys / ESM documentation)
+# Project: Environmental ESM literature - Heliopause ideas
 
 ## What this project does
 A Next.js documentation site that renders a collection of Obsidian-style

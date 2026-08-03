@@ -15,7 +15,7 @@ obs_units: [mm/day]
 
 # Description
 Transpiration represents the flux of water vapor from plant surfaces to the atmosphere, primarily through stomatal openings. It is influenced by meteorological conditions, leaf physiology, and soil water availability. 
-Importantly, transpiration is not evaporation - so observations of ET [[obs_et]] needed to be combined with the partitioning of water flux between transpiration and evaporation
+Importantly, transpiration is not evaporation - so observations of ET [[obs_et|Measuring Evapotranspiration (ET)]] needed to be combined with the partitioning of water flux between transpiration and evaporation
 
 # Process Links
 [[flux_transpiration]]

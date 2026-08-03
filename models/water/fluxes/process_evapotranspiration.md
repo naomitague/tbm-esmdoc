@@ -156,17 +156,3 @@ on one. See the full [ESM registry](/esms) for model details.
 
 ## Hybrid
 
-
-# Observations
-
-[[obs_et]]
-
-# Patterns 
-* results from models/observations that provide insight into patterns of evapotranspiration and how they change
-[[evapotranspiration_patterns_overview]]
-[[evapotranspiration_patterns_global]]
-[[evapotranspiration_patterns_within_region]]
-
-
-    
-    

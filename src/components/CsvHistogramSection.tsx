@@ -5,6 +5,7 @@ import { BarHistogram } from '@/components/BarHistogram';
 import { CsvObservationsTable } from '@/components/CsvObservationsTable';
 import { CsvRow } from '@/lib/csv';
 import { countByCategory, countUnresolved, normalizeCategory } from '@/lib/csvHistogram';
+import { describeKoppenCode } from '@/lib/koppenGeiger';
 import { HistogramTableColumn } from '@/types';
 
 interface CsvHistogramSectionProps {
@@ -33,6 +34,7 @@ export function CsvHistogramSection({ title, column, rows, tableColumns }: CsvHi
         unresolvedCount={unresolvedCount}
         selectedLabel={selectedLabel}
         onSelect={label => setSelectedLabel(prev => (prev === label ? null : label))}
+        describe={column === 'koppen_geiger' ? describeKoppenCode : undefined}
       />
       {selectedLabel && (
         <div className="mt-3 bg-white rounded-lg border border-stone-200 p-4">

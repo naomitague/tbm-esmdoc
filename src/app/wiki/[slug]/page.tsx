@@ -1,17 +1,18 @@
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getContentBySlug, getAllSlugs, getConnectionGraph } from '@/lib/markdown';
+import { getContentBySlug, getAllSlugs } from '@/lib/markdown';
 import { readCsvRows } from '@/lib/csv';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { Sidebar } from '@/components/Sidebar';
 import { PageOutline } from '@/components/PageOutline';
-import { ConnectionGraph } from '@/components/ConnectionGraph';
+import { RelatedContentPanel } from '@/components/RelatedContentPanel';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { CsvHistogramSection } from '@/components/CsvHistogramSection';
 import { CsvScatterSection } from '@/components/CsvScatterSection';
 import { TrendComparisonExplorer } from '@/components/TrendComparisonExplorer';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
+import { MetricResponseExplorer } from '@/components/MetricResponseExplorer';
 import { readEsmTable } from '@/lib/esm';
 import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
@@ -72,25 +73,97 @@ export default async function WikiPage({ params }: PageProps) {
     notFound();
   }
 
-  const connections = getConnectionGraph(slug);
+  // A note can combine more than one CSV-driven feature (e.g. histogram_data
+  // AND metric_response_data on the same page) — each config contributes one
+  // or more {heading, node} injection points, which are then ordered by
+  // where their heading actually falls in the document and spliced in with
+  // a single splitAtHeadings pass. A config whose heading isn't found in the
+  // body just contributes nothing, rather than blocking the others.
+  const injections: { heading: string; node: React.ReactNode }[] = [];
+
   const histogramData = 'histogramData' in content.metadata ? content.metadata.histogramData : undefined;
-  const histogramSegments = histogramData
-    ? splitAtHeadings(content.content, histogramData.sections.map(section => section.heading))
-    : null;
-  const csvRows = histogramSegments && histogramData ? readCsvRows(histogramData.csv) : null;
+  if (histogramData) {
+    const csvRows = readCsvRows(histogramData.csv);
+    histogramData.sections.forEach(section => {
+      injections.push({
+        heading: section.heading,
+        node:
+          section.type === 'scatter' ? (
+            <CsvScatterSection
+              title={section.title}
+              xColumn={section.x_column}
+              yColumn={section.y_column}
+              xLabel={section.x_label}
+              yLabel={section.y_label}
+              filterColumn={section.filter_column}
+              filterValue={section.filter_value}
+              rows={csvRows}
+            />
+          ) : (
+            <CsvHistogramSection
+              title={section.title}
+              column={section.column}
+              rows={csvRows}
+              tableColumns={histogramData.table_columns}
+            />
+          ),
+      });
+    });
+  }
 
   const trendData = 'trendData' in content.metadata ? content.metadata.trendData : undefined;
-  const trendSegments = trendData ? splitAtHeadings(content.content, [trendData.heading]) : null;
-  const trendRows = trendSegments && trendData ? readCsvRows(trendData.csv) : null;
+  if (trendData) {
+    injections.push({ heading: trendData.heading, node: <TrendComparisonExplorer rows={readCsvRows(trendData.csv)} /> });
+  }
 
   const esmTable = 'esmTable' in content.metadata ? content.metadata.esmTable : undefined;
-  const esmSegments = esmTable ? splitAtHeadings(content.content, [esmTable.heading]) : null;
-  const esmData = esmSegments && esmTable ? readEsmTable(esmTable.csv, esmTable.columns) : null;
+  if (esmTable) {
+    const esmData = readEsmTable(esmTable.csv, esmTable.columns);
+    injections.push({
+      heading: esmTable.heading,
+      node: <EsmMethodTable rows={esmData.rows} models={esmData.models} columns={esmData.columns} />,
+    });
+  }
+
+  const metricResponseData = 'metricResponseData' in content.metadata ? content.metadata.metricResponseData : undefined;
+  if (metricResponseData) {
+    const metricRows = readCsvRows(metricResponseData.csv);
+    metricResponseData.sections.forEach(section => {
+      injections.push({
+        heading: section.heading,
+        node: (
+          <MetricResponseExplorer
+            title={section.title}
+            rows={metricRows}
+            metricColumn={section.metric_column}
+            knownMetrics={section.known_metrics ?? []}
+            excludeMetrics={section.exclude_metrics ?? []}
+            xColumn={section.x_column}
+            xLabel={section.x_label}
+            yColumn={section.y_column}
+            yLabel={section.y_label}
+            tableColumns={section.table_columns}
+          />
+        ),
+      });
+    });
+  }
+
+  const orderedInjections = injections
+    .map(injection => ({ ...injection, index: content.content.indexOf(injection.heading) }))
+    .filter(injection => injection.index !== -1)
+    .sort((a, b) => a.index - b.index);
+
+  const contentSegments =
+    orderedInjections.length > 0
+      ? splitAtHeadings(content.content, orderedInjections.map(injection => injection.heading))
+      : null;
 
   const kind = 'kind' in content.metadata ? content.metadata.kind : undefined;
   const isPattern = kind === 'pattern' || kind === 'relationship';
   const outline = isPattern ? buildPageOutline(content.content) : [];
   const backModel = 'model' in content.metadata ? content.metadata.model : undefined;
+  const relatedContent = 'relatedContent' in content.metadata ? content.metadata.relatedContent ?? [] : [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -142,54 +215,11 @@ export default async function WikiPage({ params }: PageProps) {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1 min-w-0">
                 <InfoBox content={content} />
-                {histogramSegments && histogramData && csvRows ? (
-                  histogramSegments.map((segment, i) => {
-                    const section = histogramData.sections[i];
-                    return (
-                      <Fragment key={i}>
-                        <MarkdownContent content={segment} />
-                        {section && (
-                          section.type === 'scatter' ? (
-                            <CsvScatterSection
-                              title={section.title}
-                              xColumn={section.x_column}
-                              yColumn={section.y_column}
-                              xLabel={section.x_label}
-                              yLabel={section.y_label}
-                              filterColumn={section.filter_column}
-                              filterValue={section.filter_value}
-                              rows={csvRows}
-                            />
-                          ) : (
-                            <CsvHistogramSection
-                              title={section.title}
-                              column={section.column}
-                              rows={csvRows}
-                              tableColumns={histogramData.table_columns}
-                            />
-                          )
-                        )}
-                      </Fragment>
-                    );
-                  })
-                ) : trendSegments && trendData && trendRows ? (
-                  trendSegments.map((segment, i) => (
+                {contentSegments ? (
+                  contentSegments.map((segment, i) => (
                     <Fragment key={i}>
                       <MarkdownContent content={segment} />
-                      {i === 0 && <TrendComparisonExplorer rows={trendRows} />}
-                    </Fragment>
-                  ))
-                ) : esmSegments && esmData ? (
-                  esmSegments.map((segment, i) => (
-                    <Fragment key={i}>
-                      <MarkdownContent content={segment} />
-                      {i === 0 && (
-                        <EsmMethodTable
-                          rows={esmData.rows}
-                          models={esmData.models}
-                          columns={esmData.columns}
-                        />
-                      )}
+                      {orderedInjections[i] && orderedInjections[i].node}
                     </Fragment>
                   ))
                 ) : (
@@ -197,14 +227,9 @@ export default async function WikiPage({ params }: PageProps) {
                 )}
               </div>
 
-              {(connections.incoming.length > 0 || connections.outgoing.length > 0) && (
+              {relatedContent.length > 0 && (
                 <aside className="lg:w-80 flex-shrink-0">
-                  <ConnectionGraph
-                    slug={slug}
-                    title={getTitle(content)}
-                    incoming={connections.incoming}
-                    outgoing={connections.outgoing}
-                  />
+                  <RelatedContentPanel items={relatedContent} title="Related content" />
                 </aside>
               )}
             </div>

@@ -1,52 +1,15 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Link from 'next/link';
 import { Search, ChevronLeft } from 'lucide-react';
-import { TopicGroup, TopicLinkItem, TopicIndex } from '@/lib/topics';
+import { TopicGroup, TopicIndex } from '@/lib/topics';
+import { formatTopic, TopicGroupSections } from '@/components/TopicGroupSections';
 
 interface TopicExplorerProps {
   index: TopicIndex;
   selectedTopic: string | null;
   onSelectTopic: (topic: string | null) => void;
   highlightedSlug?: string | null;
-}
-
-function formatTopic(topic: string): string {
-  return topic.replace(/_/g, ' ');
-}
-
-function LinkList({
-  items,
-  emptyLabel,
-  highlightedSlug,
-}: {
-  items: TopicLinkItem[];
-  emptyLabel: string;
-  highlightedSlug?: string | null;
-}) {
-  if (items.length === 0) {
-    return <p className="text-xs text-stone-400 italic">{emptyLabel}</p>;
-  }
-  return (
-    <ul className="space-y-1">
-      {items.map(item => {
-        const isHighlighted = item.slug === highlightedSlug;
-        return (
-          <li key={item.href}>
-            <Link
-              href={item.href}
-              className={`text-sm hover:underline block py-0.5 px-1.5 -mx-1.5 rounded-md capitalize ${
-                isHighlighted ? 'bg-primary-light text-primary font-medium' : 'text-primary'
-              }`}
-            >
-              {formatTopic(item.title)}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
-  );
 }
 
 function TopicsCard({
@@ -83,31 +46,7 @@ function TopicsCard({
 
         <h3 className="font-heading text-base mb-4 capitalize">{formatTopic(selected.topic)}</h3>
 
-        <div className="space-y-4">
-          <div>
-            <h4 className="text-xs uppercase tracking-wide text-stone-400 mb-1.5 flex items-center gap-2">
-              <span className="badge badge-flux">Model</span>
-              Models
-            </h4>
-            <LinkList items={selected.models} emptyLabel="No model pages tagged yet" highlightedSlug={highlightedSlug} />
-          </div>
-
-          <div>
-            <h4 className="text-xs uppercase tracking-wide text-stone-400 mb-1.5 flex items-center gap-2">
-              <span className="badge badge-observation">Obs</span>
-              Observations
-            </h4>
-            <LinkList items={selected.observations} emptyLabel="No observation pages tagged yet" />
-          </div>
-
-          <div>
-            <h4 className="text-xs uppercase tracking-wide text-stone-400 mb-1.5 flex items-center gap-2">
-              <span className="badge badge-pattern">Pattern</span>
-              Patterns
-            </h4>
-            <LinkList items={selected.patterns} emptyLabel="No patterns tagged yet" />
-          </div>
-        </div>
+        <TopicGroupSections group={selected} highlightedSlug={highlightedSlug} />
       </div>
     );
   }
@@ -148,21 +87,11 @@ function TopicsCard({
 
 export function TopicExplorer({ index, selectedTopic, onSelectTopic, highlightedSlug }: TopicExplorerProps) {
   return (
-    <>
-      <TopicsCard
-        topics={index.topics}
-        selectedTopic={selectedTopic}
-        onSelectTopic={onSelectTopic}
-        highlightedSlug={highlightedSlug}
-      />
-
-      <div className="bg-white rounded-lg border border-stone-200 p-5">
-        <h3 className="font-heading text-base mb-3 flex items-center gap-2">
-          <span className="badge badge-relationship">Rel.</span>
-          Relationships of interest
-        </h3>
-        <LinkList items={index.relationships} emptyLabel="No relationships tagged yet" />
-      </div>
-    </>
+    <TopicsCard
+      topics={index.topics}
+      selectedTopic={selectedTopic}
+      onSelectTopic={onSelectTopic}
+      highlightedSlug={highlightedSlug}
+    />
   );
 }

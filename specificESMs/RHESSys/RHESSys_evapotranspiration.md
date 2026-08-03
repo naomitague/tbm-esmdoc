@@ -2,7 +2,7 @@
 overview of evapotranspiration modeling in general including approaches used in RHESSys [[process_evapotranspiration]]
 
 potential observational data for evaluation
-[[obs_et]]
+[[obs_et|Measuring Evapotranspiration (ET)]]
 
 
 

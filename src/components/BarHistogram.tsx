@@ -8,9 +8,11 @@ interface BarHistogramProps {
   unresolvedCount: number;
   selectedLabel: string | null;
   onSelect: (label: string) => void;
+  /** Optional per-label tooltip text, e.g. Köppen–Geiger code -> full climate name. Falls back to just the label when absent. */
+  describe?: (label: string) => string | undefined;
 }
 
-export function BarHistogram({ title, data, unresolvedCount, selectedLabel, onSelect }: BarHistogramProps) {
+export function BarHistogram({ title, data, unresolvedCount, selectedLabel, onSelect, describe }: BarHistogramProps) {
   const max = Math.max(1, ...data.map(d => d.count));
 
   return (
@@ -31,6 +33,7 @@ export function BarHistogram({ title, data, unresolvedCount, selectedLabel, onSe
                   type="button"
                   onClick={() => onSelect(item.label)}
                   aria-pressed={isSelected}
+                  title={describe?.(item.label) ? `${item.label} — ${describe(item.label)}` : undefined}
                   className={`
                     group flex w-full items-center gap-3 rounded-md px-1.5 py-1 text-left
                     transition-colors duration-150 focus:outline-none focus-visible:ring-2
@@ -42,7 +45,6 @@ export function BarHistogram({ title, data, unresolvedCount, selectedLabel, onSe
                     className={`w-40 shrink-0 truncate text-sm ${
                       isSelected ? 'font-medium text-primary' : 'text-stone-700'
                     }`}
-                    title={item.label}
                   >
                     {item.flaggedCount > 0 && (
                       <span

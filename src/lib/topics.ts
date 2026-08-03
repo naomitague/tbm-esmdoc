@@ -6,6 +6,8 @@ export interface TopicLinkItem {
   slug: string;
   title: string;
   href: string;
+  /** For relationship items: slug of a broader relationship page this one nests under, if any — see TopicGroupSections. */
+  parentSlug?: string;
 }
 
 export interface TopicGroup {
@@ -13,11 +15,11 @@ export interface TopicGroup {
   models: TopicLinkItem[];
   observations: TopicLinkItem[];
   patterns: TopicLinkItem[];
+  relationships: TopicLinkItem[];
 }
 
 export interface TopicIndex {
   topics: TopicGroup[];
-  relationships: TopicLinkItem[];
   /** flux/parameter slug -> its one topic (items are expected to carry a single `topic` tag). */
   itemTopics: Record<string, string>;
 }
@@ -38,15 +40,13 @@ function toLinkItem(item: ContentMetadata, href: string): TopicLinkItem {
 
 /**
  * Build the water model's topic index: a topic -> {models, observations,
- * patterns} breakdown, plus a separate flat list of "relationship of interest"
- * pages. Relationships are pulled out of the per-topic breakdown deliberately
- * — a relationship page (e.g. ET-vs-streamflow-vs-vegetation-change) already
- * is the destination, not a hub that fans out to other pages the way a topic
- * does, so it's browsed directly rather than surfaced as one of several
- * groups under a topic. A topic only appears in `topics` if it has at least
- * one model/observation/pattern tagged with it — topics that exist purely as
- * tags on a relationship page (e.g. "streamflow") aren't real topics on their
- * own and would otherwise show up with three empty groups.
+ * patterns, relationships} breakdown. Relationships are filed under every
+ * topic they're tagged with, same as patterns — a relationship page like
+ * "peak streamflow response to vegetation change" is tagged `[streamflow,
+ * vegetation_change]`, not `evapotranspiration`, so it should only surface
+ * under those topics, not under every topic a *different* relationship page
+ * happens to touch. A topic only appears in `topics` if it has at least one
+ * model/observation/pattern/relationship tagged with it.
  */
 export function getTopicIndex(modelSlug: string): TopicIndex {
   const modelContent = getAllModelContent(modelSlug);
@@ -56,7 +56,7 @@ export function getTopicIndex(modelSlug: string): TopicIndex {
   const ensure = (topic: string): TopicGroup => {
     let group = groups.get(topic);
     if (!group) {
-      group = { topic, models: [], observations: [], patterns: [] };
+      group = { topic, models: [], observations: [], patterns: [], relationships: [] };
       groups.set(topic, group);
     }
     return group;
@@ -79,8 +79,6 @@ export function getTopicIndex(modelSlug: string): TopicIndex {
     getTopics(item).forEach(topic => ensure(topic).observations.push(toLinkItem(item, href)));
   });
 
-  const relationships: TopicLinkItem[] = [];
-
   wikiContent
     .filter(item => item.type === 'overview' && (item.metadata as any).kind)
     .forEach(item => {
@@ -89,13 +87,13 @@ export function getTopicIndex(modelSlug: string): TopicIndex {
       if (kind === 'pattern') {
         getTopics(item).forEach(topic => ensure(topic).patterns.push(toLinkItem(item, href)));
       } else if (kind === 'relationship') {
-        relationships.push(toLinkItem(item, href));
+        const parentSlug = (item.metadata as any).parent;
+        getTopics(item).forEach(topic => ensure(topic).relationships.push({ ...toLinkItem(item, href), parentSlug }));
       }
     });
 
   return {
     topics: Array.from(groups.values()).sort((a, b) => a.topic.localeCompare(b.topic)),
-    relationships,
     itemTopics
   };
 }

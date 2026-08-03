@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { getModelContent, getAllModels, getAllModelContent } from '@/lib/models';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { readEsmTable } from '@/lib/esm';
+import { getTopicIndex } from '@/lib/topics';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { PageOutline } from '@/components/PageOutline';
+import { TopicGroupSections, formatTopic } from '@/components/TopicGroupSections';
 import { InfoBox } from '@/components/InfoBox';
 import { MathText } from '@/components/MathText';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
@@ -88,6 +90,15 @@ export default async function ContentPage({ params }: PageProps) {
   const esmSegments = esmTable ? splitAtHeading(content.content, esmTable.heading) : null;
   const esmData = esmSegments && esmTable ? readEsmTable(esmTable.csv, esmTable.columns) : null;
 
+  // A flux/parameter/observation's own topic tag doubles as a "see also" hub:
+  // the same Models/Observations/Patterns/Relationships breakdown a reader
+  // gets by clicking this topic on the model overview page, without leaving
+  // this page. Only the item's first topic is used — consistent with how
+  // clicking through from the overview page already treats topic as a
+  // single primary grouping, not a multi-select.
+  const itemTopic: string | undefined = Array.isArray(meta.topic) ? meta.topic[0] : undefined;
+  const topicGroup = itemTopic ? getTopicIndex(modelSlug).topics.find(g => g.topic === itemTopic) ?? null : null;
+
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
@@ -108,7 +119,7 @@ export default async function ContentPage({ params }: PageProps) {
           <span className="text-stone-800 font-medium"><MathText text={displayTitle} /></span>
         </nav>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+        <div className="grid lg:grid-cols-5 gap-6">
           {/* Sidebar */}
           <aside className="lg:col-span-1">
             <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
@@ -164,6 +175,25 @@ export default async function ContentPage({ params }: PageProps) {
               </div>
             </article>
           </main>
+
+          {/* Topic panel */}
+          {topicGroup && (
+            <aside className="lg:col-span-1">
+              <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
+                <Link
+                  href={`/models/${modelSlug}`}
+                  className="flex items-center gap-1.5 text-primary text-sm font-medium mb-4 pb-3 border-b border-stone-100"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  {modelSlug.charAt(0).toUpperCase() + modelSlug.slice(1)} Model
+                </Link>
+
+                <h3 className="font-heading text-base mb-4 capitalize">{formatTopic(topicGroup.topic)}</h3>
+
+                <TopicGroupSections group={topicGroup} highlightedSlug={slug} />
+              </div>
+            </aside>
+          )}
         </div>
       </div>
     </div>

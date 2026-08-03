@@ -5,6 +5,7 @@ import { BarHistogram } from '@/components/BarHistogram';
 import { CsvObservationsTable } from '@/components/CsvObservationsTable';
 import { CsvRow } from '@/lib/csv';
 import { countByCategory, countUnresolved, normalizeCategory } from '@/lib/csvHistogram';
+import { describeKoppenCode } from '@/lib/koppenGeiger';
 import { HistogramTableColumn } from '@/types';
 
 const ET_TABLE_COLUMNS: HistogramTableColumn[] = [
@@ -67,6 +68,7 @@ export function EtObservationsExplorer({ observations }: EtObservationsExplorerP
           unresolvedCount={koppenUnresolved}
           selectedLabel={selection?.column === 'koppen_geiger' ? selection.label : null}
           onSelect={label => handleSelect('koppen_geiger', label)}
+          describe={describeKoppenCode}
         />
         <BarHistogram
           title="Observations by Whittaker biome"

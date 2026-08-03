@@ -229,9 +229,12 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     histogramData: frontMatter.histogram_data,
     trendData: frontMatter.trend_data,
     esmTable: frontMatter.esm_table,
+    metricResponseData: frontMatter.metric_response_data,
+    relatedContent: frontMatter.related_content,
     topic: frontMatter.topic || [],
     kind: frontMatter.kind,
-    model: frontMatter.model
+    model: frontMatter.model,
+    parent: frontMatter.parent
   };
 }
 
@@ -366,28 +369,3 @@ export function getAllSlugs(): string[] {
   return allContent.map(content => content.metadata.slug);
 }
 
-/**
- * Build a connection graph for a specific item
- */
-export function getConnectionGraph(slug: string): {
-  incoming: ModelConnection[];
-  outgoing: ModelConnection[];
-} {
-  const allContent = getAllContent();
-
-  const getConnections = (item: ContentMetadata): ModelConnection[] => {
-    if ('connections' in item.metadata) {
-      return (item.metadata as { connections: ModelConnection[] }).connections;
-    }
-    return [];
-  };
-
-  const found = allContent.find(c => c.metadata.slug === slug);
-  const outgoing = found ? getConnections(found) : [];
-
-  const incoming = allContent
-    .filter(c => getConnections(c).some(conn => conn.target === slug))
-    .flatMap(c => getConnections(c).filter(conn => conn.target === slug));
-
-  return { incoming, outgoing };
-}

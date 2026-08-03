@@ -367,3 +367,9 @@ h1, h2, h3, h4, h5, h6 {
 .badge-relationship {
   background-color: #7c3aed;
 }
+
+/* Fixed (non-em) size for badges sitting inside already-small text (e.g. text-xs headings) — .badge's font-size is relative, so it compounds-shrinks there otherwise. */
+.badge-lg {
+  font-size: 0.75rem;
+  padding: 0.25em 0.65em;
+}

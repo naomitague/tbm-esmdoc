@@ -77,15 +77,6 @@ export function convertWikiLinksToNextLinks(content: string, modelSlug: string):
     const displayText = (alias || link).trim();
     const slug = link.toLowerCase().replace(/\s+/g, '_');
 
-    // Try to determine if it's a flux, parameter, or observation
-    if (link.toLowerCase().startsWith('flux_')) {
-      return `[${displayText}](/models/${modelSlug}/fluxes/${slug.replace('flux_', '')})`;
-    } else if (link.toLowerCase().startsWith('obs_')) {
-      return `[${displayText}](/models/${modelSlug}/observations/${slug.replace('obs_', '')})`;
-    } else if (link.toLowerCase().startsWith('parameter_')) {
-      return `[${displayText}](/models/${modelSlug}/parameters/${slug.replace('parameter_', '')})`;
-    }
-
     const foundType = findModelSlugType(modelSlug, slug);
     if (foundType) {
       return `[${displayText}](/models/${modelSlug}/${foundType}/${slug})`;
