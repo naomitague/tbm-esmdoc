@@ -20,14 +20,32 @@ Evapotranspiration is the flux of water from the earth surface to the atmosphere
 
 ## Techniques, Product Evaluation, Error/Uncertainty Papers
 
+# Point / Local
+
+
+
+
 - **Eddy covariance methods** for stand-scale evapotranspiration partitioning:
   - Wilson, K. B., Baldocchi, D. D., & Hanson, P. J. (2001). Leaf area index and light extinction coefficients. _Agricultural and Forest Meteorology_, 107(1), 93–115.
+
   - reducing biass in scaling - using eddy-covariance data (footprint issues across networks)
    Chu, Housen, Stefan Metzger, Zutao Ouyang, Anne Griebel, Koong Yi, David Durden, Sebastian Wolf et al. "Flux Footprints: A Critical Link to Bridge Eddy‐Covariance Measurements With Models, Remote Sensing, and Other Observations." _Global Change Biology_ 32, no. 4 (2026): e70887.
 
+   # Spatial
 
-- **Remote sensing** using thermal imaging to infer transpiration rates:
+
+Upscaling of eddy covariance data
+
+Chu, Housen, Stefan Metzger, Zutao Ouyang, Anne Griebel, Koong Yi, David Durden, Sebastian Wolf et al. "Flux Footprints: A Critical Link to Bridge Eddy‐Covariance Measurements With Models, Remote Sensing, and Other Observations." _Global Change Biology_ 32, no. 4 (2026): e70887.
+
+A brief summary of metrics used for evaluation of spatial datasets [[Space-Time Pattern]], [[spatial_validation]]
+
+## Remote sensing
+
+
   - Fisher, J.B., et al. (2020). The future of evapotranspiration: Global requirements for ecosystem functioning, carbon and climate feedbacks, agricultural management, and water resources. _Water Resources Research_, 56(4), e2019WR026236.
+
+
   - Zhang, Ke, John S. Kimball, and Steven W. Running. "A review of remote sensing based actual evapotranspiration estimation." _Wiley interdisciplinary reviews: Water_ 3, no. 6 (2016): 834-853.
 
 ## Sources/Database

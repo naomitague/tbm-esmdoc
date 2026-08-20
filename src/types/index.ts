@@ -31,6 +31,7 @@ export interface FluxMetadata {
   codeFiles?: string[];
   observations?: string[];
   esmTable?: EsmTableConfig;
+  datasetTable?: DatasetTableConfig;
   connections: ModelConnection[];
 }
 
@@ -67,6 +68,8 @@ export interface ObservationMetadata {
   variables?: string[];
   methods?: string[];
   references?: string[];
+  esmTable?: EsmTableConfig;
+  datasetTable?: DatasetTableConfig;
   connections: ModelConnection[];
 }
 
@@ -134,6 +137,38 @@ export interface EsmTableConfig {
   columns?: { key: string; label: string }[];
 }
 
+/** One displayed column of a `dataset_table`. */
+export interface DatasetTableColumn {
+  key: string;
+  label: string;
+  /** `link` renders the cell value as an external link (use `link_label` for the visible text). */
+  type?: 'text' | 'link';
+  link_label?: string;
+  /** Allow the cell to wrap instead of staying on one line — for long free-text columns. */
+  wrap?: boolean;
+}
+
+/**
+ * Declared in a note's frontmatter (`dataset_table:`) to splice a browsable
+ * table of a plain CSV in after one heading — the whole table by default,
+ * narrowed with a one-column dropdown filter (`filter_column`, e.g. product
+ * category) plus a free-text search over `search_columns`. Unlike `esm_table`
+ * this joins against nothing: the CSV is shown as-is, so it suits reference
+ * tables like the global precipitation-products list. See CsvDatasetTable.
+ */
+export interface DatasetTableConfig {
+  csv: string;
+  heading: string;
+  title?: string;
+  columns: DatasetTableColumn[];
+  filter_column?: string;
+  filter_label?: string;
+  search_columns?: string[];
+  search_placeholder?: string;
+  /** Noun used in the row count, e.g. "dataset" → "12 datasets". */
+  row_noun?: string;
+}
+
 export interface MetricOptionConfig {
   value: string;
   label: string;
@@ -199,6 +234,7 @@ export interface OverviewMetadata {
   histogramData?: HistogramDataConfig;
   trendData?: TrendDataConfig;
   esmTable?: EsmTableConfig;
+  datasetTable?: DatasetTableConfig;
   metricResponseData?: MetricResponseDataConfig;
   /** Author-curated "see also" list — replaces the old auto-derived Connections panel, which just showed whatever notes happened to be [[wikilinked]] and wasn't reliably meaningful. */
   relatedContent?: RelatedContentItem[];

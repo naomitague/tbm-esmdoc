@@ -123,6 +123,7 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
       inputs: extractListItems(inputMatch?.[1])
     },
     esmTable: frontMatter.esm_table,
+    datasetTable: frontMatter.dataset_table,
     connections
   };
 }
@@ -200,7 +201,10 @@ function parseObservation(fileContent: string, slug: string, frontMatter: any): 
     title,
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['observation'],
+    topic: frontMatter.topic || [],
     description,
+    esmTable: frontMatter.esm_table,
+    datasetTable: frontMatter.dataset_table,
     connections
   };
 }
@@ -229,6 +233,7 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     histogramData: frontMatter.histogram_data,
     trendData: frontMatter.trend_data,
     esmTable: frontMatter.esm_table,
+    datasetTable: frontMatter.dataset_table,
     metricResponseData: frontMatter.metric_response_data,
     relatedContent: frontMatter.related_content,
     topic: frontMatter.topic || [],

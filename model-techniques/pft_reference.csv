@@ -1,0 +1,17 @@
+pft_id,pft_name,category,climate_zone,phenology_class,source,extraction_source,needs_verification
+TrBe,Tropical broadleaf evergreen,vegetated,Tropical,Broadleaf evergreen,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+TrRg,Tropical raingreen,vegetated,Tropical,Broadleaf deciduous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+TeNe,Temperate needleleaf evergreen,vegetated,Temperate,Needleleaf evergreen,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+TeBe,Temperate broadleaf evergreen,vegetated,Temperate,Broadleaf evergreen,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+TeBs,Temperate broadleaf summergreen,vegetated,Temperate,Broadleaf deciduous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+BoNe,Boreal needleleaf evergreen,vegetated,Boreal,Needleleaf evergreen,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+BoNd,Boreal needleleaf summergreen,vegetated,Boreal,Needleleaf deciduous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+BoBs,Boreal broadleaf summergreen,vegetated,Boreal,Broadleaf deciduous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+NatGrassC3,Natural grassland C3,vegetated,Temperate,Herbaceous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+NatGrassC4,Natural grassland C4,vegetated,Tropical,Herbaceous,Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+MGrassC3,Managed grassland C3,vegetated,Temperate,Herbaceous (managed),Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+MGrassC4,Managed grassland C4,vegetated,Tropical,Herbaceous (managed),Poulter et al. 2011 Table 2,Poulter et al. 2011,FALSE
+Barren,Barren / bare ground,non-vegetated,,,Poulter et al. 2011 Table 7,Poulter et al. 2011,FALSE
+Water,Water,non-vegetated,,,Poulter et al. 2011 Table 7,Poulter et al. 2011,FALSE
+Urban,Urban,non-vegetated,,,Poulter et al. 2011 Table 7,Poulter et al. 2011,FALSE
+NoData,No data,non-vegetated,,,Poulter et al. 2011 Table 7,Poulter et al. 2011,FALSE

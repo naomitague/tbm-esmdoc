@@ -4,26 +4,18 @@ import Link from 'next/link';
 import { getModelContent, getAllModels, getAllModelContent } from '@/lib/models';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { readEsmTable } from '@/lib/esm';
+import { readCsvRows } from '@/lib/csv';
+import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
 import { getTopicIndex } from '@/lib/topics';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
+import { CsvDatasetTable } from '@/components/CsvDatasetTable';
 import { PageOutline } from '@/components/PageOutline';
 import { TopicGroupSections, formatTopic } from '@/components/TopicGroupSections';
 import { InfoBox } from '@/components/InfoBox';
 import { MathText } from '@/components/MathText';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-
-/**
- * Mirror of WikiPage's heading splitter: an `esm_table` note has an interactive
- * comparison table spliced in after its configured heading. Returns null (render
- * as one block) if the heading isn't present.
- */
-function splitAtHeading(markdown: string, heading: string): string[] | null {
-  const idx = markdown.indexOf(heading);
-  if (idx === -1) return null;
-  return [markdown.slice(0, idx + heading.length), markdown.slice(idx + heading.length)];
-}
 
 interface PageProps {
   params: Promise<{
@@ -86,9 +78,45 @@ export default async function ContentPage({ params }: PageProps) {
   const meta = content.metadata as any;
   const displayTitle = meta.parameterName || meta.name || meta.title || meta.slug || '';
 
+  // Same injection model as WikiPage: each CSV-driven frontmatter config
+  // contributes a component spliced in after its heading, ordered by where
+  // that heading falls in the body. A config whose heading isn't found just
+  // contributes nothing rather than blocking the others.
+  const injections: HeadingInjection[] = [];
+
   const esmTable = meta.esmTable;
-  const esmSegments = esmTable ? splitAtHeading(content.content, esmTable.heading) : null;
-  const esmData = esmSegments && esmTable ? readEsmTable(esmTable.csv, esmTable.columns) : null;
+  if (esmTable) {
+    const esmData = readEsmTable(esmTable.csv, esmTable.columns);
+    injections.push({
+      heading: esmTable.heading,
+      node: <EsmMethodTable rows={esmData.rows} models={esmData.models} columns={esmData.columns} />,
+    });
+  }
+
+  const datasetTable = meta.datasetTable;
+  if (datasetTable) {
+    injections.push({
+      heading: datasetTable.heading,
+      node: (
+        <CsvDatasetTable
+          rows={readCsvRows(datasetTable.csv)}
+          columns={datasetTable.columns}
+          filterColumn={datasetTable.filter_column}
+          filterLabel={datasetTable.filter_label}
+          searchColumns={datasetTable.search_columns}
+          searchPlaceholder={datasetTable.search_placeholder}
+          title={datasetTable.title}
+          rowNoun={datasetTable.row_noun}
+        />
+      ),
+    });
+  }
+
+  const orderedInjections = orderInjections(content.content, injections);
+  const contentSegments =
+    orderedInjections.length > 0
+      ? splitAtHeadings(content.content, orderedInjections.map(injection => injection.heading))
+      : null;
 
   // A flux/parameter/observation's own topic tag doubles as a "see also" hub:
   // the same Models/Observations/Patterns/Relationships breakdown a reader
@@ -156,17 +184,11 @@ export default async function ContentPage({ params }: PageProps) {
               <InfoBox content={content} />
 
               <div className="wiki-content">
-                {esmSegments && esmData ? (
-                  esmSegments.map((segment, i) => (
+                {contentSegments ? (
+                  contentSegments.map((segment, i) => (
                     <Fragment key={i}>
                       <MarkdownContent content={segment} />
-                      {i === 0 && (
-                        <EsmMethodTable
-                          rows={esmData.rows}
-                          models={esmData.models}
-                          columns={esmData.columns}
-                        />
-                      )}
+                      {orderedInjections[i]?.node}
                     </Fragment>
                   ))
                 ) : (

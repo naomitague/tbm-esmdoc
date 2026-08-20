@@ -135,13 +135,15 @@ of which is content:
 
 ## Interactive content protocols
 
-Three frontmatter keys splice a live React component into a note's rendered
-markdown, positioned right after a specific heading. All three work the same
+Four frontmatter keys splice a live React component into a note's rendered
+markdown, positioned right after a specific heading. All four work the same
 way under the hood: the target heading text is located in the raw markdown
-with a plain string match (`splitAtHeadings` / `splitAtHeading` in the page
-components — not an AST match), the markdown is rendered as normal up to and
-including that heading, the component is inserted, and the rest of the
-markdown renders after it.
+with a plain string match (`splitAtHeadings` in `src/lib/headingSplit.ts`,
+shared by both page routes — not an AST match), the markdown is rendered as
+normal up to and including that heading, the component is inserted, and the
+rest of the markdown renders after it. A note may combine several of these
+keys; `orderInjections` sorts them by where their headings actually fall in
+the body.
 
 **This means the heading string in frontmatter must match the heading in the
 note body exactly** — same `#`-level, same text, same punctuation. A
@@ -223,6 +225,37 @@ column is shown as a comparison column by default. Current example:
 model version to an existing method CSV, add matching rows to both
 `esm_model_versions.csv` (and `esm_model.csv`, if it's a new model) —
 otherwise the joined row will show blank model name/type/links.
+
+### 4. `dataset_table` — browsable reference table over a plain CSV
+```yaml
+dataset_table:
+  csv: models/water/observations/tables/precipitation_datasets_summary.csv
+  heading: "# Global Products Table"     # exact heading text
+  title: "Global precipitation products" # optional caption above the controls
+  filter_column: category                # optional dropdown, built from that column's distinct values
+  filter_label: "Product category"
+  search_columns: [dataset, category]    # free-text search targets; defaults to every shown column
+  search_placeholder: "Search dataset or category…"
+  row_noun: product                      # "12 products" in the row count
+  columns:                               # required: which CSV columns to show, in order
+    - key: dataset
+      label: Dataset                     # first column is the sticky row header
+    - key: reference
+      label: Reference
+      wrap: true                         # let long text wrap instead of one line
+    - key: website
+      label: Website
+      type: link                         # render the cell value as an external link
+      link_label: site                   # visible text (defaults to the raw URL)
+```
+Unlike `esm_table` this joins against nothing — the CSV renders as-is, so it
+suits flat reference tables (product/dataset inventories) rather than
+per-model-version comparisons. The whole table shows by default; the dropdown
+and search box only narrow it, and a "Show all" button clears both. Columns
+not listed in `columns` are simply not displayed (and not searched, unless
+named in `search_columns`). Current example:
+`models/water/observations/obs_precip.md` +
+`models/water/observations/tables/precipitation_datasets_summary.csv`.
 
 ### ⚠️ Gotcha: two parsers, one frontmatter contract
 Flux/parameter/observation notes are reachable via two different routes,

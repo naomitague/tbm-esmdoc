@@ -12,8 +12,11 @@ import { CsvHistogramSection } from '@/components/CsvHistogramSection';
 import { CsvScatterSection } from '@/components/CsvScatterSection';
 import { TrendComparisonExplorer } from '@/components/TrendComparisonExplorer';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
+import { CsvDatasetTable } from '@/components/CsvDatasetTable';
 import { MetricResponseExplorer } from '@/components/MetricResponseExplorer';
+import { UsefulTechniques } from '@/components/UsefulTechniques';
 import { readEsmTable } from '@/lib/esm';
+import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
 import { MathText } from '@/components/MathText';
 import { InfoBox } from '@/components/InfoBox';
 import { Leaf, ArrowLeft } from 'lucide-react';
@@ -26,34 +29,6 @@ function getTitle(item: ContentMetadata): string {
   if (meta.name) return meta.name;
   if (meta.title) return meta.title;
   return meta.slug || '';
-}
-
-/**
- * A note opts into inline CSV histograms by declaring `histogram_data` in its
- * frontmatter (csv path + a list of {heading, column, title} sections — see
- * HistogramDataConfig). This splits the note's markdown at each configured
- * heading, in order, so a chart can be spliced in right after it — the
- * generic MarkdownContent pipeline renders static HTML and can't host a live
- * component itself. Returns null (render the note as one block, unchanged)
- * if any configured heading isn't found in the content.
- */
-function splitAtHeadings(markdown: string, headings: string[]): string[] | null {
-  const indices = headings.map(heading => markdown.indexOf(heading));
-  if (indices.some(idx => idx === -1)) return null;
-  for (let i = 1; i < indices.length; i++) {
-    if (indices[i] < indices[i - 1]) return null;
-  }
-
-  const segments: string[] = [];
-  let cursor = 0;
-  headings.forEach((heading, i) => {
-    const idx = indices[i];
-    segments.push(markdown.slice(cursor, idx + heading.length));
-    cursor = idx + heading.length;
-  });
-  segments.push(markdown.slice(cursor));
-
-  return segments;
 }
 
 interface PageProps {
@@ -79,7 +54,7 @@ export default async function WikiPage({ params }: PageProps) {
   // where their heading actually falls in the document and spliced in with
   // a single splitAtHeadings pass. A config whose heading isn't found in the
   // body just contributes nothing, rather than blocking the others.
-  const injections: { heading: string; node: React.ReactNode }[] = [];
+  const injections: HeadingInjection[] = [];
 
   const histogramData = 'histogramData' in content.metadata ? content.metadata.histogramData : undefined;
   if (histogramData) {
@@ -125,6 +100,25 @@ export default async function WikiPage({ params }: PageProps) {
     });
   }
 
+  const datasetTable = 'datasetTable' in content.metadata ? content.metadata.datasetTable : undefined;
+  if (datasetTable) {
+    injections.push({
+      heading: datasetTable.heading,
+      node: (
+        <CsvDatasetTable
+          rows={readCsvRows(datasetTable.csv)}
+          columns={datasetTable.columns}
+          filterColumn={datasetTable.filter_column}
+          filterLabel={datasetTable.filter_label}
+          searchColumns={datasetTable.search_columns}
+          searchPlaceholder={datasetTable.search_placeholder}
+          title={datasetTable.title}
+          rowNoun={datasetTable.row_noun}
+        />
+      ),
+    });
+  }
+
   const metricResponseData = 'metricResponseData' in content.metadata ? content.metadata.metricResponseData : undefined;
   if (metricResponseData) {
     const metricRows = readCsvRows(metricResponseData.csv);
@@ -149,10 +143,7 @@ export default async function WikiPage({ params }: PageProps) {
     });
   }
 
-  const orderedInjections = injections
-    .map(injection => ({ ...injection, index: content.content.indexOf(injection.heading) }))
-    .filter(injection => injection.index !== -1)
-    .sort((a, b) => a.index - b.index);
+  const orderedInjections = orderInjections(content.content, injections);
 
   const contentSegments =
     orderedInjections.length > 0
@@ -161,6 +152,9 @@ export default async function WikiPage({ params }: PageProps) {
 
   const kind = 'kind' in content.metadata ? content.metadata.kind : undefined;
   const isPattern = kind === 'pattern' || kind === 'relationship';
+  // The technique guides are general pattern-comparison methods, so they ride
+  // along on `kind: pattern` notes only — not on `relationship` pages.
+  const showTechniques = kind === 'pattern';
   const outline = isPattern ? buildPageOutline(content.content) : [];
   const backModel = 'model' in content.metadata ? content.metadata.model : undefined;
   const relatedContent = 'relatedContent' in content.metadata ? content.metadata.relatedContent ?? [] : [];
@@ -227,9 +221,12 @@ export default async function WikiPage({ params }: PageProps) {
                 )}
               </div>
 
-              {relatedContent.length > 0 && (
-                <aside className="lg:w-80 flex-shrink-0">
-                  <RelatedContentPanel items={relatedContent} title="Related content" />
+              {(relatedContent.length > 0 || showTechniques) && (
+                <aside className="lg:w-80 flex-shrink-0 space-y-4">
+                  {showTechniques && <UsefulTechniques />}
+                  {relatedContent.length > 0 && (
+                    <RelatedContentPanel items={relatedContent} title="Related content" />
+                  )}
                 </aside>
               )}
             </div>

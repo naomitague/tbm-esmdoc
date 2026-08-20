@@ -25,3 +25,6 @@ pan2020_ocn,"Pan et al., 2020",O-CN,land_surface_model,1982,2011,0.32,mm_yr-2,*,
 pan2020_orchidee,"Pan et al., 2020",ORCHIDEE,land_surface_model,1982,2011,-0.17,mm_yr-2,,
 pan2020_orchideemict,"Pan et al., 2020",ORCHIDEE-MICT,land_surface_model,1982,2011,-0.34,mm_yr-2,*,0.05
 pan2020_visit,"Pan et al., 2020",VISIT,land_surface_model,1982,2011,0.87,mm_yr-2,*,0.05
+zeng2018_jun10,"Zeng et al., 2018",JUN10,machine_learning,1982,2011,0.33,mm_yr-2,***,0.01
+zeng2018_zen14,"Zeng et al., 2018",ZEN14,machine_learning,1982,2011,1.70,mm_yr-2,***,0.01
+zeng2018_zha16,"Zeng et al., 2018",ZHA16,remote_sensing,1982,2011,0.40,mm_yr-2,**,0.05

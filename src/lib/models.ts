@@ -262,6 +262,7 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
       inputs: extractListItems(inputMatch?.[1])
     },
     esmTable: frontMatter.esm_table,
+    datasetTable: frontMatter.dataset_table,
     connections
   };
 }
@@ -339,6 +340,8 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
     tags: frontMatter.tags || ['observation'],
     topic: frontMatter.topic || [],
     description,
+    esmTable: frontMatter.esm_table,
+    datasetTable: frontMatter.dataset_table,
     connections
   };
 }

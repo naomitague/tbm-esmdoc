@@ -96,6 +96,36 @@ histogram_data:
       label: Notes
       wrap: true
       muted: true
+dataset_table:
+  csv: patterns/evapotranspiration/examplepapers/global_veg_greening_hydro.csv
+  heading: "## Global and regional trend estimates"
+  title: "Reported global/regional vegetation-change effects on the water cycle"
+  filter_column: "Hydrologic Response"
+  filter_label: "Hydrologic response"
+  search_columns: ["Citation", "Hydrologic Response", "Attribution", "Attribution Method", "Vegetation Metric", "ET Estimation Basis"]
+  search_placeholder: "Search study, response, or attribution…"
+  row_noun: estimate
+  columns:
+    - key: Citation
+      label: Study
+    - key: "Hydrologic Response"
+      label: "Hydrologic response"
+    - key: Trend
+      label: Trend
+    - key: "Trend Period"
+      label: Period
+    - key: "Vegetation Metric"
+      label: "Vegetation metric"
+      wrap: true
+    - key: Attribution
+      label: "Attribution to vegetation"
+      wrap: true
+    - key: "Attribution Method"
+      label: "Attribution method"
+      wrap: true
+    - key: "ET Estimation Basis"
+      label: "ET estimation basis"
+      wrap: true
 ---
 
 # Conceptual Model
@@ -186,7 +216,23 @@ Below are some summaries of available studies organized by different categries -
 
 ## Histogram by biome
 
+# Summary of Global and Regional Studies
 
+Global and regional syntheses ask a different question than the paired-watershed
+studies above. Rather than a discrete, locally-imposed change in forest cover
+(harvest, thinning, fire, afforestation) at a gauged catchment, these studies
+estimate a broad-scale trend in a hydrologic flux — typically from remotely
+sensed or model-reconstructed products — and then attribute some fraction of
+that trend to gradual, diffuse vegetation change (greening, expressed as a
+change in LAI). Because the vegetation "treatment" is neither controlled nor
+sharply bounded in space or time, attribution rests on regression or on
+simulation experiments rather than on a before/after or paired-catchment
+contrast, and the reported effect is a share of a trend rather than a percent
+change in response to a percent change in cover.
 
+The estimates below therefore aren't directly comparable to the watershed
+numbers: they differ in the vegetation metric (LAI vs. % cover/basal area), in
+how the hydrologic response is measured (multi-product ensembles or coupled
+model output vs. gauged streamflow), and in what "attribution" means.
 
-
+## Global and regional trend estimates
