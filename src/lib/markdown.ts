@@ -114,6 +114,7 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
     title,
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
     tags: frontMatter.tags || ['flux'],
+    processIds: frontMatter.process_ids || [],
     description,
     modelName,
     variables: {
@@ -124,6 +125,9 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
     },
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
+    estimateChart: frontMatter.estimate_chart,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }
@@ -165,6 +169,7 @@ function parseParameter(fileContent: string, slug: string, frontMatter: any): Pa
     parameterName: frontMatter.name || (nameMatch ? nameMatch[1].trim() : undefined) || frontMatter.title || (paramNameMatch ? paramNameMatch[1].trim() : slug),
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['parameter'],
+    processIds: frontMatter.process_ids || [],
     status: frontMatter.status,
     dynamicallyComputed: dynamicMatch ? dynamicMatch[1].toLowerCase() === 'yes' : false,
     classification: classMatch ? classMatch[1].split(',').map(c => c.trim()).filter(Boolean) : [],
@@ -175,6 +180,8 @@ function parseParameter(fileContent: string, slug: string, frontMatter: any): Pa
     function: functionMatch ? functionMatch[1].trim() : undefined,
     description,
     usedToCreate,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }
@@ -202,9 +209,13 @@ function parseObservation(fileContent: string, slug: string, frontMatter: any): 
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['observation'],
     topic: frontMatter.topic || [],
+    processIds: frontMatter.process_ids || [],
     description,
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
+    estimateChart: frontMatter.estimate_chart,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }
@@ -234,6 +245,9 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     trendData: frontMatter.trend_data,
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
+    estimateChart: frontMatter.estimate_chart,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     metricResponseData: frontMatter.metric_response_data,
     relatedContent: frontMatter.related_content,
     topic: frontMatter.topic || [],

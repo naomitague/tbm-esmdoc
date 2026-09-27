@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { getAllModels } from '@/lib/models';
 import { Navbar } from '@/components/Navbar';
-import { Droplets, Sprout, FlaskConical, Sun, BookOpen, GitFork, GraduationCap, ArrowRight, Boxes } from 'lucide-react';
+import { Droplets, Sprout, CloudSun, Sun, BookOpen, GitFork, GraduationCap, ArrowRight, Boxes } from 'lucide-react';
 
 const modelIcons: Record<string, React.ElementType> = {
   water: Droplets,
-  carbon: Sprout,
-  nitrogen: FlaskConical,
+  'vegetation-som': Sprout,
   energy: Sun,
+  climate: CloudSun,
 };
 
 const modelColors: Record<string, { card: string; badge: string }> = {
@@ -15,6 +15,7 @@ const modelColors: Record<string, { card: string; badge: string }> = {
   green: { card: 'border-t-4 border-t-emerald-600', badge: 'bg-emerald-600' },
   purple: { card: 'border-t-4 border-t-violet-600', badge: 'bg-violet-600' },
   orange: { card: 'border-t-4 border-t-amber-600', badge: 'bg-amber-600' },
+  slate: { card: 'border-t-4 border-t-slate-600', badge: 'bg-slate-600' },
   gray: { card: 'border-t-4 border-t-stone-500', badge: 'bg-stone-500' },
 };
 
@@ -32,8 +33,8 @@ export default function HomePage() {
             Earth System Processes - Current State of Knowledge
           </h1>
           <p className="text-lg text-stone-500 max-w-2xl mx-auto font-light">
-            fluxes, states, parameters, and observations for water, carbon,
-            nitrogen, and energy cycling.
+            fluxes, states, parameters, and observations for water, dynamic
+            vegetation and soil organic matter, energy, and climate processes.
           </p>
         </div>
 

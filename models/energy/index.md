@@ -1,7 +1,7 @@
 ---
 title: Energy Model
 model: energy
-description: Energy balance and radiation fluxes in RHESSys
+description: Energy balance and radiation fluxes
 aliases: [energy balance, radiation, heat flux]
 scale: [canopy, plot, patch]
 ---

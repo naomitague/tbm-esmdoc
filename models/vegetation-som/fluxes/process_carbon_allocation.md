@@ -1,3 +1,6 @@
+---
+process_ids: [leaf_growth, stem_growth, root_growth]
+---
 
 Target ESM: RHESSys, https://github.com/RHESSys/RHESSys.git, develop branch 
 

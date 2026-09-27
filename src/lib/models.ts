@@ -101,18 +101,26 @@ export function getAllModels(): ModelCard[] {
       return fs.statSync(fullPath).isDirectory();
     });
 
+  // Homepage card order (and static-params order); unlisted models sort last, alphabetically.
+  const modelOrder = ['water', 'vegetation-som', 'energy', 'climate'];
+  const rank = (slug: string) => {
+    const i = modelOrder.indexOf(slug);
+    return i === -1 ? modelOrder.length : i;
+  };
+  modelDirs.sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
+
   const modelIcons: Record<string, string> = {
     water: 'droplets',
-    carbon: 'sprout',
-    nitrogen: 'flask-conical',
-    energy: 'sun'
+    'vegetation-som': 'sprout',
+    energy: 'sun',
+    climate: 'cloud-sun'
   };
 
   const modelColors: Record<string, string> = {
     water: 'blue',
-    carbon: 'green',
-    nitrogen: 'purple',
-    energy: 'orange'
+    'vegetation-som': 'green',
+    energy: 'orange',
+    climate: 'slate'
   };
 
   return modelDirs.map(modelDir => {
@@ -174,7 +182,9 @@ export function getModelBySlug(slug: string): ContentMetadata | null {
     scale: data.scale || [],
     fluxCount: countFiles(path.join(modelsDirectory, slug, 'fluxes')),
     parameterCount: countFiles(path.join(modelsDirectory, slug, 'parameters')),
-    observationCount: countFiles(path.join(modelsDirectory, slug, 'observations'))
+    observationCount: countFiles(path.join(modelsDirectory, slug, 'observations')),
+    processDiagram: data.process_diagram,
+    relationshipTopics: data.relationship_topics || []
   };
 
   return {
@@ -253,6 +263,7 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
     aliases: frontMatter.aliases || (aliasMatch ? aliasMatch[1].split(',').map((a: string) => a.trim()) : []),
     tags: frontMatter.tags || ['flux'],
     topic: frontMatter.topic || [],
+    processIds: frontMatter.process_ids || [],
     description,
     modelName,
     variables: {
@@ -263,6 +274,9 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
     },
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
+    estimateChart: frontMatter.estimate_chart,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }
@@ -301,6 +315,7 @@ function parseParameter(fileContent: string, slug: string, modelSlug: string, fr
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['parameter'],
     topic: frontMatter.topic || [],
+    processIds: frontMatter.process_ids || [],
     status: frontMatter.status,
     dynamicallyComputed: dynamicMatch ? dynamicMatch[1].toLowerCase() === 'yes' : false,
     classification: classMatch ? classMatch[1].split(',').map(c => c.trim()).filter(Boolean) : [],
@@ -311,6 +326,8 @@ function parseParameter(fileContent: string, slug: string, modelSlug: string, fr
     function: functionMatch ? functionMatch[1].trim() : undefined,
     description,
     usedToCreate,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }
@@ -339,9 +356,13 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
     aliases: frontMatter.aliases || [],
     tags: frontMatter.tags || ['observation'],
     topic: frontMatter.topic || [],
+    processIds: frontMatter.process_ids || [],
     description,
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
+    estimateChart: frontMatter.estimate_chart,
+    conceptDiagram: frontMatter.concept_diagram,
+    pageLinks: frontMatter.page_links,
     connections
   };
 }

@@ -1,9 +1,14 @@
 /**
  * Splitting a note's markdown at the headings the interactive-content
  * protocols (`histogram_data`, `trend_data`, `esm_table`, `dataset_table`,
- * `metric_response_data`) target, so a live React component can be spliced in
- * right after each one — the generic MarkdownContent pipeline renders static
- * HTML and can't host a component itself.
+ * `estimate_chart`, `metric_response_data`) target, so a live React component
+ * can be spliced in right after each one — the generic MarkdownContent
+ * pipeline renders static HTML and can't host a component itself.
+ *
+ * Two injections may share one heading (an `estimate_chart` figure above the
+ * `dataset_table` it summarizes): both resolve to the same index, the sort
+ * below is stable, and the empty segment between them renders as nothing — so
+ * they appear back-to-back in the order the route pushed them.
  *
  * Shared by both note routes (`/wiki/[slug]` and
  * `/models/[model]/[type]/[slug]`) so the two don't drift apart the way their

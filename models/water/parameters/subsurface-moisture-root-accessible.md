@@ -1,3 +1,6 @@
+---
+process_ids: [soil_water_storage]
+---
 
 parameter_name: rz_storage
 

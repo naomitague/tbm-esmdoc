@@ -136,6 +136,106 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 100%;
 }
 
+/* Process diagram on model overviews (ProcessDiagram.tsx). `data-coverage` is
+   set per box for the selected ESM; CSS here overrides the SVG's own
+   presentation attributes. */
+.process-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.process-diagram g[data-process-id],
+.process-diagram g[data-process-ids] {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.15s;
+}
+
+.process-diagram g[data-process-id] > rect,
+.process-diagram g[data-process-ids] > rect,
+.process-diagram g[data-process-id] > polygon,
+.process-diagram g[data-process-ids] > polygon {
+  transition: stroke-width 0.15s;
+}
+
+/* Most clickable elements are boxes, but a concept figure can also make a
+   drawn arrow clickable (the "hydro to veg" arrow inside the two-way arrow in
+   vegetation_hydrology_flow.svg), and that's a polygon. */
+.process-diagram g[data-process-id]:not([data-inert="true"]):hover > rect,
+.process-diagram g[data-process-ids]:not([data-inert="true"]):hover > rect,
+.process-diagram g[data-process-id]:focus-visible > rect,
+.process-diagram g[data-process-ids]:focus-visible > rect,
+.process-diagram g[data-process-id]:not([data-inert="true"]):hover > polygon,
+.process-diagram g[data-process-ids]:not([data-inert="true"]):hover > polygon,
+.process-diagram g[data-process-id]:focus-visible > polygon,
+.process-diagram g[data-process-ids]:focus-visible > polygon {
+  stroke-width: 2;
+}
+
+.process-diagram g[data-process-id]:not([data-inert="true"]):hover > text {
+  text-decoration: underline;
+}
+
+/* Concept diagrams mark boxes no page documents yet: still drawn, but not an affordance. */
+.process-diagram g[data-inert="true"] {
+  cursor: default;
+}
+
+.process-diagram g[data-coverage="partial"] {
+  opacity: 0.75;
+}
+
+.process-diagram g[data-coverage="partial"] > rect {
+  stroke-dasharray: 5 3;
+  stroke-width: 1.5;
+}
+
+.process-diagram g[data-coverage="needs_verification"] > rect {
+  stroke: #d97706;
+  stroke-dasharray: 2 3;
+  stroke-width: 1.5;
+}
+
+.process-diagram g[data-coverage="no"] {
+  opacity: 0.55;
+}
+
+.process-diagram g[data-coverage="no"] > rect {
+  fill: #f5f5f4;
+  stroke: #d6d3d1;
+}
+
+.process-diagram g[data-coverage="no"] text {
+  fill: #a8a29e;
+}
+
+/* C/N/P/O element markers on plant-organ boxes (follow that organ's storage pool coverage). */
+.process-diagram circle[data-marker-coverage="no"] {
+  fill: #d6d3d1;
+}
+
+.process-diagram text[data-marker-coverage="no"] {
+  fill: #78716c;
+}
+
+.process-diagram circle[data-marker-coverage="partial"] {
+  fill-opacity: 0.4;
+}
+
+.process-diagram text[data-marker-coverage="partial"] {
+  fill: #44403c;
+}
+
+.process-diagram circle[data-marker-coverage="needs_verification"] {
+  fill: #d97706;
+}
+
+.process-diagram g[data-selected="true"] > rect {
+  stroke: #1c1917;
+  stroke-width: 2.5;
+}
+
 .wiki-content table {
   border-collapse: collapse;
   margin-bottom: 1.25em;
@@ -372,4 +472,24 @@ h1, h2, h3, h4, h5, h6 {
 .badge-lg {
   font-size: 0.75rem;
   padding: 0.25em 0.65em;
+}
+
+/* A dataset-table row linked to from elsewhere on the page (a CsvEstimateStrip
+   dot, say). The background has to go on the cells rather than the <tr>,
+   because the first column is sticky with its own opaque background and would
+   otherwise paint straight over the row's. scroll-margin-top clears the sticky
+   site header so the row doesn't land underneath it. */
+.dataset-table tr:target > th,
+.dataset-table tr:target > td {
+  background-color: #e8f0eb;
+}
+
+/* The accent goes on the first cell, not the <tr>: with border-collapse the
+   row box doesn't reliably paint a box-shadow. */
+.dataset-table tr:target > *:first-child {
+  box-shadow: inset 3px 0 0 0 #1a5632;
+}
+
+.dataset-table tr:target {
+  scroll-margin-top: 5rem;
 }

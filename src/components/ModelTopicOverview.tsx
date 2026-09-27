@@ -1,71 +1,62 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { MarkdownContent } from '@/components/MarkdownContent';
-import { TopicExplorer } from '@/components/TopicExplorer';
-import { TopicIndex } from '@/lib/topics';
+import { RelationshipsPanel } from '@/components/RelationshipsPanel';
+import { MarkdownWithDiagram, ProcessCoveragePanel, ProcessDiagram } from '@/components/ProcessDiagram';
+import type { RelationshipOfInterest } from '@/lib/topics';
+import { ProcessDiagramData } from '@/types';
 
 interface ModelTopicOverviewProps {
-  modelSlug: string;
   content: string;
-  topicIndex: TopicIndex;
+  relationships: RelationshipOfInterest[];
+  /** From the model index's `process_diagram` frontmatter; spliced in after its heading. */
+  diagram?: ProcessDiagramData | null;
 }
 
 /**
- * Ties the model overview's conceptual-picture content (left) to the Topics
- * panel (right): clicking a flux/parameter link there doesn't navigate away —
- * it selects that item's topic in the panel instead, so the reader stays on
- * the overview and just gets the topic breakdown for what they clicked.
- * Items with no `topic` tag (nothing to show in the panel) still navigate
- * normally.
+ * Model overview layout: the process diagram and conceptual-picture content
+ * (left, three of the page's four columns so the figure reads at a useful
+ * size) beside a "Relationships of interest" panel (right). Clicking a
+ * process-diagram box with no single page to open shows its per-ESM coverage
+ * in the same sidebar, above the relationships panel.
  */
-export function ModelTopicOverview({ modelSlug, content, topicIndex }: ModelTopicOverviewProps) {
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-  const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null);
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  const fluxPrefix = `/models/${modelSlug}/fluxes/`;
-  const paramPrefix = `/models/${modelSlug}/parameters/`;
-
-  function handleContentClick(e: React.MouseEvent<HTMLDivElement>) {
-    const anchor = (e.target as HTMLElement).closest('a');
-    if (!anchor) return;
-
-    const href = anchor.getAttribute('href') || '';
-    const slug = href.startsWith(fluxPrefix)
-      ? href.slice(fluxPrefix.length)
-      : href.startsWith(paramPrefix)
-        ? href.slice(paramPrefix.length)
-        : null;
-    if (!slug) return;
-
-    const topic = topicIndex.itemTopics[slug];
-    if (!topic) return;
-
-    e.preventDefault();
-    setSelectedTopic(topic);
-    setHighlightedSlug(slug);
-    sidebarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
+export function ModelTopicOverview({ content, relationships, diagram }: ModelTopicOverviewProps) {
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [selectedProcessIds, setSelectedProcessIds] = useState<string[] | null>(null);
 
   return (
     <>
-      <div className="lg:col-span-2">
-        <div className="bg-white rounded-lg border border-stone-200 p-8 wiki-content" onClick={handleContentClick}>
-          <MarkdownContent content={content} />
+      <div className="lg:col-span-3">
+        <div className="bg-white rounded-lg border border-stone-200 p-6 wiki-content">
+          {diagram ? (
+            <MarkdownWithDiagram content={content} heading={diagram.heading}>
+              <ProcessDiagram
+                data={diagram}
+                selectedModel={selectedModel}
+                onSelectModel={setSelectedModel}
+                selectedIds={selectedProcessIds}
+                onSelectIds={setSelectedProcessIds}
+              />
+            </MarkdownWithDiagram>
+          ) : (
+            <MarkdownContent content={content} />
+          )}
         </div>
       </div>
 
-      <div className="lg:col-span-1 space-y-5" ref={sidebarRef}>
-        <TopicExplorer
-          index={topicIndex}
-          selectedTopic={selectedTopic}
-          onSelectTopic={topic => {
-            setSelectedTopic(topic);
-            setHighlightedSlug(null);
-          }}
-          highlightedSlug={highlightedSlug}
-        />
+      <div className="lg:col-span-1 space-y-5">
+        {diagram && selectedProcessIds && (
+          <div className="lg:sticky lg:top-4 z-10">
+            <ProcessCoveragePanel
+              data={diagram}
+              ids={selectedProcessIds}
+              selectedModel={selectedModel}
+              onClose={() => setSelectedProcessIds(null)}
+            />
+          </div>
+        )}
+        <RelationshipsPanel relationships={relationships} />
       </div>
     </>
   );

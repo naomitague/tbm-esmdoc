@@ -97,3 +97,42 @@ export function getTopicIndex(modelSlug: string): TopicIndex {
     itemTopics
   };
 }
+
+export interface RelationshipOfInterest {
+  slug: string;
+  title: string;
+  href: string;
+  topics: string[];
+  /** How many narrower relationship pages nest under this one via their `parent`. */
+  childCount: number;
+}
+
+/**
+ * Top-level relationship pages for a model overview's "Relationships of
+ * interest" panel: `kind: relationship`, no `parent`, and either `model:
+ * <modelSlug>` or tagged with one of `extraTopics` (the model index's
+ * `relationship_topics`, e.g. vegetation-som pulls in `vegetation_change` pages that
+ * live under water). Sub-topic pages (e.g. per-metric pages under a hub page)
+ * are reached from their hub rather than listed alongside it.
+ */
+export function getRelationshipsOfInterest(modelSlug: string, extraTopics: string[] = []): RelationshipOfInterest[] {
+  const relationships = getAllContent().filter(
+    item => item.type === 'overview' && (item.metadata as any).kind === 'relationship'
+  );
+
+  return relationships
+    .filter(item => !(item.metadata as any).parent)
+    .filter(
+      item =>
+        (item.metadata as any).model === modelSlug ||
+        getTopics(item).some(topic => extraTopics.includes(topic))
+    )
+    .map(item => ({
+      slug: item.metadata.slug,
+      title: getTitle(item),
+      href: `/wiki/${item.metadata.slug}`,
+      topics: getTopics(item),
+      childCount: relationships.filter(r => (r.metadata as any).parent === item.metadata.slug).length,
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title));
+}

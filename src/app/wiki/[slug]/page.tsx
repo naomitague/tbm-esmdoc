@@ -2,7 +2,9 @@ import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getContentBySlug, getAllSlugs } from '@/lib/markdown';
+import { getAllModels } from '@/lib/models';
 import { readCsvRows } from '@/lib/csv';
+import { getEstimateSeries } from '@/lib/csvEstimates';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { Sidebar } from '@/components/Sidebar';
 import { PageOutline } from '@/components/PageOutline';
@@ -13,8 +15,12 @@ import { CsvScatterSection } from '@/components/CsvScatterSection';
 import { TrendComparisonExplorer } from '@/components/TrendComparisonExplorer';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { CsvDatasetTable } from '@/components/CsvDatasetTable';
+import { CsvEstimateStrip } from '@/components/CsvEstimateStrip';
 import { MetricResponseExplorer } from '@/components/MetricResponseExplorer';
 import { UsefulTechniques } from '@/components/UsefulTechniques';
+import { ConceptDiagram } from '@/components/ConceptDiagram';
+import { PageLinks, PageLinksSidebar } from '@/components/PageLinks';
+import { readConceptDiagram } from '@/lib/conceptDiagram';
 import { readEsmTable } from '@/lib/esm';
 import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
 import { MathText } from '@/components/MathText';
@@ -100,6 +106,30 @@ export default async function WikiPage({ params }: PageProps) {
     });
   }
 
+  // The estimate strip and the dataset table below it deliberately target the
+  // SAME heading: splitAtHeadings resolves both to that heading's index and
+  // orderInjections sorts stably, so they render back-to-back in the order
+  // pushed here — figure first, then the table it summarizes. Keep this push
+  // above the datasetTable one.
+  const estimateChart = 'estimateChart' in content.metadata ? content.metadata.estimateChart : undefined;
+  if (estimateChart) {
+    injections.push({
+      heading: estimateChart.heading,
+      node: (
+        <CsvEstimateStrip
+          series={getEstimateSeries(readCsvRows(estimateChart.csv), estimateChart)}
+          title={estimateChart.title}
+          axisLabel={estimateChart.axis_label}
+          axisMin={estimateChart.axis_min}
+          axisMax={estimateChart.axis_max}
+          unit={estimateChart.unit}
+          note={estimateChart.note}
+          anchorPrefix={estimateChart.row_id_column ? 'estimate-' : undefined}
+        />
+      ),
+    });
+  }
+
   const datasetTable = 'datasetTable' in content.metadata ? content.metadata.datasetTable : undefined;
   if (datasetTable) {
     injections.push({
@@ -114,33 +144,54 @@ export default async function WikiPage({ params }: PageProps) {
           searchPlaceholder={datasetTable.search_placeholder}
           title={datasetTable.title}
           rowNoun={datasetTable.row_noun}
+          rowIdColumn={datasetTable.row_id_column}
         />
       ),
     });
   }
 
+  // Components that declare no heading at all lead the page, ahead of the
+  // markdown, rather than being spliced into it.
+  const leadingNodes: React.ReactNode[] = [];
+
   const metricResponseData = 'metricResponseData' in content.metadata ? content.metadata.metricResponseData : undefined;
   if (metricResponseData) {
     const metricRows = readCsvRows(metricResponseData.csv);
-    metricResponseData.sections.forEach(section => {
-      injections.push({
-        heading: section.heading,
-        node: (
-          <MetricResponseExplorer
-            title={section.title}
-            rows={metricRows}
-            metricColumn={section.metric_column}
-            knownMetrics={section.known_metrics ?? []}
-            excludeMetrics={section.exclude_metrics ?? []}
-            xColumn={section.x_column}
-            xLabel={section.x_label}
-            yColumn={section.y_column}
-            yLabel={section.y_label}
-            tableColumns={section.table_columns}
-          />
-        ),
-      });
+    metricResponseData.sections.forEach((section, i) => {
+      const node = (
+        <MetricResponseExplorer
+          title={section.title}
+          rows={metricRows}
+          metricColumn={section.metric_column}
+          knownMetrics={section.known_metrics ?? []}
+          excludeMetrics={section.exclude_metrics ?? []}
+          defaultMetric={section.default_metric}
+          note={section.note}
+          xColumn={section.x_column}
+          xLabel={section.x_label}
+          yColumn={section.y_column}
+          yLabel={section.y_label}
+          tableColumns={section.table_columns}
+        />
+      );
+      if (section.heading) injections.push({ heading: section.heading, node });
+      else leadingNodes.push(<Fragment key={`metric-${i}`}>{node}</Fragment>);
     });
+  }
+
+  const pageLinks = 'pageLinks' in content.metadata ? content.metadata.pageLinks : undefined;
+  if (pageLinks?.heading) {
+    injections.push({ heading: pageLinks.heading, node: <PageLinks items={pageLinks.items} /> });
+  }
+
+  // The concept figure follows the same splice rule, except that it may also
+  // declare no heading at all — in which case it leads the page, ahead of the
+  // markdown, the way a model overview's process diagram does.
+  const conceptDiagramConfig = 'conceptDiagram' in content.metadata ? content.metadata.conceptDiagram : undefined;
+  const conceptDiagram = conceptDiagramConfig ? readConceptDiagram(conceptDiagramConfig) : null;
+  const conceptDiagramNode = conceptDiagram ? <ConceptDiagram data={conceptDiagram} /> : null;
+  if (conceptDiagram?.heading) {
+    injections.push({ heading: conceptDiagram.heading, node: conceptDiagramNode });
   }
 
   const orderedInjections = orderInjections(content.content, injections);
@@ -157,7 +208,17 @@ export default async function WikiPage({ params }: PageProps) {
   const showTechniques = kind === 'pattern';
   const outline = isPattern ? buildPageOutline(content.content) : [];
   const backModel = 'model' in content.metadata ? content.metadata.model : undefined;
+  // The model's own title rather than its slug: "Dynamic Vegetation and SOM
+  // Model", not "Vegetation-som Model".
+  const backModelTitle = backModel
+    ? getAllModels().find(model => model.slug === backModel)?.title ??
+      `${backModel.charAt(0).toUpperCase()}${backModel.slice(1)} Model`
+    : undefined;
   const relatedContent = 'relatedContent' in content.metadata ? content.metadata.relatedContent ?? [] : [];
+  // `page_links.sidebar: true` repeats the links in the left outline sidebar,
+  // where a hub page's worked examples are visible without scrolling to the
+  // heading they're spliced after.
+  const sidebarPageLinks = isPattern && pageLinks?.sidebar ? pageLinks : undefined;
 
   return (
     <div className="min-h-screen bg-white">
@@ -172,19 +233,27 @@ export default async function WikiPage({ params }: PageProps) {
 
       <div className="flex max-w-screen-2xl mx-auto">
         {!isPattern && <Sidebar currentSlug={slug} contentType={content.type} />}
-        {isPattern && (outline.length > 0 || backModel) && (
+        {isPattern && (outline.length > 0 || backModel || sidebarPageLinks) && (
           <aside className="hidden lg:block w-64 flex-shrink-0 px-4 py-6">
             <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
               {backModel && (
                 <Link
                   href={`/models/${backModel}`}
-                  className="flex items-center gap-1.5 text-primary text-sm font-medium mb-4 pb-3 border-b border-stone-100"
+                  className="flex items-start gap-1.5 text-primary text-sm font-medium leading-snug mb-4 pb-3 border-b border-stone-100"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  {backModel.charAt(0).toUpperCase() + backModel.slice(1)} Model
+                  <ArrowLeft className="mt-0.5 w-3.5 h-3.5 flex-shrink-0" strokeWidth={1.5} />
+                  {backModelTitle}
                 </Link>
               )}
               <PageOutline outline={outline} />
+              {sidebarPageLinks && (
+                <div className={outline.length > 0 ? 'mt-4 pt-3 border-t border-stone-100' : ''}>
+                  <PageLinksSidebar
+                    items={sidebarPageLinks.items}
+                    title={sidebarPageLinks.sidebar_title ?? sidebarPageLinks.heading?.replace(/^#+\s*/, '') ?? 'Related pages'}
+                  />
+                </div>
+              )}
             </div>
           </aside>
         )}
@@ -209,6 +278,8 @@ export default async function WikiPage({ params }: PageProps) {
             <div className="flex flex-col lg:flex-row gap-6">
               <div className="flex-1 min-w-0">
                 <InfoBox content={content} />
+                {conceptDiagram && !conceptDiagram.heading && conceptDiagramNode}
+                {leadingNodes}
                 {contentSegments ? (
                   contentSegments.map((segment, i) => (
                     <Fragment key={i}>

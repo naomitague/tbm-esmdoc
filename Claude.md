@@ -17,7 +17,7 @@ interactive, CSV-backed tables and charts spliced into specific sections.
 
 ## Project structure
 ```
-models/<domain>/                  # water, carbon, nitrogen, energy
+models/<domain>/                  # water, vegetation-som, energy, climate
   index.md                        # model overview page
   fluxes/       process_*.md      # one per flux
     tabledata/*.csv                # per-flux ESM method-comparison tables (see esm_table below)
@@ -31,6 +31,9 @@ patterns/<topic>/                 # cross-cutting pattern & relationship pages
 esms/                             # shared ESM registry, joined into every esm_table
   esm_model.csv                   # one row per model (RHESSys, ORCHIDEE, CLM, ...)
   esm_model_versions.csv          # one row per model version, FKs into esm_model.csv
+  process_coverage.csv            # process_id × model_id coverage (yes/partial/no/needs_verification)
+                                   # — drives the model-overview process diagrams (see process_diagram)
+figures/                          # model-overview diagram SVGs (boxes tagged data-process-id(s))
 
 specificESMs/<Model>/             # narrative writeups of one specific ESM's implementation
 Templates/                        # one template per content type; new notes should follow the
@@ -85,7 +88,12 @@ No test suite exists yet. See `QUICKSTART.md` for local setup from scratch.
 ## URL structure
 ```
 /                                              # homepage (model gallery)
-/models/<model>                                # model overview (water, carbon, nitrogen, energy)
+/models/<model>                                # model overview (water, vegetation-som, energy, climate)
+/models/carbon/*, /models/nitrogen/*           # redirect to /models/vegetation-som/* (next.config.ts) —
+                                                # carbon + nitrogen were merged into the "Dynamic
+                                                # Vegetation and SOM Model". /models/biogeochemistry is
+                                                # intentionally unused/unredirected: reserved for a future
+                                                # biogeochemistry / soil-development model suite.
 /models/<model>/fluxes/<slug>                  # a flux, scoped under its model
 /models/<model>/parameters/<slug>              # a parameter, scoped under its model
 /models/<model>/observations/<slug>            # an observation, scoped under its model
@@ -104,8 +112,10 @@ No test suite exists yet. See `QUICKSTART.md` for local setup from scratch.
 1. Create `models/<model>/{fluxes,parameters,observations}/<name>.md`, following
    the matching file in `Templates/` (`Flux-Template.md`, `Parameter-Family-Template.md`
    or `Parameter-State-Template.md`, `Observation-Output-Template.md`).
-2. Fill in frontmatter, including `topic: [...]` if it should show up in that
-   model's Topics panel (see Tagging protocol).
+2. Fill in frontmatter, including `topic: [...]` so it's grouped with related
+   pages in its own page's topic sidebar, and `process_ids: [...]` if it
+   documents a box in the model's process diagram (see Tagging protocol and
+   `process_diagram`).
 3. It's picked up automatically — no registration step, `getAllModelContent`/
    `getAllContent` scan the directories at request time.
 
@@ -123,7 +133,8 @@ of which is content:
 1. `mkdir -p models/soil/{fluxes,parameters,observations}` and create
    `models/soil/index.md` with `title`, `model: soil`, `description` in
    frontmatter.
-2. In `src/lib/models.ts`, add `soil` to the `modelIcons` and `modelColors`
+2. In `src/lib/models.ts`, add `soil` to the `modelOrder` list (homepage
+   card order; unlisted models sort last) and the `modelIcons` and `modelColors`
    maps in `getAllModels()` (the color name — `blue`/`green`/`purple`/
    `orange`/a new one — becomes `ModelCard.color`).
 3. In `src/app/page.tsx`, add `soil` to its own separate `modelIcons` map
@@ -135,8 +146,8 @@ of which is content:
 
 ## Interactive content protocols
 
-Four frontmatter keys splice a live React component into a note's rendered
-markdown, positioned right after a specific heading. All four work the same
+Several frontmatter keys splice a live React component into a note's rendered
+markdown, positioned right after a specific heading. They all work the same
 way under the hood: the target heading text is located in the raw markdown
 with a plain string match (`splitAtHeadings` in `src/lib/headingSplit.ts`,
 shared by both page routes — not an AST match), the markdown is rendered as
@@ -184,8 +195,10 @@ histogram_data:
 `sections` render in list order, each spliced after its heading — the number
 and order of `sections` entries must line up with the matching headings'
 order in the note body. See
-`patterns/evapotranspiration/evapotranspiration or streamflow _response_to_vegetation_change.md`
-for a live example combining both section types plus `table_columns`.
+`patterns/evapotranspiration/watershed_disturbance_synthesis.md` for two bar
+sections plus `table_columns`, and
+`patterns/evapotranspiration/annual_et_response_to_vegetation_change.md` for a
+scatter section.
 
 ### 2. `trend_data` — summary + query panel over one-row-per-estimate numeric data
 ```yaml
@@ -253,9 +266,182 @@ suits flat reference tables (product/dataset inventories) rather than
 per-model-version comparisons. The whole table shows by default; the dropdown
 and search box only narrow it, and a "Show all" button clears both. Columns
 not listed in `columns` are simply not displayed (and not searched, unless
-named in `search_columns`). Current example:
+named in `search_columns`). `row_id_column: <column>` additionally gives each
+row a DOM id, which is what an `estimate_chart` on the same page links its dots
+to (see below). Current example:
 `models/water/observations/obs_precip.md` +
 `models/water/observations/tables/precipitation_datasets_summary.csv`.
+
+### 5. `estimate_chart` — compact dot strip over a handful of published estimates
+```yaml
+estimate_chart:
+  csv: patterns/<topic>/examplepapers/<file>.csv
+  heading: "## Global and regional trend estimates"   # exact heading text
+  title: "Share of the observed ET trend attributed to vegetation greening"
+  value_column: "Attribution Percent"       # the plotted number
+  min_column: "Attribution Percent Min"     # optional; both bounds needed to draw a whisker
+  max_column: "Attribution Percent Max"
+  label_column: Citation                    # tooltip heading
+  sublabel_column: "Trend Period"
+  tooltip_columns: ["Attribution Method", "Trend"]
+  axis_label: "% of the ET trend attributed to greening"
+  axis_min: 0                               # omit both bounds to fit the axis to the data
+  axis_max: 100
+  unit: "%"
+  row_id_column: "Estimate ID"              # click target — see below
+  note: "…why some rows aren't plotted."
+```
+One dot per CSV row on a single horizontal axis, with a whisker where the row
+reported a range — for the case where a few papers estimate the *same*
+quantity and the point of the figure is the spread, not a relationship between
+two variables. **A row whose `value_column` doesn't parse as a number is
+silently not plotted** — that's deliberate, and is how a qualitatively
+different result in the same table (a bare correlation among
+percentages-of-trend, say) stays in the table without being forced onto an
+axis it doesn't belong on; the caption reports "N of M estimates plotted".
+Numbers live in their own numeric columns, so the table can keep showing the
+paper's own free-text phrasing in a separate column.
+
+Setting `row_id_column` on **both** `estimate_chart` and the page's
+`dataset_table` (naming the same column) makes each dot clickable: the strip
+sets the location hash to `#estimate-<id>`, which scrolls that table row into
+view and highlights it via the `.dataset-table tr:target` rule in
+`globals.css`. The two components share no state — if the table is filtered so
+the row isn't rendered, the click simply does nothing.
+
+Both can (and here do) target the **same heading**: `splitAtHeadings` resolves
+both to that heading's index and `orderInjections` sorts stably, so they render
+back-to-back in the order the route pushes them — the `estimate_chart`
+injection is pushed *above* the `dataset_table` one in both page components, so
+the figure leads the table it summarizes. Current example:
+`patterns/evapotranspiration/global_vegetation_change_et.md` +
+`patterns/evapotranspiration/examplepapers/global_veg_greening_hydro.csv`.
+
+### 6. `process_diagram` — clickable, ESM-aware process diagram (model overviews)
+```yaml
+# in models/<domain>/index.md
+process_diagram:
+  svg: figures/hydrology_full_diagram.svg
+  coverage: esms/process_coverage.csv
+  heading: "## Some heading"   # OPTIONAL — omit and the diagram leads the page
+```
+Same heading-splice rule as above (but `heading` is optional here: with none
+declared the diagram renders above the markdown, which is what water and
+vegetation-som do — the hero already names the model, so the figure needs no
+heading of its own), on a model's `index.md` (read by
+`getModelBySlug` in `models.ts`; loaded by `src/lib/processDiagram.ts`,
+rendered by `src/components/ProcessDiagram.tsx`). The SVG is inlined; its
+process boxes are `<g data-process-id="x">` or `<g data-process-ids="x,y,z">`
+— **those attributes are the contract**: if the figure is regenerated they
+must survive, and every id must exist in the coverage CSV.
+- **Picker**: "Framework" (all boxes normal) or one ESM, which marks each
+  box `yes`/`partial`/`no`/`needs_verification` (styled in `globals.css`
+  under `.process-diagram`). A multi-id box takes the unanimous status of its
+  processes, or `partial` if they're mixed.
+- **Element markers**: the small C/N/P/O circles on leaf/stem/root boxes in
+  `vegetation_full_diagram.svg` grey out (or fade, for `partial`) per circle,
+  following the selected model's coverage of that element's storage pool in
+  the same organ — an "N" circle on a stem box follows `stem_storage_n`.
+  W and S circles aren't touched. A stopgap until N/P get their own
+  treatment; see `updateElementMarkers` in `ProcessDiagram.tsx`.
+- **Click**: if exactly one note claims a box's process(es) it navigates
+  there; otherwise the per-model coverage panel (status, `mechanism_note`,
+  `citation`, links to any claiming pages) opens in the sidebar, above the
+  Relationships-of-interest panel.
+- **Label size**: the exported figures' text is sized for a full-page figure
+  and scales down with the SVG, so `readProcessDiagram` multiplies every
+  `font-size` by `TEXT_SCALE` (1.15) as it reads the markup — done there, not
+  in the SVGs, so it survives a figure being regenerated. The tightest box has
+  ~25% horizontal slack, so keep the factor under 1.2. The other half of
+  legibility is column width: the diagram layout uses a wider page container
+  and a 4-column grid (figure 3, sidebar 1) in `src/app/models/[model]/page.tsx`.
+- **Layout**: any model whose `index.md` declares `process_diagram` gets the
+  diagram + Relationships layout (currently water → `hydrology_full_diagram.svg`,
+  vegetation-som → `vegetation_full_diagram.svg`); models without one keep the plain
+  flux/parameter/observation lists.
+- **Cross-model links**: `process_diagram.links: [{process_ids: [...], href,
+  title}]` on a model index adds links for boxes whose page lives in another
+  model (loaded alongside the `process_ids` pages; a box with exactly one link
+  navigates). Currently water's Growth box → `/models/vegetation-som`, and
+  the vegetation diagram's six blue water-dimension boxes → `/models/water`.
+- **Linking notes to boxes**: add `process_ids: [leaf_transpiration, ...]`
+  to a flux/parameter/observation note's frontmatter (wired into both
+  parsers). Current examples: `process_transpiration.md`,
+  `process_soil_evaporation.md`, `obs_precip.md`, `subsurface-moisture-*.md`,
+  and vegetation-som's `process_carbon_allocation.md` (leaf/stem/root
+  "Growth / allocation" boxes — a model with photosynthesis and growth is
+  necessarily doing allocation, so growth and allocation share one box).
+- **`esms/process_coverage.csv`**: one row per `process_id` × `model_id`
+  (`model_id` joins `esms/esm_model.csv`, same ids as the registry — e.g.
+  `RHESSYS`, `LPJGUESS`, not `RHESSys`/`LPJ-GUESS`). `version_id` is blank
+  (= applies to every version of that model); rows with a `version_id` are
+  reserved for per-version overrides and currently ignored by the loader.
+
+### 7. `concept_diagram` — clickable concept figure + key considerations (pattern/relationship pages)
+```yaml
+# in patterns/<topic>/<name>.md
+concept_diagram:
+  svg: figures/vegetation_hydrology_flow.svg
+  heading: "# Conceptual Model"     # OPTIONAL — omit and the figure leads the page
+  text_scale: 1.25                  # OPTIONAL — label-size multiplier, default 1.15
+  links:                            # box → page, beyond what `process_ids` frontmatter claims
+    - process_ids: [river_channel_flow, lateral_surface]
+      href: /wiki/annual_streamflow_response_to_vegetation_change
+      title: "Annual streamflow response to vegetation change"
+      type: flux                    # optional: flux|parameter|observation|model|page (default page)
+  considerations:                   # column of cards rendered beside the figure
+    - title: Time
+      subtitle: "when, and over what interval"
+      items:                        # `label` alone is a plain list entry;
+        - label: "Time since the change"
+        - label: "Averaging interval"
+          note: "optional — a label with a note renders as its heading"
+          href: /wiki/some_page      # optional
+```
+The same `data-process-id(s)` SVG contract as `process_diagram`, minus the ESM
+picker and the coverage CSV: here a box is a map of the idea, not a coverage
+claim. Differences from `process_diagram`:
+- `process_ids` are resolved against **every** model's notes (a relationship
+  figure spans vegetation drivers and hydrology responses), not one model's.
+- A box exactly one page claims navigates there; a box several pages claim
+  opens a picker below the figure; a box nothing claims is left as inert
+  artwork (`data-inert="true"`, styled in `globals.css`).
+- `links:` is how sibling pattern/relationship pages get onto the figure — no
+  `process_ids` frontmatter would ever claim them.
+Loaded by `src/lib/conceptDiagram.ts`, rendered by
+`src/components/ConceptDiagram.tsx`; both routes read it (see the gotcha
+below). Current example:
+`patterns/evapotranspiration/evapotranspiration or streamflow _response_to_vegetation_change.md`
++ `figures/vegetation_hydrology_flow.svg`. Both figure loaders share
+`src/lib/diagramSvg.ts` (strips the content-credential blob, drops the fixed
+pixel size, scales label text — both `font-size="…"` attributes and
+`font-size:` rules in a figure's `<style>` block, since the figures use both).
+`text_scale` raises the default 1.15 for one figure; the ceiling is that
+figure's tightest box, and overflowing text just runs over the box stroke with
+no warning, so check the longest label before raising it.
+
+### 8. `page_links` — a row of buttons to other notes
+```yaml
+page_links:
+  heading: "## Worked syntheses"      # exact heading text
+  sidebar: true                       # optional: also repeat as a card in the
+  sidebar_title: "Worked syntheses"   #   left outline sidebar (/wiki pattern
+                                      #   pages only; defaults to `heading`
+                                      #   minus its #s). Only worth it when the
+                                      #   page's "On this page" list is short.
+  items:
+    - label: "Watershed studies of disturbance effects on hydrology"
+      href: /wiki/watershed_disturbance_synthesis
+      description: "optional one-line subtitle"
+```
+Same splice rule as the rest. How a hub page hands off to the worked examples
+that live on their own pages, rather than carrying every table itself —
+prominent enough to read as the way onward, unlike a markdown link in a
+paragraph. Rendered by `src/components/PageLinks.tsx`. Current example: the
+water-cycle/vegetation-change hub page, which links to
+`watershed_disturbance_synthesis.md` and `global_vegetation_change_et.md`
+(both `parent:` that hub, so they nest under it rather than appearing as
+siblings in the model's Relationships panel).
 
 ### ⚠️ Gotcha: two parsers, one frontmatter contract
 Flux/parameter/observation notes are reachable via two different routes,
@@ -277,19 +463,27 @@ one users actually land on by clicking through the site.
 
 ## Tagging protocol: `topic` / `kind` / `model`
 - **`topic: [tag1, tag2]`** — on flux/parameter/observation notes *and* on
-  pattern/relationship notes. Drives the Topics panel
-  (`TopicExplorer`/`ModelTopicOverview`, via `src/lib/topics.ts`) shown on
-  each model's overview page: a topic only appears there if at least one
-  flux/parameter/observation/pattern actually carries it.
+  pattern/relationship notes. Drives the topic sidebar on
+  `/models/<model>/<type>/<slug>` pages (`getTopicIndex` in
+  `src/lib/topics.ts` + `TopicGroupSections`): the other fluxes/parameters/
+  observations/patterns/relationships sharing that page's topic.
 - **`kind: pattern | relationship`** — only on notes under `patterns/`.
-  `pattern` = a topic-scoped page, grouped under its topic(s) in the Topics
-  panel and given the outline-sidebar layout on `/wiki/[slug]`.
+  `pattern` = a topic-scoped page, grouped under its topic(s) in that topic
+  sidebar and given the outline-sidebar layout on `/wiki/[slug]`.
   `relationship` = a page connecting multiple topics/processes (e.g. the
-  ET/streamflow/vegetation-change page) — listed separately as
-  "Relationships of interest" rather than filed under one topic.
-- **`model: water | carbon | nitrogen | energy`** — on pattern/relationship
+  ET/streamflow/vegetation-change page). On model overview pages with a
+  `process_diagram` (water, vegetation-som), the "Relationships of interest" panel
+  (`RelationshipsPanel`, via `getRelationshipsOfInterest`) lists every
+  relationship with **no `parent`** and either `model: <that model>` or a
+  `topic` listed in that model's `index.md` `relationship_topics: [...]`
+  (vegetation-som sets `[vegetation_change]`, so the water-owned "Water
+  cycle response to vegetation change" page appears there too). A new
+  hub-level relationship page shows up automatically; sub-pages that set
+  `parent: <hub slug>` are only counted under their hub.
+- **`model: water | vegetation-som | energy | climate`** — on pattern/relationship
   notes, drives the "← <Model> Model" back-link in the pattern-page sidebar
-  on `/wiki/[slug]`.
+  on `/wiki/[slug]`, and which overview's Relationships panel a relationship
+  appears in.
 
 Fluxes/parameters/observations only need `topic` (their kind is implicit
 from which subfolder they live in). Pattern/relationship notes under

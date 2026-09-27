@@ -1,0 +1,453 @@
+process_id,category,process,model_id,version_id,coverage,mechanism_note,citation,extraction_source,flux_store_property,dimension
+canopy_structure,community_composition,Canopy structure,RHESSYS,,needs_verification,Confirm with Naomi whether any RHESSys branch has dynamic community assembly beyond prescribed patch vegetation type,TBD,Fisher & Koven 2020 Fig 2a,,
+canopy_structure,community_composition,Canopy structure,CLM,,partial,Dynamic cohort/size-structured canopy only in CLM-FATES; default CLM uses prescribed PFT canopy fractions,Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+canopy_structure,community_composition,Canopy structure,ORCHIDEE,,partial,Dynamic community assembly only in ORCHIDEE-DGVM/CAN branches; default ORCHIDEE uses prescribed PFT fractions,needs_verification,Fisher & Koven 2020 Fig 2a,,
+canopy_structure,community_composition,Canopy structure,LPJGUESS,,yes,"Core DGVM design: individual/cohort-based canopy and community dynamics, PFT composition shifts over time","Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+ecophysiology_adaptation,cross_cutting,Adaptation,RHESSYS,,no,Fixed physiological parameters per vegetation type; no trait plasticity or evolutionary adaptation,TBD,Fisher & Koven 2020 Fig 2a,,
+ecophysiology_adaptation,cross_cutting,Adaptation,CLM,,no,Fixed PFT-level trait parameters; no within-PFT plasticity or evolutionary adaptation in default model or FATES,needs_verification,Fisher & Koven 2020 Fig 2a,,
+ecophysiology_adaptation,cross_cutting,Adaptation,ORCHIDEE,,no,Fixed PFT-level trait parameters; no trait plasticity or evolutionary adaptation identified,needs_verification,Fisher & Koven 2020 Fig 2a,,
+ecophysiology_adaptation,cross_cutting,Adaptation,LPJGUESS,,partial,"Some intraspecific trait variation across PFT bioclimatic limits, but no dynamic evolutionary adaptation; largely a research frontier across all four models",needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_drought,disturbance,Drought (structural mortality trigger),RHESSYS,,needs_verification,Distinct from physiological ET response — confirm whether drought triggers structural mortality in any RHESSys branch,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_drought,disturbance,Drought (structural mortality trigger),CLM,,partial,Drought/hydraulic mortality only via FATES; default CLM has no drought-mortality link,Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+disturbance_drought,disturbance,Drought (structural mortality trigger),ORCHIDEE,,partial,Drought mortality only in DGVM branch,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_drought,disturbance,Drought (structural mortality trigger),LPJGUESS,,yes,Drought-induced mortality via resource-limitation and stress functions,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+disturbance_fire,disturbance,Fire,RHESSYS,,needs_verification,Coupled RHESSys-fire studies exist in the literature; confirm whether fire is in any maintained branch,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_fire,disturbance,Fire,CLM,,yes,"SPITFIRE fire module, CLM4.5 onward",Li et al. 2013,Fisher & Koven 2020 Fig 2a,,
+disturbance_fire,disturbance,Fire,ORCHIDEE,,partial,"SPITFIRE coupling exists in some ORCHIDEE-DGVM configurations, not the default model",needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_fire,disturbance,Fire,LPJGUESS,,yes,GlobFIRM or SPITFIRE fire modules depending on configuration,Thonicke et al. 2001; Lehsten et al. 2009,Fisher & Koven 2020 Fig 2a,,
+disturbance_forestry,disturbance,Forestry / management,RHESSYS,,partial,Fuel treatments and forest management typically represented via prescribed canopy or LAI reduction scenarios rather than a dynamic management model; confirm exact implementation,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_forestry,disturbance,Forestry / management,CLM,,partial,Wood harvest represented via transient land-use and harvest datasets,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_forestry,disturbance,Forestry / management,ORCHIDEE,,partial,Harvest represented via land-use change forcing in some configurations,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_forestry,disturbance,Forestry / management,LPJGUESS,,yes,Explicit wood harvest / forest management module in several configurations,Lindeskog et al. 2013 (needs_verification),Fisher & Koven 2020 Fig 2a,,
+disturbance_lcc,disturbance,Land cover change,RHESSYS,,partial,Vegetation type per patch can be changed manually between simulation periods; not a dynamic land-cover-change model,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_lcc,disturbance,Land cover change,CLM,,yes,Transient land use and land cover change datasets (e.g. LUH2) drive PFT transitions,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_lcc,disturbance,Land cover change,ORCHIDEE,,yes,Land use change forcing via LUH-type maps,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_lcc,disturbance,Land cover change,LPJGUESS,,yes,Land use change forcing supported,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_pest,disturbance,Pest / pathogen,RHESSYS,,no,No pest/pathogen module identified,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_pest,disturbance,Pest / pathogen,CLM,,no,No pest/pathogen module,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_pest,disturbance,Pest / pathogen,ORCHIDEE,,no,No pest/pathogen module,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_pest,disturbance,Pest / pathogen,LPJGUESS,,no,No pest/pathogen module identified,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_wind,disturbance,Wind,RHESSYS,,no,No wind disturbance module identified; confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,,
+disturbance_wind,disturbance,Wind,CLM,,no,No wind disturbance module,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_wind,disturbance,Wind,ORCHIDEE,,no,No wind disturbance module,needs_verification,Fisher & Koven 2020 Fig 2a,,
+disturbance_wind,disturbance,Wind,LPJGUESS,,partial,Generic stochastic disturbance return interval can represent windthrow but is not a mechanistic wind model,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_agriculture,human_drivers,Agriculture,RHESSYS,,no,No managed crop representation identified,TBD,Fisher & Koven 2020 Fig 2a,,
+human_agriculture,human_drivers,Agriculture,CLM,,yes,Managed crop model (CLM-Crop / CLM5),needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_agriculture,human_drivers,Agriculture,ORCHIDEE,,partial,"Crop representation via STICS-coupled configurations (ORCHIDEE-STICS), not default",needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_agriculture,human_drivers,Agriculture,LPJGUESS,,partial,"Crop module available in some configurations, not default",needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_fertilizer,human_drivers,Fertilizer,RHESSYS,,no,No fertilizer application module identified,TBD,Fisher & Koven 2020 Fig 2a,,
+human_fertilizer,human_drivers,Fertilizer,CLM,,yes,Nitrogen fertilization represented in CLM-Crop,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_fertilizer,human_drivers,Fertilizer,ORCHIDEE,,needs_verification,Confirm fertilizer representation in crop-coupled configurations,TBD,Fisher & Koven 2020 Fig 2a,,
+human_fertilizer,human_drivers,Fertilizer,LPJGUESS,,needs_verification,Confirm fertilizer representation in crop-coupled configurations,TBD,Fisher & Koven 2020 Fig 2a,,
+human_harvest,human_drivers,Harvest,RHESSYS,,partial,Prescribed harvest/thinning scenarios possible via canopy manipulation; not a dynamic harvest model,TBD,Fisher & Koven 2020 Fig 2a,,
+human_harvest,human_drivers,Harvest,CLM,,yes,Wood harvest via land-use transitions,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_harvest,human_drivers,Harvest,ORCHIDEE,,partial,Harvest via land-use change forcing in some configurations,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_harvest,human_drivers,Harvest,LPJGUESS,,yes,Explicit harvest module in several configurations,Lindeskog et al. 2013 (needs_verification),Fisher & Koven 2020 Fig 2a,,
+human_irrigation,human_drivers,Irrigation,RHESSYS,,needs_verification,Confirm with Naomi whether any RHESSys branch has an irrigation module,TBD,Fisher & Koven 2020 Fig 2a,,
+human_irrigation,human_drivers,Irrigation,CLM,,yes,CLM5 irrigation scheme,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_irrigation,human_drivers,Irrigation,ORCHIDEE,,partial,"Irrigation represented in some configurations, not default",needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_irrigation,human_drivers,Irrigation,LPJGUESS,,needs_verification,Confirm irrigation representation,TBD,Fisher & Koven 2020 Fig 2a,,
+human_urban_environment,human_drivers,Urban environment,RHESSYS,,no,No explicit urban land unit in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_urban_environment,human_drivers,Urban environment,CLM,,yes,Explicit urban canopy model (CLMU),"Oleson et al., CLM Urban",Fisher & Koven 2020 Fig 2a,,
+human_urban_environment,human_drivers,Urban environment,ORCHIDEE,,no,No explicit urban land unit in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_urban_environment,human_drivers,Urban environment,LPJGUESS,,no,No explicit urban land unit in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+leaf_allometry,plant_physiology_leaf,Allometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_allometry,plant_physiology_leaf,Allometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_allometry,plant_physiology_leaf,Allometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_allometry,plant_physiology_leaf,Allometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_assimilation,plant_physiology_leaf,Assimilation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_assimilation,plant_physiology_leaf,Assimilation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_assimilation,plant_physiology_leaf,Assimilation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_assimilation,plant_physiology_leaf,Assimilation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_bvocs,plant_physiology_leaf,BVOC emissions,RHESSYS,,partial,Usually an optional coupled module (e.g. MEGAN) rather than a default component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_bvocs,plant_physiology_leaf,BVOC emissions,CLM,,partial,Usually an optional coupled module (e.g. MEGAN) rather than a default component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_bvocs,plant_physiology_leaf,BVOC emissions,ORCHIDEE,,partial,Usually an optional coupled module (e.g. MEGAN) rather than a default component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_bvocs,plant_physiology_leaf,BVOC emissions,LPJGUESS,,partial,Usually an optional coupled module (e.g. MEGAN) rather than a default component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_growth,plant_physiology_leaf,Growth / allocation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_growth,plant_physiology_leaf,Growth / allocation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_growth,plant_physiology_leaf,Growth / allocation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_growth,plant_physiology_leaf,Growth / allocation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_interception_evaporation,plant_physiology_leaf,Interception & evaporation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_interception_evaporation,plant_physiology_leaf,Interception & evaporation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_interception_evaporation,plant_physiology_leaf,Interception & evaporation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_interception_evaporation,plant_physiology_leaf,Interception & evaporation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_morphology,plant_physiology_leaf,Morphology,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_morphology,plant_physiology_leaf,Morphology,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_morphology,plant_physiology_leaf,Morphology,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_morphology,plant_physiology_leaf,Morphology,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_optical_properties,plant_physiology_leaf,Optical properties,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_optical_properties,plant_physiology_leaf,Optical properties,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_optical_properties,plant_physiology_leaf,Optical properties,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_optical_properties,plant_physiology_leaf,Optical properties,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_phenology_timing,plant_physiology_leaf,Phenology timing,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_phenology_timing,plant_physiology_leaf,Phenology timing,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_phenology_timing,plant_physiology_leaf,Phenology timing,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_phenology_timing,plant_physiology_leaf,Phenology timing,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_photosynthesis,plant_physiology_leaf,Photosynthesis,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_photosynthesis,plant_physiology_leaf,Photosynthesis,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_photosynthesis,plant_physiology_leaf,Photosynthesis,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_photosynthesis,plant_physiology_leaf,Photosynthesis,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_respiration,plant_physiology_leaf,Respiration,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_respiration,plant_physiology_leaf,Respiration,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_respiration,plant_physiology_leaf,Respiration,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_respiration,plant_physiology_leaf,Respiration,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_stomatal_conductance,plant_physiology_leaf,Stomatal conductance,RHESSYS,,yes,Jarvis-type / conductance formulation; confirm exact scheme in current branch,TBD,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_stomatal_conductance,plant_physiology_leaf,Stomatal conductance,CLM,,yes,"Ball-Berry (CLM4.5) or Medlyn (CLM5) formulation, configuration-dependent",TBD,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_stomatal_conductance,plant_physiology_leaf,Stomatal conductance,ORCHIDEE,,yes,Ball-Berry-type formulation,TBD,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_stomatal_conductance,plant_physiology_leaf,Stomatal conductance,LPJGUESS,,yes,Empirical/optimality-based conductance formulation,TBD,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_tissue_nutrient_stoichiometry,plant_physiology_leaf,Tissue nutrient stoichiometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_tissue_nutrient_stoichiometry,plant_physiology_leaf,Tissue nutrient stoichiometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_tissue_nutrient_stoichiometry,plant_physiology_leaf,Tissue nutrient stoichiometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_tissue_nutrient_stoichiometry,plant_physiology_leaf,Tissue nutrient stoichiometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_transpiration,plant_physiology_leaf,Transpiration,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_transpiration,plant_physiology_leaf,Transpiration,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_transpiration,plant_physiology_leaf,Transpiration,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_transpiration,plant_physiology_leaf,Transpiration,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+leaf_turnover,plant_physiology_leaf,Turnover,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_turnover,plant_physiology_leaf,Turnover,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_turnover,plant_physiology_leaf,Turnover,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+leaf_turnover,plant_physiology_leaf,Turnover,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_allometry,plant_physiology_roots,Allometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_allometry,plant_physiology_roots,Allometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_allometry,plant_physiology_roots,Allometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_allometry,plant_physiology_roots,Allometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_growth,plant_physiology_roots,Growth / allocation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_growth,plant_physiology_roots,Growth / allocation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_growth,plant_physiology_roots,Growth / allocation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_growth,plant_physiology_roots,Growth / allocation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_nutrient_uptake,plant_physiology_roots,Nutrient uptake,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+root_nutrient_uptake,plant_physiology_roots,Nutrient uptake,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+root_nutrient_uptake,plant_physiology_roots,Nutrient uptake,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+root_nutrient_uptake,plant_physiology_roots,Nutrient uptake,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+root_respiration,plant_physiology_roots,Respiration,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_respiration,plant_physiology_roots,Respiration,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_respiration,plant_physiology_roots,Respiration,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_respiration,plant_physiology_roots,Respiration,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_tissue_nutrient_stoichiometry,plant_physiology_roots,Tissue nutrient stoichiometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_tissue_nutrient_stoichiometry,plant_physiology_roots,Tissue nutrient stoichiometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_tissue_nutrient_stoichiometry,plant_physiology_roots,Tissue nutrient stoichiometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_tissue_nutrient_stoichiometry,plant_physiology_roots,Tissue nutrient stoichiometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_turnover,plant_physiology_roots,Turnover,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_turnover,plant_physiology_roots,Turnover,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_turnover,plant_physiology_roots,Turnover,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_turnover,plant_physiology_roots,Turnover,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+root_water_uptake,plant_physiology_roots,Water uptake,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_water_uptake,plant_physiology_roots,Water uptake,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_water_uptake,plant_physiology_roots,Water uptake,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_water_uptake,plant_physiology_roots,Water uptake,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_xylem_transport,plant_physiology_roots,Xylem transport,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_xylem_transport,plant_physiology_roots,Xylem transport,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_xylem_transport,plant_physiology_roots,Xylem transport,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+root_xylem_transport,plant_physiology_roots,Xylem transport,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+stem_allometry,plant_physiology_stem,Allometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_allometry,plant_physiology_stem,Allometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_allometry,plant_physiology_stem,Allometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_allometry,plant_physiology_stem,Allometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_growth,plant_physiology_stem,Growth / allocation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_growth,plant_physiology_stem,Growth / allocation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_growth,plant_physiology_stem,Growth / allocation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_growth,plant_physiology_stem,Growth / allocation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_respiration,plant_physiology_stem,Respiration,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_respiration,plant_physiology_stem,Respiration,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_respiration,plant_physiology_stem,Respiration,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_respiration,plant_physiology_stem,Respiration,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_tissue_nutrient_stoichiometry,plant_physiology_stem,Tissue nutrient stoichiometry,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_tissue_nutrient_stoichiometry,plant_physiology_stem,Tissue nutrient stoichiometry,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_tissue_nutrient_stoichiometry,plant_physiology_stem,Tissue nutrient stoichiometry,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_tissue_nutrient_stoichiometry,plant_physiology_stem,Tissue nutrient stoichiometry,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+stem_turnover,plant_physiology_stem,Turnover,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_turnover,plant_physiology_stem,Turnover,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_turnover,plant_physiology_stem,Turnover,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_turnover,plant_physiology_stem,Turnover,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,carbon
+stem_xylem_transport,plant_physiology_stem,Xylem transport,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+stem_xylem_transport,plant_physiology_stem,Xylem transport,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+stem_xylem_transport,plant_physiology_stem,Xylem transport,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+stem_xylem_transport,plant_physiology_stem,Xylem transport,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,flux,water
+soil_decomposition,soil_hydrology,Decomposition,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_decomposition,soil_hydrology,Decomposition,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_decomposition,soil_hydrology,Decomposition,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_decomposition,soil_hydrology,Decomposition,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_immobilization,soil_hydrology,Immobilization,RHESSYS,,yes,N immobilization tracked via Century-style soil N cycle,TBD,Fisher & Koven 2020 Fig 2a,,
+soil_immobilization,soil_hydrology,Immobilization,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_immobilization,soil_hydrology,Immobilization,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_immobilization,soil_hydrology,Immobilization,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_microbial_ecology,soil_hydrology,Microbial ecology (explicit),RHESSYS,,partial,Most configurations use implicit decomposition rates rather than explicit microbial population dynamics,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_microbial_ecology,soil_hydrology,Microbial ecology (explicit),CLM,,partial,Most configurations use implicit decomposition rates rather than explicit microbial population dynamics,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_microbial_ecology,soil_hydrology,Microbial ecology (explicit),ORCHIDEE,,partial,Most configurations use implicit decomposition rates rather than explicit microbial population dynamics,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_microbial_ecology,soil_hydrology,Microbial ecology (explicit),LPJGUESS,,partial,Most configurations use implicit decomposition rates rather than explicit microbial population dynamics,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_mineralisation,soil_hydrology,Mineralisation,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_mineralisation,soil_hydrology,Mineralisation,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_mineralisation,soil_hydrology,Mineralisation,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_mineralisation,soil_hydrology,Mineralisation,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_redox,soil_hydrology,Redox,RHESSYS,,no,Explicit redox chemistry not represented in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_redox,soil_hydrology,Redox,CLM,,partial,Some redox-related processes represented via CLM-CH4/wetland methane module,TBD,Fisher & Koven 2020 Fig 2a,,
+soil_redox,soil_hydrology,Redox,ORCHIDEE,,no,Explicit redox chemistry not represented in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_redox,soil_hydrology,Redox,LPJGUESS,,no,Explicit redox chemistry not represented in default configuration,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_vertical_transport_leaching,soil_hydrology,Vertical transport & leaching,RHESSYS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_vertical_transport_leaching,soil_hydrology,Vertical transport & leaching,CLM,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_vertical_transport_leaching,soil_hydrology,Vertical transport & leaching,ORCHIDEE,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_vertical_transport_leaching,soil_hydrology,Vertical transport & leaching,LPJGUESS,,yes,Standard process-based vegetation model component,needs_verification,Fisher & Koven 2020 Fig 2a,,
+growth,vegetation_growth_mortality,Growth,RHESSYS,,yes,Carbon allocation and growth via Biome-BGC-style photosynthesis and allocation,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,,
+growth,vegetation_growth_mortality,Growth,CLM,,yes,Standard biogeochemistry growth module,"Oleson et al., CLM5 Technical Note",Fisher & Koven 2020 Fig 2a,,
+growth,vegetation_growth_mortality,Growth,ORCHIDEE,,yes,Standard photosynthesis-allocation growth module,Krinner et al. 2005,Fisher & Koven 2020 Fig 2a,,
+growth,vegetation_growth_mortality,Growth,LPJGUESS,,yes,Growth via individual/cohort carbon allocation,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+mortality,vegetation_growth_mortality,Mortality,RHESSYS,,needs_verification,Confirm whether any RHESSys branch has explicit demographic mortality beyond prescribed disturbance scenarios,TBD,Fisher & Koven 2020 Fig 2a,,
+mortality,vegetation_growth_mortality,Mortality,CLM,,partial,"Background, hydraulic, fire, and carbon-starvation mortality only via FATES; default CLM has no demographic mortality",Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+mortality,vegetation_growth_mortality,Mortality,ORCHIDEE,,partial,Background and stress mortality only in DGVM branch; default ORCHIDEE has no mortality,needs_verification,Fisher & Koven 2020 Fig 2a,,
+mortality,vegetation_growth_mortality,Mortality,LPJGUESS,,yes,"Background, resource-limitation, disturbance, and fire mortality are core processes","Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+recruitment,vegetation_growth_mortality,Recruitment,RHESSYS,,needs_verification,Confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,,
+recruitment,vegetation_growth_mortality,Recruitment,CLM,,partial,Establishment/recruitment only via FATES; not in default CLM,Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+recruitment,vegetation_growth_mortality,Recruitment,ORCHIDEE,,partial,Establishment only in DGVM branch,needs_verification,Fisher & Koven 2020 Fig 2a,,
+recruitment,vegetation_growth_mortality,Recruitment,LPJGUESS,,yes,Establishment/recruitment is a core demographic process,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+seed_production,vegetation_growth_mortality,Seed production,RHESSYS,,needs_verification,Confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,,
+seed_production,vegetation_growth_mortality,Seed production,CLM,,partial,Only via FATES,Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+seed_production,vegetation_growth_mortality,Seed production,ORCHIDEE,,partial,Only in DGVM branch,TBD,Fisher & Koven 2020 Fig 2a,,
+seed_production,vegetation_growth_mortality,Seed production,LPJGUESS,,yes,Core demographic process,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+snow_porosity,snow_physics,Porosity,RHESSYS,,needs_verification,Confirm whether snowpack porosity is explicitly tracked,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+snow_porosity,snow_physics,Porosity,CLM,,yes,Multi-layer snow model tracks porosity/density evolution,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_porosity,snow_physics,Porosity,ORCHIDEE,,partial,Snow scheme tracks density; explicit porosity representation needs confirming,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+snow_porosity,snow_physics,Porosity,LPJGUESS,,no,Simplified single-layer snow scheme; no explicit porosity,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_density,snow_physics,Density,RHESSYS,,needs_verification,Confirm with Naomi,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+snow_density,snow_physics,Density,CLM,,yes,Multi-layer snow model tracks density evolution,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_density,snow_physics,Density,ORCHIDEE,,partial,Snow density represented in the snow scheme,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+snow_density,snow_physics,Density,LPJGUESS,,partial,Simplified snow scheme; density may be a fixed parameter rather than dynamic,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_accumulation,snow_physics,Accumulation,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_accumulation,snow_physics,Accumulation,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_accumulation,snow_physics,Accumulation,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_accumulation,snow_physics,Accumulation,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_melt,snow_physics,Melt,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_melt,snow_physics,Melt,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_melt,snow_physics,Melt,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_melt,snow_physics,Melt,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_sublimation,snow_physics,Sublimation,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_sublimation,snow_physics,Sublimation,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_sublimation,snow_physics,Sublimation,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+snow_sublimation,snow_physics,Sublimation,LPJGUESS,,partial,Confirm whether sublimation is resolved separately from melt in the simplified snow scheme,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+canopy_turbulence_aero,canopy_turbulence,Turbulence (aerodynamic conductance),RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_aero,canopy_turbulence,Turbulence (aerodynamic conductance),CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_aero,canopy_turbulence,Turbulence (aerodynamic conductance),ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_aero,canopy_turbulence,Turbulence (aerodynamic conductance),LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_chemistry,canopy_turbulence,Turbulence / deposition chemistry,RHESSYS,,no,In-canopy deposition chemistry generally not resolved outside chemistry-coupled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_chemistry,canopy_turbulence,Turbulence / deposition chemistry,CLM,,partial,Dry deposition scheme available in chemistry-coupled configurations (e.g. CLM-chem),needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_chemistry,canopy_turbulence,Turbulence / deposition chemistry,ORCHIDEE,,no,In-canopy deposition chemistry generally not resolved outside chemistry-coupled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_turbulence_chemistry,canopy_turbulence,Turbulence / deposition chemistry,LPJGUESS,,no,In-canopy deposition chemistry generally not resolved outside chemistry-coupled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_rad_transfer,canopy_radiative_transfer,Radiative transfer,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_rad_transfer,canopy_radiative_transfer,Radiative transfer,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_rad_transfer,canopy_radiative_transfer,Radiative transfer,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+canopy_rad_transfer,canopy_radiative_transfer,Radiative transfer,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_infiltration,soil_hydrology,Infiltration,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_infiltration,soil_hydrology,Infiltration,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_infiltration,soil_hydrology,Infiltration,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_infiltration,soil_hydrology,Infiltration,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_evaporation,soil_hydrology,Evaporation,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_evaporation,soil_hydrology,Evaporation,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_evaporation,soil_hydrology,Evaporation,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_evaporation,soil_hydrology,Evaporation,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_vertical_drainage,soil_hydrology,Vertical drainage,RHESSYS,,yes,"Consolidates vertical transport, drainage, and capillary rise into a single vertical-flux process",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_vertical_drainage,soil_hydrology,Vertical drainage,CLM,,yes,"Consolidates vertical transport, drainage, and capillary rise into a single vertical-flux process",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_vertical_drainage,soil_hydrology,Vertical drainage,ORCHIDEE,,yes,"Consolidates vertical transport, drainage, and capillary rise into a single vertical-flux process",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_vertical_drainage,soil_hydrology,Vertical drainage,LPJGUESS,,yes,"Consolidates vertical transport, drainage, and capillary rise into a single vertical-flux process",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+soil_water_storage,soil_hydrology,Water storage,RHESSYS,,yes,"Consolidates rooting-zone, unsaturated, and saturated zone storage into a single soil water store",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_water_storage,soil_hydrology,Water storage,CLM,,yes,"Consolidates rooting-zone, unsaturated, and saturated zone storage into a single soil water store",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_water_storage,soil_hydrology,Water storage,ORCHIDEE,,yes,"Consolidates rooting-zone, unsaturated, and saturated zone storage into a single soil water store",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_water_storage,soil_hydrology,Water storage,LPJGUESS,,partial,Two-layer bucket store rather than a multi-zone soil profile,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_macropore_flow,soil_hydrology,Macropore / preferential flow,RHESSYS,,yes,Represented via macropore/preferential flow parameterization,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+soil_macropore_flow,soil_hydrology,Macropore / preferential flow,CLM,,no,Not resolved by Richards-equation-based soil hydrology schemes,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_macropore_flow,soil_hydrology,Macropore / preferential flow,ORCHIDEE,,no,Not resolved by Richards-equation-based soil hydrology schemes,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_macropore_flow,soil_hydrology,Macropore / preferential flow,LPJGUESS,,no,Not resolved by Richards-equation-based soil hydrology schemes,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+soil_thermal_dynamics,soil_hydrology,Thermal dynamics,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_thermal_dynamics,soil_hydrology,Thermal dynamics,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_thermal_dynamics,soil_hydrology,Thermal dynamics,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_thermal_dynamics,soil_hydrology,Thermal dynamics,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_porosity,soil_hydrology,Porosity,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_porosity,soil_hydrology,Porosity,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_porosity,soil_hydrology,Porosity,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_porosity,soil_hydrology,Porosity,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_water_retention,soil_hydrology,Water retention (field capacity),RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_water_retention,soil_hydrology,Water retention (field capacity),CLM,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_water_retention,soil_hydrology,Water retention (field capacity),ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_water_retention,soil_hydrology,Water retention (field capacity),LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_permeability,soil_hydrology,Permeability,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_permeability,soil_hydrology,Permeability,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_permeability,soil_hydrology,Permeability,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+soil_permeability,soil_hydrology,Permeability,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,Fisher & Koven 2020 Fig 2a,,
+litter_evaporation,litter,Evaporation,RHESSYS,,yes,Explicit litter interception/evaporation store,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+litter_evaporation,litter,Evaporation,CLM,,partial,Litter pool usually tracked for biogeochemistry; explicit hydrologic evaporation flux varies by model,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_evaporation,litter,Evaporation,ORCHIDEE,,partial,Litter pool usually tracked for biogeochemistry; explicit hydrologic evaporation flux varies by model,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_evaporation,litter,Evaporation,LPJGUESS,,partial,Litter pool usually tracked for biogeochemistry; explicit hydrologic evaporation flux varies by model,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_water_storage,litter,Water storage,RHESSYS,,yes,Explicit litter interception store,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+litter_water_storage,litter,Water storage,CLM,,partial,Litter interception capacity varies by model configuration,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_water_storage,litter,Water storage,ORCHIDEE,,partial,Litter interception capacity varies by model configuration,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_water_storage,litter,Water storage,LPJGUESS,,partial,Litter interception capacity varies by model configuration,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_accumulation_decomposition,litter,Accumulation / decomposition,RHESSYS,,yes,Litter mass balance is a standard component of the carbon cycle in these models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_accumulation_decomposition,litter,Accumulation / decomposition,CLM,,yes,Litter mass balance is a standard component of the carbon cycle in these models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_accumulation_decomposition,litter,Accumulation / decomposition,ORCHIDEE,,yes,Litter mass balance is a standard component of the carbon cycle in these models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_accumulation_decomposition,litter,Accumulation / decomposition,LPJGUESS,,yes,Litter mass balance is a standard component of the carbon cycle in these models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+vegetation_interception_throughfall,vegetation_fluxes,Interception / throughfall,RHESSYS,,yes,Standard component of most process-based hydrology models; now bundled with throughfall as the complementary canopy-water flux,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+vegetation_interception_throughfall,vegetation_fluxes,Interception / throughfall,CLM,,yes,Standard component of most process-based hydrology models; now bundled with throughfall as the complementary canopy-water flux,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+vegetation_interception_throughfall,vegetation_fluxes,Interception / throughfall,ORCHIDEE,,yes,Standard component of most process-based hydrology models; now bundled with throughfall as the complementary canopy-water flux,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+vegetation_interception_throughfall,vegetation_fluxes,Interception / throughfall,LPJGUESS,,yes,Standard component of most process-based hydrology models; now bundled with throughfall as the complementary canopy-water flux,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_surface,lateral_flow,Surface,RHESSYS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_surface,lateral_flow,Surface,CLM,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_surface,lateral_flow,Surface,ORCHIDEE,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_surface,lateral_flow,Surface,LPJGUESS,,yes,Standard component of most process-based hydrology models,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_shallow_subsurface,lateral_flow,Shallow subsurface,RHESSYS,,yes,Explicit interflow / shallow subsurface lateral redistribution,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_shallow_subsurface,lateral_flow,Shallow subsurface,CLM,,partial,"Represented implicitly via subsurface runoff parameterization, not explicit hillslope routing",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_shallow_subsurface,lateral_flow,Shallow subsurface,ORCHIDEE,,partial,Represented via routing module baseflow term,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_shallow_subsurface,lateral_flow,Shallow subsurface,LPJGUESS,,no,No lateral subsurface routing,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_groundwater,lateral_flow,Groundwater,RHESSYS,,yes,Explicit groundwater store and lateral discharge to channel/riparian zone,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_groundwater,lateral_flow,Groundwater,CLM,,partial,Simple unconfined aquifer layer; lateral groundwater flow not fully resolved,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_groundwater,lateral_flow,Groundwater,ORCHIDEE,,partial,Confirm groundwater representation outside specialized configurations,TBD,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_groundwater,lateral_flow,Groundwater,LPJGUESS,,no,No groundwater store,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_human_modified,lateral_flow,Human-modified,RHESSYS,,partial,"Diversions/management can be prescribed in specific applications, not a dynamic default feature",TBD,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_human_modified,lateral_flow,Human-modified,CLM,,partial,Some reservoir operation and irrigation withdrawal representation in specific configurations,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_human_modified,lateral_flow,Human-modified,ORCHIDEE,,no,"Tile drains, canals, diversions, and pumping are not represented in default configuration",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+lateral_human_modified,lateral_flow,Human-modified,LPJGUESS,,no,"Tile drains, canals, diversions, and pumping are not represented in default configuration",needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_hyporheic_flow,river_riparian,Hyporheic flow,RHESSYS,,no,Hyporheic exchange is rarely resolved at the scale of these models; a general research frontier,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_hyporheic_flow,river_riparian,Hyporheic flow,CLM,,no,Hyporheic exchange is rarely resolved at the scale of these models; a general research frontier,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_hyporheic_flow,river_riparian,Hyporheic flow,ORCHIDEE,,no,Hyporheic exchange is rarely resolved at the scale of these models; a general research frontier,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_hyporheic_flow,river_riparian,Hyporheic flow,LPJGUESS,,no,Hyporheic exchange is rarely resolved at the scale of these models; a general research frontier,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_channel_flow,river_riparian,Channel flow,RHESSYS,,yes,Explicit channel routing,Tague & Band 2004,"Hillslope hydrology schematic (user-provided, general)",,
+river_channel_flow,river_riparian,Channel flow,CLM,,partial,Only via optional MOSART river routing coupling,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_channel_flow,river_riparian,Channel flow,ORCHIDEE,,partial,Routing scheme handles channel flow,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_channel_flow,river_riparian,Channel flow,LPJGUESS,,no,No channel routing,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_large_waterbody_mixing,river_riparian,Large water body mixing,RHESSYS,,no,Lake/reservoir mixing dynamics not resolved,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_large_waterbody_mixing,river_riparian,Large water body mixing,CLM,,partial,CLM lake model resolves some vertical mixing,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_large_waterbody_mixing,river_riparian,Large water body mixing,ORCHIDEE,,no,Lake/reservoir mixing dynamics not resolved,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+river_large_waterbody_mixing,river_riparian,Large water body mixing,LPJGUESS,,no,Lake/reservoir mixing dynamics not resolved,needs_verification,"Hillslope hydrology schematic (user-provided, general)",,
+litter_biogeochemistry,litter,Litter biogeochemistry,RHESSYS,,yes,Litter nutrient release tracked via Century-style decomposition,Tague & Band 2004,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+litter_biogeochemistry,litter,Litter biogeochemistry,CLM,,yes,Litter pool nutrient cycling standard in CLM-CN/CLM5 biogeochemistry,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+litter_biogeochemistry,litter,Litter biogeochemistry,ORCHIDEE,,yes,Litter nutrient cycling represented in biogeochemistry-enabled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+litter_biogeochemistry,litter,Litter biogeochemistry,LPJGUESS,,yes,Litter nutrient cycling represented in N-cycle-enabled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_human_management,river_riparian,Human management,RHESSYS,,partial,Reservoir/withdrawal scenarios can be prescribed; not a dynamic default feature,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_human_management,river_riparian,Human management,CLM,,partial,Reservoir operation representation available via MOSART-coupled configurations,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_human_management,river_riparian,Human management,ORCHIDEE,,needs_verification,Confirm reservoir/withdrawal representation,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_human_management,river_riparian,Human management,LPJGUESS,,no,No river management representation,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+snow_albedo,snow_physics,Albedo,RHESSYS,,needs_verification,Confirm whether albedo evolution is represented in the maintained branch,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+snow_albedo,snow_physics,Albedo,CLM,,yes,Standard snow albedo aging scheme (e.g. SNICAR),needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+snow_albedo,snow_physics,Albedo,ORCHIDEE,,yes,Snow albedo aging represented in the snow scheme,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+snow_albedo,snow_physics,Albedo,LPJGUESS,,partial,Simplified snow scheme; confirm whether albedo evolves dynamically or is fixed,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+water_input_interbasin_irrigation,lateral_flow,Inter-basin transfer / irrigation,RHESSYS,,partial,Irrigation can be prescribed as a scenario input; inter-basin transfer generally not represented,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+water_input_interbasin_irrigation,lateral_flow,Inter-basin transfer / irrigation,CLM,,partial,CLM5 irrigation scheme available; no general inter-basin transfer representation,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+water_input_interbasin_irrigation,lateral_flow,Inter-basin transfer / irrigation,ORCHIDEE,,partial,Irrigation represented in some configurations; inter-basin transfer not represented,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+water_input_interbasin_irrigation,lateral_flow,Inter-basin transfer / irrigation,LPJGUESS,,needs_verification,Confirm irrigation representation; inter-basin transfer not represented,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_biochemical_transport,river_riparian,Biochemical transport,RHESSYS,,partial,Stream nitrogen export is tracked; broader biochemical/contaminant transport not fully resolved,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_biochemical_transport,river_riparian,Biochemical transport,CLM,,partial,Available only via optional MOSART biogeochemistry coupling,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_biochemical_transport,river_riparian,Biochemical transport,ORCHIDEE,,no,Not represented in default configuration,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+river_biochemical_transport,river_riparian,Biochemical transport,LPJGUESS,,no,Not represented,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+stem_phenology_timing,plant_physiology_stem,Phenology timing,RHESSYS,,yes,Growth/turnover timing tracked via phenology model,Fisher & Koven 2020 Fig 2a,needs_verification,property,structural
+stem_phenology_timing,plant_physiology_stem,Phenology timing,CLM,,yes,Standard phenology module,Fisher & Koven 2020 Fig 2a,needs_verification,property,structural
+stem_phenology_timing,plant_physiology_stem,Phenology timing,ORCHIDEE,,yes,Standard phenology module,Fisher & Koven 2020 Fig 2a,needs_verification,property,structural
+stem_phenology_timing,plant_physiology_stem,Phenology timing,LPJGUESS,,yes,Standard phenology module,Fisher & Koven 2020 Fig 2a,needs_verification,property,structural
+community_assembly,community_composition,Community assembly,RHESSYS,,needs_verification,Confirm with Naomi whether species/PFT composition shifts dynamically in any branch,TBD,Fisher & Koven 2020 Fig 2a,,
+community_assembly,community_composition,Community assembly,CLM,,partial,Competitive species/cohort assembly only via FATES; default CLM uses prescribed PFT composition,Fisher et al. 2018 (FATES),Fisher & Koven 2020 Fig 2a,,
+community_assembly,community_composition,Community assembly,ORCHIDEE,,partial,Dynamic assembly only in ORCHIDEE-DGVM/CAN branches,needs_verification,Fisher & Koven 2020 Fig 2a,,
+community_assembly,community_composition,Community assembly,LPJGUESS,,yes,Core DGVM design: competitive establishment and PFT composition shifts over time,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,,
+ecophysiology_evolution,cross_cutting,Evolution,RHESSYS,,no,No genetic/evolutionary representation,TBD,Cross-cutting,,
+ecophysiology_evolution,cross_cutting,Evolution,CLM,,no,"No genetic/evolutionary representation, including in FATES",needs_verification,Cross-cutting,,
+ecophysiology_evolution,cross_cutting,Evolution,ORCHIDEE,,no,No genetic/evolutionary representation,needs_verification,Cross-cutting,,
+ecophysiology_evolution,cross_cutting,Evolution,LPJGUESS,,no,No genetic/evolutionary representation; a general research frontier across all four models,needs_verification,Cross-cutting,,
+human_plant_selection,human_drivers,Plant selection,RHESSYS,,no,No cultivar/breeding selection representation,TBD,Fisher & Koven 2020 Fig 2a,,
+human_plant_selection,human_drivers,Plant selection,CLM,,needs_verification,Confirm whether crop model configurations allow cultivar-level parameter selection,TBD,Fisher & Koven 2020 Fig 2a,,
+human_plant_selection,human_drivers,Plant selection,ORCHIDEE,,no,No plant selection representation,needs_verification,Fisher & Koven 2020 Fig 2a,,
+human_plant_selection,human_drivers,Plant selection,LPJGUESS,,no,No plant selection representation,needs_verification,Fisher & Koven 2020 Fig 2a,,
+leaf_senescence_reabsorption,plant_physiology_leaf,Senescence / reabsorption,RHESSYS,,needs_verification,Confirm whether nutrient retranslocation before leaf drop is represented in the maintained branch,TBD,Fisher & Koven 2020 Fig 2a,flux,nutrient
+leaf_senescence_reabsorption,plant_physiology_leaf,Senescence / reabsorption,CLM,,yes,Leaf nitrogen retranslocation before litterfall represented in CLM-CN/CLM5,needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+leaf_senescence_reabsorption,plant_physiology_leaf,Senescence / reabsorption,ORCHIDEE,,partial,Confirm whether nutrient retranslocation is represented outside N-cycle-enabled configurations,TBD,Fisher & Koven 2020 Fig 2a,flux,nutrient
+leaf_senescence_reabsorption,plant_physiology_leaf,Senescence / reabsorption,LPJGUESS,,partial,"Represented in N-cycle-enabled configurations, not the default carbon-only setup",needs_verification,Fisher & Koven 2020 Fig 2a,flux,nutrient
+root_morphology,plant_physiology_roots,Morphology (distribution / depth),RHESSYS,,yes,Rooting depth/distribution parameterization is core to hillslope water uptake representation,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,property,structural
+root_morphology,plant_physiology_roots,Morphology (distribution / depth),CLM,,yes,Root fraction depth profile parameterization by PFT,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_morphology,plant_physiology_roots,Morphology (distribution / depth),ORCHIDEE,,yes,Root profile parameterization by PFT,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+root_morphology,plant_physiology_roots,Morphology (distribution / depth),LPJGUESS,,yes,Root distribution by depth in PFT parameterization,needs_verification,Fisher & Koven 2020 Fig 2a,property,structural
+leaf_storage_c,plant_physiology_leaf,Storage — carbon,RHESSYS,,yes,Carbon pools tracked via Biome-BGC-style allocation,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,carbon
+leaf_storage_c,plant_physiology_leaf,Storage — carbon,CLM,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+leaf_storage_c,plant_physiology_leaf,Storage — carbon,ORCHIDEE,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+leaf_storage_c,plant_physiology_leaf,Storage — carbon,LPJGUESS,,yes,Standard carbon pool tracking,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,store,carbon
+leaf_storage_n,plant_physiology_leaf,Storage — nitrogen,RHESSYS,,yes,Nitrogen pools tracked via Century-style soil/plant N cycle,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_n,plant_physiology_leaf,Storage — nitrogen,CLM,,yes,Nitrogen pools standard in CLM-CN/CLM5,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_n,plant_physiology_leaf,Storage — nitrogen,ORCHIDEE,,partial,Only in N-cycle-enabled configurations (e.g. ORCHIDEE-CNP); default carbon-only ORCHIDEE lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_n,plant_physiology_leaf,Storage — nitrogen,LPJGUESS,,partial,Only in N-cycle-enabled configurations; default carbon-only setup lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_p,plant_physiology_leaf,Storage — phosphorus,RHESSYS,,no,No phosphorus cycle representation identified,TBD,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_p,plant_physiology_leaf,Storage — phosphorus,CLM,,partial,"Only in CLM5-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_p,plant_physiology_leaf,Storage — phosphorus,ORCHIDEE,,partial,"Only in ORCHIDEE-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_p,plant_physiology_leaf,Storage — phosphorus,LPJGUESS,,no,No phosphorus cycle representation identified,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+leaf_storage_other,plant_physiology_leaf,Storage — other reserves,RHESSYS,,needs_verification,Non-structural carbohydrate or base-cation reserves not clearly tracked; confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,store,structural
+leaf_storage_other,plant_physiology_leaf,Storage — other reserves,CLM,,no,Other nutrient/reserve pools (e.g. base cations) not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+leaf_storage_other,plant_physiology_leaf,Storage — other reserves,ORCHIDEE,,no,Other nutrient/reserve pools not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+leaf_storage_other,plant_physiology_leaf,Storage — other reserves,LPJGUESS,,no,Other nutrient/reserve pools not represented; a general research frontier across all four models,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+stem_storage_c,plant_physiology_stem,Storage — carbon,RHESSYS,,yes,Carbon pools tracked via Biome-BGC-style allocation,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,carbon
+stem_storage_c,plant_physiology_stem,Storage — carbon,CLM,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+stem_storage_c,plant_physiology_stem,Storage — carbon,ORCHIDEE,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+stem_storage_c,plant_physiology_stem,Storage — carbon,LPJGUESS,,yes,Standard carbon pool tracking,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,store,carbon
+stem_storage_n,plant_physiology_stem,Storage — nitrogen,RHESSYS,,yes,Nitrogen pools tracked via Century-style soil/plant N cycle,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_n,plant_physiology_stem,Storage — nitrogen,CLM,,yes,Nitrogen pools standard in CLM-CN/CLM5,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_n,plant_physiology_stem,Storage — nitrogen,ORCHIDEE,,partial,Only in N-cycle-enabled configurations (e.g. ORCHIDEE-CNP); default carbon-only ORCHIDEE lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_n,plant_physiology_stem,Storage — nitrogen,LPJGUESS,,partial,Only in N-cycle-enabled configurations; default carbon-only setup lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_p,plant_physiology_stem,Storage — phosphorus,RHESSYS,,no,No phosphorus cycle representation identified,TBD,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_p,plant_physiology_stem,Storage — phosphorus,CLM,,partial,"Only in CLM5-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_p,plant_physiology_stem,Storage — phosphorus,ORCHIDEE,,partial,"Only in ORCHIDEE-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_p,plant_physiology_stem,Storage — phosphorus,LPJGUESS,,no,No phosphorus cycle representation identified,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+stem_storage_other,plant_physiology_stem,Storage — other reserves,RHESSYS,,needs_verification,Non-structural carbohydrate or base-cation reserves not clearly tracked; confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,store,structural
+stem_storage_other,plant_physiology_stem,Storage — other reserves,CLM,,no,Other nutrient/reserve pools (e.g. base cations) not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+stem_storage_other,plant_physiology_stem,Storage — other reserves,ORCHIDEE,,no,Other nutrient/reserve pools not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+stem_storage_other,plant_physiology_stem,Storage — other reserves,LPJGUESS,,no,Other nutrient/reserve pools not represented; a general research frontier across all four models,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+root_storage_c,plant_physiology_roots,Storage — carbon,RHESSYS,,yes,Carbon pools tracked via Biome-BGC-style allocation,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,carbon
+root_storage_c,plant_physiology_roots,Storage — carbon,CLM,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+root_storage_c,plant_physiology_roots,Storage — carbon,ORCHIDEE,,yes,Standard carbon pool tracking,needs_verification,Fisher & Koven 2020 Fig 2a,store,carbon
+root_storage_c,plant_physiology_roots,Storage — carbon,LPJGUESS,,yes,Standard carbon pool tracking,"Smith et al. 2001, 2014",Fisher & Koven 2020 Fig 2a,store,carbon
+root_storage_n,plant_physiology_roots,Storage — nitrogen,RHESSYS,,yes,Nitrogen pools tracked via Century-style soil/plant N cycle,Tague & Band 2004,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_n,plant_physiology_roots,Storage — nitrogen,CLM,,yes,Nitrogen pools standard in CLM-CN/CLM5,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_n,plant_physiology_roots,Storage — nitrogen,ORCHIDEE,,partial,Only in N-cycle-enabled configurations (e.g. ORCHIDEE-CNP); default carbon-only ORCHIDEE lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_n,plant_physiology_roots,Storage — nitrogen,LPJGUESS,,partial,Only in N-cycle-enabled configurations; default carbon-only setup lacks N pools,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_p,plant_physiology_roots,Storage — phosphorus,RHESSYS,,no,No phosphorus cycle representation identified,TBD,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_p,plant_physiology_roots,Storage — phosphorus,CLM,,partial,"Only in CLM5-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_p,plant_physiology_roots,Storage — phosphorus,ORCHIDEE,,partial,"Only in ORCHIDEE-CNP branch, not the default configuration",needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_p,plant_physiology_roots,Storage — phosphorus,LPJGUESS,,no,No phosphorus cycle representation identified,needs_verification,Fisher & Koven 2020 Fig 2a,store,nutrient
+root_storage_other,plant_physiology_roots,Storage — other reserves,RHESSYS,,needs_verification,Non-structural carbohydrate or base-cation reserves not clearly tracked; confirm with Naomi,TBD,Fisher & Koven 2020 Fig 2a,store,structural
+root_storage_other,plant_physiology_roots,Storage — other reserves,CLM,,no,Other nutrient/reserve pools (e.g. base cations) not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+root_storage_other,plant_physiology_roots,Storage — other reserves,ORCHIDEE,,no,Other nutrient/reserve pools not represented,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+root_storage_other,plant_physiology_roots,Storage — other reserves,LPJGUESS,,no,Other nutrient/reserve pools not represented; a general research frontier across all four models,needs_verification,Fisher & Koven 2020 Fig 2a,store,structural
+input_radiation,environmental_inputs,Radiation,RHESSYS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_radiation,environmental_inputs,Radiation,CLM,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_radiation,environmental_inputs,Radiation,ORCHIDEE,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_radiation,environmental_inputs,Radiation,LPJGUESS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_precipitation,environmental_inputs,Precipitation,RHESSYS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_precipitation,environmental_inputs,Precipitation,CLM,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_precipitation,environmental_inputs,Precipitation,ORCHIDEE,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_precipitation,environmental_inputs,Precipitation,LPJGUESS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_humidity,environmental_inputs,Humidity,RHESSYS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_humidity,environmental_inputs,Humidity,CLM,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_humidity,environmental_inputs,Humidity,ORCHIDEE,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_humidity,environmental_inputs,Humidity,LPJGUESS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_temperature,environmental_inputs,Temperature,RHESSYS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_temperature,environmental_inputs,Temperature,CLM,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_temperature,environmental_inputs,Temperature,ORCHIDEE,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_temperature,environmental_inputs,Temperature,LPJGUESS,,yes,Standard meteorological forcing input,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_n_deposition,environmental_inputs,N-deposition,RHESSYS,,partial,Only meaningful as forcing where the nitrogen cycle is enabled,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_n_deposition,environmental_inputs,N-deposition,CLM,,yes,Only meaningful as forcing where the nitrogen cycle is enabled,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_n_deposition,environmental_inputs,N-deposition,ORCHIDEE,,partial,Only meaningful as forcing where the nitrogen cycle is enabled,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_n_deposition,environmental_inputs,N-deposition,LPJGUESS,,partial,Only meaningful as forcing where the nitrogen cycle is enabled,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_other_chemistry,environmental_inputs,Other chemistry,RHESSYS,,no,"e.g. ozone, sulfur deposition; only in specialized chemistry-coupled configurations",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_other_chemistry,environmental_inputs,Other chemistry,CLM,,partial,"e.g. ozone, sulfur deposition; only in specialized chemistry-coupled configurations",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_other_chemistry,environmental_inputs,Other chemistry,ORCHIDEE,,no,"e.g. ozone, sulfur deposition; only in specialized chemistry-coupled configurations",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_other_chemistry,environmental_inputs,Other chemistry,LPJGUESS,,no,"e.g. ozone, sulfur deposition; only in specialized chemistry-coupled configurations",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_wind,environmental_inputs,Wind,RHESSYS,,yes,"Standard meteorological forcing input, used for aerodynamic resistance",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_wind,environmental_inputs,Wind,CLM,,yes,"Standard meteorological forcing input, used for aerodynamic resistance",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_wind,environmental_inputs,Wind,ORCHIDEE,,yes,"Standard meteorological forcing input, used for aerodynamic resistance",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+input_wind,environmental_inputs,Wind,LPJGUESS,,yes,"Standard meteorological forcing input, used for aerodynamic resistance",needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+lateral_biochemical_transport,lateral_flow,Biochemical transport,RHESSYS,,yes,Dissolved organic and inorganic nitrogen routed through lateral/subsurface flow paths,Tague & Band 2004,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+lateral_biochemical_transport,lateral_flow,Biochemical transport,CLM,,no,No lateral flow pathway to transport biochemical constituents through in default configuration,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+lateral_biochemical_transport,lateral_flow,Biochemical transport,ORCHIDEE,,no,No lateral flow pathway to transport biochemical constituents through in default configuration,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+lateral_biochemical_transport,lateral_flow,Biochemical transport,LPJGUESS,,no,No lateral flow representation,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+vegetation_throughfall_biochemistry,vegetation_fluxes,Throughfall biochemistry,RHESSYS,,needs_verification,Confirm whether canopy leaching/foliar uptake chemistry alters throughfall composition in the maintained branch,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+vegetation_throughfall_biochemistry,vegetation_fluxes,Throughfall biochemistry,CLM,,no,Canopy nutrient leaching into throughfall not represented,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+vegetation_throughfall_biochemistry,vegetation_fluxes,Throughfall biochemistry,ORCHIDEE,,no,Canopy nutrient leaching into throughfall not represented,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+vegetation_throughfall_biochemistry,vegetation_fluxes,Throughfall biochemistry,LPJGUESS,,no,Not represented; a general research frontier across all four models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_impervious_surface,human_drivers,Impervious surface,RHESSYS,,partial,"Representable via land cover patch type, not a dedicated urban hydrology submodel",TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_impervious_surface,human_drivers,Impervious surface,CLM,,yes,Represented via the CLM urban canopy model (CLMU),needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_impervious_surface,human_drivers,Impervious surface,ORCHIDEE,,no,No dedicated urban hydrology representation,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_impervious_surface,human_drivers,Impervious surface,LPJGUESS,,no,No urban land unit representation,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_constructed_drainage,human_drivers,Constructed drainage,RHESSYS,,no,No engineered stormwater drainage network representation,TBD,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_constructed_drainage,human_drivers,Constructed drainage,CLM,,no,CLMU does not resolve engineered stormwater drainage networks,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_constructed_drainage,human_drivers,Constructed drainage,ORCHIDEE,,no,Not represented,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,
+hydro_urban_constructed_drainage,human_drivers,Constructed drainage,LPJGUESS,,no,Not represented; a general research frontier across all four models,needs_verification,"Naomi's hydrology conceptual model (general, not paper-specific)",,

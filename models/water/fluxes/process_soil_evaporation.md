@@ -1,5 +1,6 @@
 ---
 topic: [soil_evaporation]
+process_ids: [soil_evaporation]
 ---
 
 name: soil evaporation

@@ -1,6 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import { readCsvRows } from './csv';
+import { readDiagramSvg } from './diagramSvg';
 import { ESM_MODEL_CSV } from './esm';
 import { getAllModelContent } from './models';
 import {
@@ -13,16 +12,6 @@ import {
 } from '@/types';
 
 /**
- * Label text in the exported figures is sized for a full-page figure; on the
- * overview it scales down with the SVG and lands too small to read
- * comfortably, so every `font-size` is bumped by this factor as the markup is
- * read. Applied here rather than in the SVGs so it survives a figure being
- * regenerated. The tightest box has ~25% horizontal slack (the urban
- * "Impervious surface, constructed drainage" box), so keep this below 1.2.
- */
-const TEXT_SCALE = 1.15;
-
-/**
  * Loads everything a model overview's process diagram needs: the SVG markup
  * (boxes tagged with `data-process-id(s)`), per-model coverage from the
  * coverage CSV (`process_id` × `model_id`, model ids joined against
@@ -32,20 +21,8 @@ const TEXT_SCALE = 1.15;
  * markdown the same way a mismatched heading does.
  */
 export function readProcessDiagram(config: ProcessDiagramConfig, modelSlug: string): ProcessDiagramData | null {
-  const svgPath = path.join(process.cwd(), config.svg);
-  if (!fs.existsSync(svgPath)) return null;
-
-  const svgMarkup = fs
-    .readFileSync(svgPath, 'utf8')
-    // Content-credential blob (several KB of base64) — no use to the browser.
-    .replace(/<metadata>[\s\S]*?<\/metadata>/g, '')
-    // Drop the fixed pixel size (keeping viewBox) so the figure scales to its column.
-    .replace(/<svg\b([^>]*)>/, (_match, attrs: string) =>
-      `<svg${attrs.replace(/\s(?:width|height|xmlns:c2pa)="[^"]*"/g, '')}>`
-    )
-    .replace(/font-size="([\d.]+)"/g, (_match, size: string) =>
-      `font-size="${Math.round(Number(size) * TEXT_SCALE * 100) / 100}"`
-    );
+  const svgMarkup = readDiagramSvg(config.svg);
+  if (!svgMarkup) return null;
 
   const registry = new Map(readCsvRows(ESM_MODEL_CSV).map(r => [r.model_id, r]));
 

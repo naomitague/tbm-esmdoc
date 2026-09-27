@@ -1,6 +1,7 @@
 ---
 title: "Measuring Precipitation (P)"
 topic: [precipitation]
+process_ids: [input_precipitation]
 dataset_table:
   csv: models/water/observations/tables/precipitation_datasets_summary.csv
   heading: "# Global Products Table"

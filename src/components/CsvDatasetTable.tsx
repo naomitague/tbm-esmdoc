@@ -17,6 +17,10 @@ interface CsvDatasetTableProps {
   title?: string;
   /** Noun used in the row count, e.g. "dataset" → "12 datasets". */
   rowNoun?: string;
+  /** Column whose value ids each row, so a figure elsewhere on the page can link to it. */
+  rowIdColumn?: string;
+  /** Prefix for those ids — must match what the linking component uses. */
+  rowIdPrefix?: string;
 }
 
 function renderCell(row: CsvRow, col: DatasetTableColumn) {
@@ -50,6 +54,8 @@ export function CsvDatasetTable({
   searchPlaceholder,
   title,
   rowNoun = 'row',
+  rowIdColumn,
+  rowIdPrefix = 'estimate-',
 }: CsvDatasetTableProps) {
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [query, setQuery] = useState<string>('');
@@ -140,7 +146,7 @@ export function CsvDatasetTable({
       </div>
 
       <div className="overflow-x-auto rounded-lg border border-stone-200">
-        <table className="min-w-full text-xs text-left border-collapse">
+        <table className="dataset-table min-w-full text-xs text-left border-collapse">
           <thead>
             <tr className="bg-stone-50 border-b border-stone-200">
               {columns.map((col, i) => (
@@ -157,7 +163,11 @@ export function CsvDatasetTable({
           </thead>
           <tbody>
             {visibleRows.map((row, rowIdx) => (
-              <tr key={`${row[columns[0].key] ?? ''}-${rowIdx}`} className="border-b border-stone-100 last:border-0 align-top">
+              <tr
+                key={`${row[columns[0].key] ?? ''}-${rowIdx}`}
+                id={rowIdColumn && row[rowIdColumn] ? `${rowIdPrefix}${row[rowIdColumn]}` : undefined}
+                className="border-b border-stone-100 last:border-0 align-top"
+              >
                 {columns.map((col, i) =>
                   i === 0 ? (
                     <th

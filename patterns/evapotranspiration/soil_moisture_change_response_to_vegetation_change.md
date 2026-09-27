@@ -3,6 +3,30 @@ title: "Soil moisture change response to vegetation change"
 topic: [evapotranspiration, vegetation_change]
 kind: relationship
 model: water
+related_content:
+  - label: "Water cycle response to vegetation change"
+    type: relationship
+    href: /wiki/evapotranspiration_or_streamflow__response_to_vegetation_change
+  - label: "Measuring soil moisture"
+    type: observation
+    href: /models/water/observations/obs_soil_moisture
+  - label: "Root-accessible subsurface moisture"
+    type: parameter
+    href: /models/water/parameters/subsurface-moisture-root-accessible
+  - label: "Evapotranspiration"
+    type: flux
+    href: /models/water/fluxes/process_evapotranspiration
+  - label: "Measuring Evapotranspiration (ET)"
+    type: observation
+    href: /models/water/observations/obs_et
+  - label: "Leaf Area Index"
+    type: parameter
+    href: /models/vegetation-som/parameters/leaf_area
+  - label: "Measuring LAI"
+    type: observation
+    href: /models/vegetation-som/observations/obs_lai
+  - label: "Vegetation biomass"
+    type: parameter
 parent: evapotranspiration_or_streamflow__response_to_vegetation_change
 histogram_data:
   csv: patterns/evapotranspiration/examplepapers/veg_hydro_response_obs.csv

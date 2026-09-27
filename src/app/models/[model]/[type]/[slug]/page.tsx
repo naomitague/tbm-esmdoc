@@ -4,13 +4,18 @@ import Link from 'next/link';
 import { getModelContent, getAllModels, getAllModelContent } from '@/lib/models';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { readEsmTable } from '@/lib/esm';
+import { readConceptDiagram } from '@/lib/conceptDiagram';
 import { readCsvRows } from '@/lib/csv';
+import { getEstimateSeries } from '@/lib/csvEstimates';
 import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
 import { getTopicIndex } from '@/lib/topics';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { CsvDatasetTable } from '@/components/CsvDatasetTable';
+import { CsvEstimateStrip } from '@/components/CsvEstimateStrip';
+import { ConceptDiagram } from '@/components/ConceptDiagram';
+import { PageLinks } from '@/components/PageLinks';
 import { PageOutline } from '@/components/PageOutline';
 import { TopicGroupSections, formatTopic } from '@/components/TopicGroupSections';
 import { InfoBox } from '@/components/InfoBox';
@@ -93,6 +98,30 @@ export default async function ContentPage({ params }: PageProps) {
     });
   }
 
+  // The estimate strip and the dataset table below it deliberately target the
+  // SAME heading: splitAtHeadings resolves both to that heading's index and
+  // orderInjections sorts stably, so they render back-to-back in the order
+  // pushed here — figure first, then the table it summarizes. Keep this push
+  // above the datasetTable one.
+  const estimateChart = meta.estimateChart;
+  if (estimateChart) {
+    injections.push({
+      heading: estimateChart.heading,
+      node: (
+        <CsvEstimateStrip
+          series={getEstimateSeries(readCsvRows(estimateChart.csv), estimateChart)}
+          title={estimateChart.title}
+          axisLabel={estimateChart.axis_label}
+          axisMin={estimateChart.axis_min}
+          axisMax={estimateChart.axis_max}
+          unit={estimateChart.unit}
+          note={estimateChart.note}
+          anchorPrefix={estimateChart.row_id_column ? 'estimate-' : undefined}
+        />
+      ),
+    });
+  }
+
   const datasetTable = meta.datasetTable;
   if (datasetTable) {
     injections.push({
@@ -107,9 +136,23 @@ export default async function ContentPage({ params }: PageProps) {
           searchPlaceholder={datasetTable.search_placeholder}
           title={datasetTable.title}
           rowNoun={datasetTable.row_noun}
+          rowIdColumn={datasetTable.row_id_column}
         />
       ),
     });
+  }
+
+  const pageLinks = meta.pageLinks;
+  if (pageLinks?.heading) {
+    injections.push({ heading: pageLinks.heading, node: <PageLinks items={pageLinks.items} /> });
+  }
+
+  // Same splice rule, except a concept figure may declare no heading at all —
+  // in which case it leads the note, ahead of the markdown.
+  const conceptDiagram = meta.conceptDiagram ? readConceptDiagram(meta.conceptDiagram) : null;
+  const conceptDiagramNode = conceptDiagram ? <ConceptDiagram data={conceptDiagram} /> : null;
+  if (conceptDiagram?.heading) {
+    injections.push({ heading: conceptDiagram.heading, node: conceptDiagramNode });
   }
 
   const orderedInjections = orderInjections(content.content, injections);
@@ -184,6 +227,7 @@ export default async function ContentPage({ params }: PageProps) {
               <InfoBox content={content} />
 
               <div className="wiki-content">
+                {conceptDiagram && !conceptDiagram.heading && conceptDiagramNode}
                 {contentSegments ? (
                   contentSegments.map((segment, i) => (
                     <Fragment key={i}>

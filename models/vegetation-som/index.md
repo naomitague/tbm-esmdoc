@@ -1,16 +1,19 @@
 ---
-title: Carbon Model
-model: carbon
-description: Carbon cycling and plant growth fluxes in RHESSys
-aliases: [carbon cycle, photosynthesis, NPP]
+title: Dynamic Vegetation and SOM Model
+model: vegetation-som
+description: Carbon, nitrogen and nutrient cycling in vegetation and soils
+aliases: [carbon cycle, photosynthesis, NPP, nitrogen cycle, nutrient cycling]
 scale: [plant, plot, patch]
+process_diagram:
+  svg: figures/vegetation_full_diagram.svg
+  coverage: esms/process_coverage.csv
+  links:
+    # the blue (water-dimension) boxes → the water model overview
+    - process_ids: [leaf_transpiration, leaf_interception_evaporation, leaf_stomatal_conductance, stem_xylem_transport, root_water_uptake, root_xylem_transport]
+      href: /models/water
+      title: "Water Model"
+relationship_topics: [vegetation_change]
 ---
-
-# Carbon Model Overview
-
-## Conceptual Picture of Processes
-
-{{include:primary-carbon.md}}
 
 ## Alternative viz
 

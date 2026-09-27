@@ -1,17 +1,21 @@
 ---
 title: Water Model
 model: water
-description: Hydrological fluxes and water cycling in RHESSys
+description: Hydrological fluxes and water cycling
 aliases: [hydro, hydrology]
 scale: [plot, patch, stand]
+process_diagram:
+  svg: figures/hydrology_full_diagram.svg
+  coverage: esms/process_coverage.csv
+  links:
+    - process_ids: [leaf_growth, stem_growth, root_growth, growth]
+      href: /models/vegetation-som
+      title: "Dynamic Vegetation and SOM Model"
+# pulls in vegetation_change relationships owned by another model — the
+# vegetation-side response to water availability is as much a water-model
+# relationship as the hydrologic response to vegetation change.
+relationship_topics: [vegetation_change]
 ---
-
-# Water Model Overview
-
-## Conceptual Picture of Processes
-
-{{include:primary-water.md}}
-
 
 ## Alternative viz
 

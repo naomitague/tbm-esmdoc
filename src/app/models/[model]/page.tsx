@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getModelBySlug, getAllModels, getAllModelContent } from '@/lib/models';
-import { getTopicIndex } from '@/lib/topics';
+import { getRelationshipsOfInterest } from '@/lib/topics';
+import { readProcessDiagram } from '@/lib/processDiagram';
 import { Navbar } from '@/components/Navbar';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { MathText } from '@/components/MathText';
 import { ModelTopicOverview } from '@/components/ModelTopicOverview';
 import { ModelMetadata, ContentMetadata } from '@/types';
-import { Droplets, Sprout, FlaskConical, Sun, BarChart3 } from 'lucide-react';
+import { Droplets, Sprout, CloudSun, Sun, BarChart3 } from 'lucide-react';
 
 function getTitle(item: ContentMetadata): string {
   const meta = item.metadata as any;
@@ -24,9 +25,9 @@ interface PageProps {
 
 const modelIcons: Record<string, React.ElementType> = {
   water: Droplets,
-  carbon: Sprout,
-  nitrogen: FlaskConical,
+  'vegetation-som': Sprout,
   energy: Sun,
+  climate: CloudSun,
 };
 
 const colorClasses: Record<string, string> = {
@@ -34,6 +35,7 @@ const colorClasses: Record<string, string> = {
   green: 'bg-emerald-600',
   purple: 'bg-violet-600',
   orange: 'bg-amber-600',
+  slate: 'bg-slate-600',
   gray: 'bg-stone-500',
 };
 
@@ -52,9 +54,16 @@ export default async function ModelPage({ params }: PageProps) {
 
   const metadata = modelContent.metadata as ModelMetadata;
   const allContent = getAllModelContent(modelSlug);
-  const topicIndex = modelSlug === 'water' ? getTopicIndex(modelSlug) : null;
+  const diagram = metadata.processDiagram ? readProcessDiagram(metadata.processDiagram, modelSlug) : null;
+  // Overviews with a process diagram get the diagram + Relationships-of-interest
+  // layout; the rest keep the plain flux/parameter/observation lists.
+  const relationships = diagram ? getRelationshipsOfInterest(modelSlug, metadata.relationshipTopics) : null;
   const bgColor = metadata.color ? colorClasses[metadata.color] : 'bg-stone-500';
   const Icon = modelIcons[modelSlug] || BarChart3;
+  // The diagram layout gets a wider page and a wider main column: the figure
+  // scales to its column, so the extra width is what makes its labels legible.
+  const containerWidth = relationships ? 'max-w-[88rem]' : 'max-w-6xl';
+  const gridColumns = relationships ? 'lg:grid-cols-4' : 'lg:grid-cols-3';
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -62,7 +71,7 @@ export default async function ModelPage({ params }: PageProps) {
 
       {/* Hero */}
       <div className={`${bgColor} text-white py-12`}>
-        <div className="max-w-6xl mx-auto px-4">
+        <div className={`${containerWidth} mx-auto px-4`}>
           <div className="flex items-center gap-4 mb-4">
             <Icon className="w-10 h-10" strokeWidth={1.5} />
             <div>
@@ -90,10 +99,14 @@ export default async function ModelPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {topicIndex ? (
-            <ModelTopicOverview modelSlug={modelSlug} content={modelContent.content} topicIndex={topicIndex} />
+      <div className={`${containerWidth} mx-auto px-4 py-8`}>
+        <div className={`grid ${gridColumns} gap-8`}>
+          {relationships ? (
+            <ModelTopicOverview
+              content={modelContent.content}
+              relationships={relationships}
+              diagram={diagram}
+            />
           ) : (
             <>
               {/* Main Content */}
