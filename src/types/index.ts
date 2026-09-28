@@ -35,6 +35,7 @@ export interface FluxMetadata {
   esmTable?: EsmTableConfig;
   datasetTable?: DatasetTableConfig;
   estimateChart?: EstimateChartConfig;
+  controlsList?: ControlsListConfig;
   conceptDiagram?: ConceptDiagramConfig;
   pageLinks?: PageLinksConfig;
   connections: ModelConnection[];
@@ -80,6 +81,7 @@ export interface ObservationMetadata {
   esmTable?: EsmTableConfig;
   datasetTable?: DatasetTableConfig;
   estimateChart?: EstimateChartConfig;
+  controlsList?: ControlsListConfig;
   conceptDiagram?: ConceptDiagramConfig;
   pageLinks?: PageLinksConfig;
   connections: ModelConnection[];
@@ -168,11 +170,26 @@ export interface DatasetTableColumn {
  * this joins against nothing: the CSV is shown as-is, so it suits reference
  * tables like the global precipitation-products list. See CsvDatasetTable.
  */
+/** One dropdown filter on a `dataset_table`. */
+export interface DatasetTableFilter {
+  column: string;
+  label?: string;
+  /**
+   * Set when a cell holds several values at once (`"water_yield; ET"`): the
+   * dropdown then lists the individual values and a row matches if any of its
+   * values does. Without it a multi-valued cell becomes its own filter option.
+   */
+  separator?: string;
+}
+
 export interface DatasetTableConfig {
   csv: string;
   heading: string;
   title?: string;
   columns: DatasetTableColumn[];
+  /** Several dropdowns, in order. Supersedes `filter_column`; both may not be needed at once. */
+  filters?: DatasetTableFilter[];
+  /** Single-dropdown shorthand, kept for notes that already use it. */
   filter_column?: string;
   filter_label?: string;
   search_columns?: string[];
@@ -224,6 +241,28 @@ export interface EstimateChartConfig {
   row_id_column?: string;
   /** Caption under the figure — typically why some rows aren't plotted. */
   note?: string;
+}
+
+/**
+ * Declared in a note's frontmatter (`controls_list:`) to render a vocabulary
+ * CSV as a grouped, ordered reading list rather than a table — for the
+ * watershed-controls page, where each row carries prose (`definition`,
+ * `why_it_matters`) that reads badly in table cells.
+ *
+ * Column names follow the settled schema in
+ * `patterns/evapotranspiration/examplepapers/hydro_controls_README.md` and are
+ * fixed in `readControlGroups` rather than configurable — the same tradeoff
+ * `trend_data` makes. A second, differently-shaped vocabulary would need them
+ * generalized first.
+ */
+export interface ControlsListConfig {
+  csv: string;
+  /** Evidence table, used only to count rows per control. */
+  evidence_csv?: string;
+  /** Splice point; omit and the list leads the page. */
+  heading?: string;
+  /** Anchor the "n studies" counts link to, e.g. the evidence table's heading id. */
+  evidence_href?: string;
 }
 
 export interface MetricOptionConfig {
@@ -298,6 +337,7 @@ export interface OverviewMetadata {
   esmTable?: EsmTableConfig;
   datasetTable?: DatasetTableConfig;
   estimateChart?: EstimateChartConfig;
+  controlsList?: ControlsListConfig;
   metricResponseData?: MetricResponseDataConfig;
   conceptDiagram?: ConceptDiagramConfig;
   pageLinks?: PageLinksConfig;

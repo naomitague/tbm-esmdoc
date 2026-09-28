@@ -126,6 +126,7 @@ function parseFlux(fileContent: string, slug: string, frontMatter: any): FluxMet
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
     estimateChart: frontMatter.estimate_chart,
+    controlsList: frontMatter.controls_list,
     conceptDiagram: frontMatter.concept_diagram,
     pageLinks: frontMatter.page_links,
     connections
@@ -214,6 +215,7 @@ function parseObservation(fileContent: string, slug: string, frontMatter: any): 
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
     estimateChart: frontMatter.estimate_chart,
+    controlsList: frontMatter.controls_list,
     conceptDiagram: frontMatter.concept_diagram,
     pageLinks: frontMatter.page_links,
     connections
@@ -246,6 +248,7 @@ function parseOverview(fileContent: string, slug: string, frontMatter: any): Ove
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
     estimateChart: frontMatter.estimate_chart,
+    controlsList: frontMatter.controls_list,
     conceptDiagram: frontMatter.concept_diagram,
     pageLinks: frontMatter.page_links,
     metricResponseData: frontMatter.metric_response_data,

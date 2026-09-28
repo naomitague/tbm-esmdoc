@@ -7,7 +7,7 @@ Two CSVs backing `what_shapes_responses.md` (child of the Water cycle response t
 | Column | Meaning |
 |---|---|
 | `control_id` | stable key; joins to the evidence table |
-| `display_order`, `group` | page ordering; groups mirror the concept map (Climate & timing, Disturbance footprint, Vegetation recovery & structure, Topography & surface energy, Snow, Soils & subsurface) |
+| `display_order`, `group` | page ordering; groups mirror the concept map (Climate & timing, Disturbance footprint, Vegetation Pre/Post, Topography & surface energy, Snow, Soils & subsurface) |
 | `label`, `definition`, `why_it_matters` | text shown on the page |
 | `concept_map_node` | node name(s) in `vegetation_hydrology_flow.svg`; `;`-separated |
 | `model_link_type` | `process` · `parameter` · `structure` · `dynamics` · `scenario` · `forcing_scenario` (`;`-separated when mixed). `forcing_scenario` = about experiment design, not model coverage — do not show as a coverage gap |

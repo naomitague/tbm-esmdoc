@@ -275,6 +275,7 @@ function parseFlux(fileContent: string, slug: string, modelSlug: string, frontMa
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
     estimateChart: frontMatter.estimate_chart,
+    controlsList: frontMatter.controls_list,
     conceptDiagram: frontMatter.concept_diagram,
     pageLinks: frontMatter.page_links,
     connections
@@ -361,6 +362,7 @@ function parseObservation(fileContent: string, slug: string, modelSlug: string, 
     esmTable: frontMatter.esm_table,
     datasetTable: frontMatter.dataset_table,
     estimateChart: frontMatter.estimate_chart,
+    controlsList: frontMatter.controls_list,
     conceptDiagram: frontMatter.concept_diagram,
     pageLinks: frontMatter.page_links,
     connections

@@ -3,12 +3,14 @@
 import { useMemo, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
 import { CsvRow } from '@/lib/csv';
-import { DatasetTableColumn } from '@/types';
+import { DatasetTableColumn, DatasetTableFilter } from '@/types';
 
 interface CsvDatasetTableProps {
   rows: CsvRow[];
   columns: DatasetTableColumn[];
-  /** Column whose distinct values become the dropdown filter (e.g. `category`). */
+  /** Dropdown filters, in order. Takes precedence over `filterColumn`. */
+  filters?: DatasetTableFilter[];
+  /** Single-dropdown shorthand, kept for notes that already declare it. */
   filterColumn?: string;
   filterLabel?: string;
   /** Columns the free-text box searches. Defaults to every displayed column. */
@@ -45,9 +47,18 @@ function renderCell(row: CsvRow, col: DatasetTableColumn) {
   return <span>{value}</span>;
 }
 
+/** A cell may hold several values at once ("water_yield; ET") — see DatasetTableFilter.separator. */
+function cellValues(raw: string, separator?: string): string[] {
+  const value = (raw ?? '').trim();
+  if (!value) return [];
+  if (!separator) return [value];
+  return value.split(separator).map(part => part.trim()).filter(Boolean);
+}
+
 export function CsvDatasetTable({
   rows,
   columns,
+  filters,
   filterColumn,
   filterLabel,
   searchColumns,
@@ -57,18 +68,26 @@ export function CsvDatasetTable({
   rowIdColumn,
   rowIdPrefix = 'estimate-',
 }: CsvDatasetTableProps) {
-  const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  // One selection per filter column, keyed by column name; 'all' means no
+  // constraint. The single-column shorthand is normalized into the same shape
+  // so there's only one code path below.
+  const activeFilters = useMemo<DatasetTableFilter[]>(() => {
+    if (filters && filters.length > 0) return filters;
+    return filterColumn ? [{ column: filterColumn, label: filterLabel }] : [];
+  }, [filters, filterColumn, filterLabel]);
+
+  const [selected, setSelected] = useState<Record<string, string>>({});
   const [query, setQuery] = useState<string>('');
 
-  const filterValues = useMemo(() => {
-    if (!filterColumn) return [];
-    const seen = new Set<string>();
-    rows.forEach(row => {
-      const value = (row[filterColumn] ?? '').trim();
-      if (value) seen.add(value);
+  const filterOptions = useMemo(() => {
+    return activeFilters.map(filter => {
+      const seen = new Set<string>();
+      rows.forEach(row => {
+        cellValues(row[filter.column] ?? '', filter.separator).forEach(value => seen.add(value));
+      });
+      return { filter, values: Array.from(seen).sort((a, b) => a.localeCompare(b)) };
     });
-    return Array.from(seen).sort((a, b) => a.localeCompare(b));
-  }, [rows, filterColumn]);
+  }, [rows, activeFilters]);
 
   // Search across whichever columns the note named, falling back to every
   // column actually on screen — searching hidden columns would surface rows
@@ -81,13 +100,18 @@ export function CsvDatasetTable({
   const visibleRows = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return rows.filter(row => {
-      if (filterColumn && selectedFilter !== 'all' && (row[filterColumn] ?? '').trim() !== selectedFilter) {
-        return false;
-      }
+      const passesFilters = activeFilters.every(filter => {
+        const chosen = selected[filter.column];
+        if (!chosen || chosen === 'all') return true;
+        return cellValues(row[filter.column] ?? '', filter.separator).includes(chosen);
+      });
+      if (!passesFilters) return false;
       if (!needle) return true;
       return searchKeys.some(key => (row[key] ?? '').toLowerCase().includes(needle));
     });
-  }, [rows, query, filterColumn, selectedFilter, searchKeys]);
+  }, [rows, query, activeFilters, selected, searchKeys]);
+
+  const anyFilterActive = Object.values(selected).some(value => value && value !== 'all');
 
   if (rows.length === 0 || columns.length === 0) return null;
 
@@ -96,25 +120,32 @@ export function CsvDatasetTable({
       {title && <h4 className="text-sm font-heading text-stone-800 mb-3">{title}</h4>}
 
       <div className="flex flex-wrap items-center gap-3 mb-3">
-        {filterColumn && filterValues.length > 0 && (
-          <div className="flex items-center gap-2">
-            <label htmlFor="dataset-table-filter" className="text-sm font-medium text-stone-600">
-              {filterLabel ?? 'Category'}:
-            </label>
-            <select
-              id="dataset-table-filter"
-              value={selectedFilter}
-              onChange={e => setSelectedFilter(e.target.value)}
-              className="text-sm border border-stone-300 rounded-md px-2 py-1 bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-primary/40"
-            >
-              <option value="all">All ({rows.length})</option>
-              {filterValues.map(value => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
-            </select>
-          </div>
+        {filterOptions.map(({ filter, values }) =>
+          values.length === 0 ? null : (
+            <div key={filter.column} className="flex items-center gap-2">
+              <label
+                htmlFor={`dataset-filter-${filter.column}`}
+                className="text-sm font-medium text-stone-600"
+              >
+                {filter.label ?? filter.column}:
+              </label>
+              <select
+                id={`dataset-filter-${filter.column}`}
+                value={selected[filter.column] ?? 'all'}
+                onChange={e =>
+                  setSelected(prev => ({ ...prev, [filter.column]: e.target.value }))
+                }
+                className="text-sm border border-stone-300 rounded-md px-2 py-1 bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-primary/40"
+              >
+                <option value="all">All</option>
+                {values.map(value => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )
         )}
 
         <input
@@ -125,12 +156,12 @@ export function CsvDatasetTable({
           className="text-sm border border-stone-300 rounded-md px-2 py-1 bg-white text-stone-800 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-primary/40 min-w-[14rem] flex-1 max-w-xs"
         />
 
-        {(query || selectedFilter !== 'all') && (
+        {(query || anyFilterActive) && (
           <button
             type="button"
             onClick={() => {
               setQuery('');
-              setSelectedFilter('all');
+              setSelected({});
             }}
             className="text-xs text-stone-500 hover:text-primary underline"
           >

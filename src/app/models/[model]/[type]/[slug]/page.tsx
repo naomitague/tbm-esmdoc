@@ -7,6 +7,7 @@ import { readEsmTable } from '@/lib/esm';
 import { readConceptDiagram } from '@/lib/conceptDiagram';
 import { readCsvRows } from '@/lib/csv';
 import { getEstimateSeries } from '@/lib/csvEstimates';
+import { readControlGroups } from '@/lib/controlsList';
 import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
 import { getTopicIndex } from '@/lib/topics';
 import { Navbar } from '@/components/Navbar';
@@ -14,6 +15,7 @@ import { MarkdownContent } from '@/components/MarkdownContent';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { CsvDatasetTable } from '@/components/CsvDatasetTable';
 import { CsvEstimateStrip } from '@/components/CsvEstimateStrip';
+import { ControlsList } from '@/components/ControlsList';
 import { ConceptDiagram } from '@/components/ConceptDiagram';
 import { PageLinks } from '@/components/PageLinks';
 import { PageOutline } from '@/components/PageOutline';
@@ -130,6 +132,7 @@ export default async function ContentPage({ params }: PageProps) {
         <CsvDatasetTable
           rows={readCsvRows(datasetTable.csv)}
           columns={datasetTable.columns}
+          filters={datasetTable.filters}
           filterColumn={datasetTable.filter_column}
           filterLabel={datasetTable.filter_label}
           searchColumns={datasetTable.search_columns}
@@ -140,6 +143,18 @@ export default async function ContentPage({ params }: PageProps) {
         />
       ),
     });
+  }
+
+  // Components that declare no heading lead the page, ahead of the markdown —
+  // the same slot the /wiki route gives them, so behaviour doesn't diverge.
+  const leadingNodes: React.ReactNode[] = [];
+
+  const controlsList = meta.controlsList;
+  if (controlsList) {
+    const controlGroups = readControlGroups(controlsList);
+    const controlsNode = <ControlsList groups={controlGroups} evidenceHref={controlsList.evidence_href} />;
+    if (controlsList.heading) injections.push({ heading: controlsList.heading, node: controlsNode });
+    else leadingNodes.push(<Fragment key="controls-list">{controlsNode}</Fragment>);
   }
 
   const pageLinks = meta.pageLinks;
@@ -228,6 +243,7 @@ export default async function ContentPage({ params }: PageProps) {
 
               <div className="wiki-content">
                 {conceptDiagram && !conceptDiagram.heading && conceptDiagramNode}
+                {leadingNodes}
                 {contentSegments ? (
                   contentSegments.map((segment, i) => (
                     <Fragment key={i}>

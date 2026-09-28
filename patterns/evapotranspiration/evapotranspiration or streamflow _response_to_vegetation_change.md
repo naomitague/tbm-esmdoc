@@ -28,12 +28,15 @@ related_content:
 page_links:
   # sidebar-only: these live in the left panel, not spliced into the body
   sidebar: true
-  sidebar_title: "Worked syntheses"
+  sidebar_title: "Details"
   items:
     - label: "Watershed studies of disturbance effects on hydrology"
       href: /wiki/watershed_disturbance_synthesis
     - label: "Global vegetation change and ET"
       href: /wiki/global_vegetation_change_et
+    - label: "What Shapes Responses"
+      href: /wiki/what_shapes_responses
+      description: "Watershed controls on how hydrology responds"
 concept_diagram:
   svg: figures/vegetation_hydrology_flow.svg
   text_scale: 1.25

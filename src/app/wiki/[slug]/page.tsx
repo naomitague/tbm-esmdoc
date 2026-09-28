@@ -5,6 +5,7 @@ import { getContentBySlug, getAllSlugs } from '@/lib/markdown';
 import { getAllModels } from '@/lib/models';
 import { readCsvRows } from '@/lib/csv';
 import { getEstimateSeries } from '@/lib/csvEstimates';
+import { readControlGroups } from '@/lib/controlsList';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { Sidebar } from '@/components/Sidebar';
 import { PageOutline } from '@/components/PageOutline';
@@ -16,6 +17,7 @@ import { TrendComparisonExplorer } from '@/components/TrendComparisonExplorer';
 import { EsmMethodTable } from '@/components/EsmMethodTable';
 import { CsvDatasetTable } from '@/components/CsvDatasetTable';
 import { CsvEstimateStrip } from '@/components/CsvEstimateStrip';
+import { ControlsList } from '@/components/ControlsList';
 import { MetricResponseExplorer } from '@/components/MetricResponseExplorer';
 import { UsefulTechniques } from '@/components/UsefulTechniques';
 import { ConceptDiagram } from '@/components/ConceptDiagram';
@@ -138,6 +140,7 @@ export default async function WikiPage({ params }: PageProps) {
         <CsvDatasetTable
           rows={readCsvRows(datasetTable.csv)}
           columns={datasetTable.columns}
+          filters={datasetTable.filters}
           filterColumn={datasetTable.filter_column}
           filterLabel={datasetTable.filter_label}
           searchColumns={datasetTable.search_columns}
@@ -177,6 +180,14 @@ export default async function WikiPage({ params }: PageProps) {
       if (section.heading) injections.push({ heading: section.heading, node });
       else leadingNodes.push(<Fragment key={`metric-${i}`}>{node}</Fragment>);
     });
+  }
+
+  const controlsList = 'controlsList' in content.metadata ? content.metadata.controlsList : undefined;
+  if (controlsList) {
+    const controlGroups = readControlGroups(controlsList);
+    const controlsNode = <ControlsList groups={controlGroups} evidenceHref={controlsList.evidence_href} />;
+    if (controlsList.heading) injections.push({ heading: controlsList.heading, node: controlsNode });
+    else leadingNodes.push(<Fragment key="controls-list">{controlsNode}</Fragment>);
   }
 
   const pageLinks = 'pageLinks' in content.metadata ? content.metadata.pageLinks : undefined;
