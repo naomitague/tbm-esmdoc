@@ -1,12 +1,36 @@
 # Heliopause / tbm-esmdoc — state snapshot
 
-_Snapshot date: 2026-09-24. Written for a collaborator without repo access._
+_Snapshot date: 2026-09-28. Written for a collaborator without repo access._
 
 A Next.js 16 (App Router, React 19, TypeScript, Tailwind) site that renders a vault of
 Obsidian-style markdown notes — biophysical model documentation, cross-cutting
 pattern/relationship pages, and a comparison registry of Earth System Models — as a
 cross-linked wiki with CSV-backed interactive tables, charts and clickable diagrams.
 Package manager `pnpm`; `pnpm dev` / `pnpm build`. **No test suite exists.**
+
+### Changes since the 2026-09-24 snapshot
+
+All in the **controls vocabulary** (`hydro_controls.csv`, behind `/wiki/what_shapes_responses`);
+no code or schema changed.
+
+- Group **"Vegetation recovery & structure" → "Vegetation Pre/Post"** (4 controls), and two of
+  its labels: "Recovery rate and growth release" → **"Post change growth"**, "Fine-scale canopy
+  structure and density" → **"Pre-disturbance canopy structure and composition"**.
+- **"Rain-snow regime" moved from Climate & timing into Snow.** Climate & timing is now 2
+  controls, Snow 4.
+- The old "Subcanopy evaporation and snowpack sublimation" control was repurposed into
+  **"Soil Evaporation"** under Soils & subsurface (same `control_id`), and a new Snow control
+  **"Snow melt, accumulation and sublimation"** was added.
+- **`display_order` renumbered 1–18, contiguous, in group order.** It had a blank and a
+  duplicate, which mattered more than it looks: `readControlGroups` sorts with
+  `parseFloat(display_order) || 0` and takes group order from first appearance, so the blank row
+  sorted to the very top of the page and the stale `11` pulled Soils & subsurface ahead of Snow.
+- Repairs to the new Snow row: `control_id` `snow accumulation adn melt` →
+  `snow_accumulation_melt` (it is the join key into the evidence CSV, so as written no evidence
+  row could ever match it); `concept_map_node` and `process_ids` were comma-separated where the
+  parser splits on `;` only, collapsing several values into one; `interception_throughfall` →
+  `vegetation_interception_throughfall`; `snow_accumulation` and `snow_sublimation` added. All
+  seven ids verified against `process_coverage.csv`.
 
 ## 1. Directory tree
 
@@ -19,7 +43,7 @@ models/            water, vegetation-som, energy, climate — one folder per mod
   water/fluxes/tabledata/    per-flux ESM method CSVs
   water/observations/tables/ reference-table CSVs
 patterns/          cross-cutting pages, grouped by topic folder
-  evapotranspiration/        12 notes + examplepapers/ (literature CSVs + README)
+  evapotranspiration/        13 notes + examplepapers/ (literature CSVs + README)
   water_limitation/          1 note (new, stub)
   surfacewater_N/            empty placeholder folder
 esms/              shared ESM registry (3 CSVs) — see §2
@@ -76,6 +100,8 @@ canopy fractions" | Fisher et al. 2018 (FATES) | Fisher & Koven 2020 Fig 2a`
 | `…/veg_hydro_response_syn.csv` | 8 | one row per synthesis/meta-analysis result; 27 cols |
 | `…/et_trend_comparison.csv` | 29 | one row per published ET-trend estimate; 10 cols |
 | `…/global_veg_greening_hydro.csv` | 4 | global greening→hydrology attributions; 12 cols |
+| `…/hydro_controls.csv` | 18 | one row per control on the disturbance→hydrology response; 12 cols |
+| `…/hydro_controls_evidence.csv` | 37 | one row per published finding, tagged to a control; 23 cols |
 | `models/water/observations/tables/precipitation_datasets_summary.csv` | 29 | precipitation product inventory; 19 cols |
 | `model-techniques/pft_reference.csv` | 16 | PFT lookup; 8 cols. **Not wired to any page yet.** |
 
@@ -103,6 +129,18 @@ some shared catchments, and that disagreement is data.
 **`global_veg_greening_hydro.csv`** — 4 rows. Three report a share of the ET trend attributable
 to greening (39 %, 62 %, 55 % [30–80]); the fourth reports only R = 0.39 and so has a blank
 `Attribution Percent` and is deliberately not plotted.
+
+**`hydro_controls.csv`** — the controls vocabulary behind `/wiki/what_shapes_responses`: what
+makes the hydrologic response to a disturbance differ from place to place. `control_id |
+display_order | group | label | definition | why_it_matters | concept_map_node | model_link_type
+| model_representation_needed | process_ids | process_id_status | notes`. Six groups, rendered in
+`display_order` (not alphabetically): **Climate & timing** (2), **Disturbance footprint** (2),
+**Vegetation Pre/Post** (4), **Topography & surface energy** (1), **Snow** (4), **Soils &
+subsurface** (5). `process_ids` is `;`-separated and joins `process_coverage.csv`
+(`process_id_status`: mapped 14, needs_new_id 3, not_applicable 1) — note that **`;` is the only
+separator the parser splits on**, so a comma-separated list silently becomes one value.
+`hydro_controls_evidence.csv` joins back on `control_id`, and its row count per control is what
+the page shows as that control's evidence count (0 is displayed, not hidden).
 
 ## 4. Frontend
 
@@ -150,9 +188,11 @@ markdown up to that heading, inserts the React component, then renders the rest.
 string that doesn't match the body doesn't error — the component silently doesn't appear.
 *This is the first thing to check when something "isn't showing up."*
 
-Eight such keys exist. Current users: `histogram_data` (7 notes), `trend_data` (1),
-`esm_table` (1), `dataset_table` (2), `estimate_chart` (1), `metric_response_data` (1),
-`process_diagram` (2 model indexes), `concept_diagram` (1), `page_links` (1).
+Ten such keys exist. Current users: `histogram_data` (7 notes), `trend_data` (1),
+`esm_table` (1), `dataset_table` (3), `estimate_chart` (1), `metric_response_data` (1),
+`process_diagram` (2 model indexes), `concept_diagram` (1), `page_links` (1),
+`controls_list` (1 — `what_shapes_responses.md`, rendering `hydro_controls.csv` grouped, with
+each control's evidence count linked to the evidence table lower on the same page).
 
 ## 6. Diagrams
 
@@ -194,6 +234,11 @@ the concept figure uses 1.25) rather than in the SVGs, so it survives regenerati
   merged); the redirects live in `next.config.ts`.
 - **`patterns/surfacewater_N/` is an empty folder.** `specificESMs/RHESSys/` and several
   `model-techniques/` notes are near-empty.
+- **Five evidence rows still point at `subcanopy_evaporation_sublimation`**, the control that is
+  now labelled "Soil Evaporation" under Soils & subsurface. Some of that evidence is about
+  snowpack sublimation and probably belongs on the new Snow control instead; re-pointing it is a
+  content call NT is reviewing. Three controls currently have no evidence rows at all:
+  `snow_accumulation_melt`, `disturbance_extent_position`, `post_fire_soil_change`.
 - `pft_reference.csv` is written but not read by anything.
 - `process_coverage.csv`'s per-version override mechanism is specified but unused and unread.
 - `/about`, `/profile`, `/settings` are UI shells; `/api/sidebar`'s `variables` is a stub.

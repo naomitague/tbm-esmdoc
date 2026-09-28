@@ -1,3 +1,7 @@
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+
 overrides:
   "@types/react": "19.0.10"
   "@types/react-dom": "19.0.4"
