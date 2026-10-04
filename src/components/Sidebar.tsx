@@ -55,6 +55,7 @@ export function Sidebar({ currentSlug, contentType }: SidebarProps) {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        data-floating-fab
         className="lg:hidden fixed bottom-4 right-4 z-50 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-dark transition-colors"
         aria-label="Toggle sidebar"
       >

@@ -544,3 +544,50 @@ export interface ModelCard {
   parameterCount: number;
   observationCount: number;
 }
+
+/**
+ * One step of a tour: open this page, do this, notice that. Parsed out of a
+ * `tours/*.md` script by `src/lib/tours.ts` rather than declared in
+ * frontmatter — the scripts are written as plain markdown and stay readable
+ * on their own.
+ */
+export interface TourStep {
+  /** 1-based, as shown in the tour bar ("Step 3 of 8"). */
+  index: number;
+  title: string;
+  /** The page this step sends the reader to; absent when the step has no usable `**Page:**` link. */
+  href?: string;
+  linkLabel?: string;
+  do?: string;
+  notice?: string;
+  /** `> **Prototype note:** …` — what isn't built yet. */
+  note?: string;
+  /** The whole step section's markdown, for rendering on the tour page. */
+  body: string;
+}
+
+export interface Tour {
+  /** `tour_id` frontmatter — the URL segment, e.g. `/tours/reviewer`. */
+  id: string;
+  /** Filename slug, kept so the old `/wiki/<slug>` URLs can redirect here. */
+  slug: string;
+  title: string;
+  order: number;
+  status?: string;
+  question?: string;
+  who?: string;
+  priority?: boolean;
+  /** Markdown before the first step (minus the body's own H1, which the page renders itself). */
+  intro: string;
+  steps: TourStep[];
+  /** Closing sections — "What you leave with", "What's not here yet", … */
+  outro: { heading: string; body: string }[];
+}
+
+/** What the client gets: the menu needs titles, the tour bar needs each step's text and target. */
+export interface TourSummary {
+  id: string;
+  title: string;
+  who?: string;
+  steps: Pick<TourStep, 'index' | 'title' | 'href' | 'do' | 'notice'>[];
+}

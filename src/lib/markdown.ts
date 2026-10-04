@@ -270,7 +270,19 @@ export function getAllMarkdownFiles(dir: string = contentDirectory, fileList: st
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
 
-    if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules' && file !== 'src') {
+    // The top-level `tours/` is parsed into steps by src/lib/tours.ts and
+    // rendered at /tours/<tour_id>, so it is deliberately not a wiki note —
+    // leaving it in would publish each tour twice and list them beside README
+    // in the sidebar. Matched against the path relative to the vault root, so
+    // this skips only that directory and not, say, `patterns/<topic>/tours/`.
+    const relative = path.relative(contentDirectory, filePath);
+    if (
+      stat.isDirectory() &&
+      !file.startsWith('.') &&
+      file !== 'node_modules' &&
+      file !== 'src' &&
+      relative !== 'tours'
+    ) {
       getAllMarkdownFiles(filePath, fileList);
     } else if (file.endsWith('.md') && !file.startsWith('.')) {
       fileList.push(filePath);

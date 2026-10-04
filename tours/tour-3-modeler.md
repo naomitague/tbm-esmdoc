@@ -5,11 +5,6 @@ order: 3
 status: draft
 question: "I want to simulate how thinning and other fuel treatments change water yield. Which model can do it, and what do I need to check?"
 who: "A researcher comfortable with models who needs to choose one, or to know where their current model falls short, before investing months of work."
-links_to_check:
-  - "Global ET trends page name"
-  - "Vegetation model page name"
-  - "Water model page name"
-  - "Precipitation products page name"
 ---
 
 # Tour 3: Modeler assessing fuel treatments
@@ -20,8 +15,7 @@ links_to_check:
 
 ## Step 1: Get the overview
 
-
-**Page:** [[Home]]
+**Page:** [Home](/)
 
 **Do:** Click **Water Model**.
 
@@ -29,15 +23,17 @@ links_to_check:
 
 > **Prototype note:** Later, a chat box could take a question right to the water cycle response to vegetation change page.
 
-**Page:** [[Water cycle response to vegetation change]]
+## Step 2: See the whole system
+
+**Page:** [Water cycle response to vegetation change](/wiki/evapotranspiration_or_streamflow__response_to_vegetation_change)
 
 **Do:** Look over the concept map and the questions on the right.
 
 **Notice:** All the processes a fuel-treatment simulation would at least need to consider.
 
-## Step 2: Find the factors thinning acts on
+## Step 3: Find the factors thinning acts on
 
-**Page:** [[What shapes responses]]
+**Page:** [What shapes responses](/wiki/what_shapes_responses)
 
 **Do:** Look for the factors that thinning changes: canopy structure before treatment, regrowth after treatment, snow processes and soil evaporation.
 
@@ -45,33 +41,33 @@ links_to_check:
 
 > **Prototype note:** Check whether the page shows what a model needs to represent for each factor, or only stores it.
 
-## Step 3: See how much models disagree
+## Step 4: See how much models disagree
 
-**Page:** [[Global ET trends]]
+**Page:** [Global ET trends](/wiki/evapotranspiration_patterns_global)
 
 **Do:** Filter the published estimates to model-based results.
 
 **Notice:** Several of the models on the following pages appear here, and their estimates of global evapotranspiration trends differ. That's a reminder of why process representation matters.
 
-## Step 4: The vegetation side
+## Step 5: The vegetation side
 
-**Page:** [[Vegetation model]]
+**Page:** [Vegetation model](/models/vegetation-som)
 
 **Do:** Choose a model from the menu, then switch between models to compare how they represent canopy structure and composition.
 
 **Notice:** Each box shades by whether the model represents that process: yes, partial, no, or needs verification.
 
-## Step 5: The water side, same model
+## Step 6: The water side, same model
 
-**Page:** [[Water model]]
+**Page:** [Water model](/models/water)
 
 **Do:** Keep the same model selected. Check the processes thinning changes most: interception, snow under the canopy, transpiration and soil evaporation.
 
 **Notice:** A model can be strong on one page and weak on the other. Thinning effects depend on both.
 
-## Step 6: Compare how models calculate evapotranspiration
+## Step 7: Compare how models calculate evapotranspiration
 
-**Page:** [[Evapotranspiration]]
+**Page:** [Evapotranspiration](/models/water/fluxes/process_evapotranspiration)
 
 **Do:** Scroll to the model comparison table.
 
@@ -79,17 +75,17 @@ links_to_check:
 
 > **Prototype note:** Equivalent tables for transpiration and soil evaporation don't exist yet.
 
-## Step 7: Choose input data
+## Step 8: Choose input data
 
-**Page:** [[Precipitation products]]
+**Page:** [Precipitation products](/models/water/observations/obs_precip)
 
 **Do:** Compare the 29 precipitation products by type and coverage.
 
 **Notice:** The choice of climate inputs can matter as much as the model for small differences like treatment effects.
 
-## Step 8: Find data to test against
+## Step 9: Find data to test against
 
-**Page:** [[Watershed studies of disturbance effects on hydrology]]
+**Page:** [Watershed studies of disturbance effects on hydrology](/wiki/watershed_disturbance_synthesis)
 
 **Do:** Narrow to thinning and harvest studies.
 

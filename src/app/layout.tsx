@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { TourProvider } from '@/components/TourProvider';
+import { getTourSummaries } from '@/lib/tours';
 
 export const metadata: Metadata = {
   title: 'RHESSys Documentation',
@@ -21,7 +23,11 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased bg-stone-50 text-stone-800">{children}</body>
+      {/* The tour summaries are read here, once, so both the Navbar menu and
+          the tour bar can use them without every page passing them down. */}
+      <body className="antialiased bg-stone-50 text-stone-800">
+        <TourProvider tours={getTourSummaries()}>{children}</TourProvider>
+      </body>
     </html>
   );
 }

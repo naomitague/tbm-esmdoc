@@ -35,6 +35,8 @@ esms/                             # shared ESM registry, joined into every esm_t
                                    # — drives the model-overview process diagrams (see process_diagram)
 figures/                          # model-overview diagram SVGs (boxes tagged data-process-id(s))
 
+tours/                            # guided walkthroughs of the site (see "Tours" below) — parsed
+                                   # into steps, rendered at /tours, NOT wiki notes
 specificESMs/<Model>/             # narrative writeups of one specific ESM's implementation
 Templates/                        # one template per content type; new notes should follow the
                                    # matching template (e.g. models/water/fluxes/*.md ~ Templates/Flux-Template.md)
@@ -100,6 +102,10 @@ No test suite exists yet. See `QUICKSTART.md` for local setup from scratch.
 /wiki/<slug>                                   # any note by slug — patterns/relationships live only
                                                 # here; fluxes/parameters/observations are ALSO reachable
                                                 # here (see the dual-parser gotcha below)
+/tours                                         # index of the guided walkthroughs
+/tours/<tour_id>                               # one tour: its steps, and where each one goes
+/wiki/tour-*                                   # redirect to /tours/<tour_id> (tours used to be
+                                                # picked up by the wiki scanner)
 /esms                                          # the shared ESM registry (esm_model.csv + versions)
 /patterns/et-observations                      # standalone example of a full CSV browsing page (not
                                                 # spliced into a note — built as its own route instead)
@@ -127,6 +133,17 @@ No test suite exists yet. See `QUICKSTART.md` for local setup from scratch.
 3. Wire up `histogram_data` / `trend_data` / `esm_table` if it needs
    interactive tables/charts (see below) — remember the heading-text-must-
    match-exactly rule.
+
+**A new tour:**
+1. Create `tours/<name>.md` with `title`, `tour_id` (the URL segment), `order`, and optionally
+   `status`, `question`, `who`.
+2. Write the body as `## Step N: <label>` sections, each with `**Page:** [Label](/href)`,
+   `**Do:** …`, `**Notice:** …`, and optionally `> **Prototype note:** …`. Trailing `##` sections
+   (e.g. "What you leave with") render after the steps; `## Notes for us` is parsed but kept off
+   the public page.
+3. It's picked up automatically — `getAllTours()` scans the directory, and the menu bar's Tours
+   dropdown, `/tours` and `/tours/<tour_id>` all follow. Add a redirect in `next.config.ts` only
+   if the tour previously lived at a `/wiki/` URL.
 
 **A new model** (e.g. "soil") — three separate places need updating, only one
 of which is content:
@@ -467,6 +484,29 @@ already caused one real bug: `esm_table` was wired into `markdown.ts` but
 not `models.ts`, so the ESM table rendered at `/wiki/process_evapotranspiration`
 but not at `/models/water/fluxes/process_evapotranspiration` — which is the
 one users actually land on by clicking through the site.
+
+## Tours
+
+Walkthroughs that step a reader through the site itself — "open this page, do this, notice that"
+— one per kind of reader. Unlike every other note, a tour is **not** rendered as a markdown page:
+`src/lib/tours.ts` parses `tours/*.md` into `Tour` / `TourStep` (see `src/types/index.ts`) and the
+`/tours` routes render that structure.
+
+- **Parsed, not declared.** Steps come from the markdown (`## Step N:` + `**Page:**` / `**Do:**` /
+  `**Notice:**`), so tours stay readable as plain documents. Parsing is deliberately tolerant: a
+  step with no usable `**Page:**` link just has no target, it isn't an error.
+- **`tours/` is excluded from the wiki scanner** (`getAllMarkdownFiles` in `markdown.ts`), so a
+  tour is not reachable at `/wiki/<slug>` and a `[[wikilink]]` pointing at one will dead-end.
+- **The tour bar** (`src/components/TourBar.tsx`) is mounted for every route by `TourProvider` in
+  `src/app/layout.tsx` — including `/wiki/[slug]`, which renders its own header and no `Navbar`.
+  It carries the current step's Do/Notice plus Prev/Next/Exit while the reader is on the real page.
+- **How the active tour survives navigation**: `?tour=<id>&step=<n>` is only the entry point (what
+  the tour page's links carry, and what makes a step shareable). The tour itself is held in
+  `sessionStorage`, because steps tell the reader to click links on the page they land on — a
+  URL-only approach would drop the tour at the first such click.
+- Step `**Page:**` targets should be the route the site's own navigation uses
+  (`/models/water/fluxes/process_evapotranspiration`), not the `/wiki/` twin — write those as plain
+  markdown links, since a wikilink always resolves to `/wiki/<slug>`.
 
 ## Tagging protocol: `topic` / `kind` / `model`
 - **`topic: [tag1, tag2]`** — on flux/parameter/observation notes *and* on

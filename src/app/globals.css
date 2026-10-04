@@ -493,3 +493,10 @@ h1, h2, h3, h4, h5, h6 {
 .dataset-table tr:target {
   scroll-margin-top: 5rem;
 }
+
+/* The guided-tour bar is fixed to the bottom of the viewport; lift any floating
+   button clear of it while a tour is running (the bar adds its own spacer for
+   page content). Set by TourBar. */
+body.tour-active [data-floating-fab] {
+  bottom: 9rem;
+}

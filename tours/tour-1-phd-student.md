@@ -5,12 +5,6 @@ order: 1
 status: draft
 question: "Forests in my region are changing. What impact does that have on the water cycle, and what should I be reading?"
 who: "An early-career researcher who knows their region but not yet the vegetation–water literature. Needs orientation more than answers."
-links_to_check:
-  - "Global ET trends page name"
-  - "Measuring evapotranspiration page name"
-  - "Vegetation model page name"
-  - "Water model page name"
-  - "Hydro-to-veg page name"
 ---
 
 # Tour 1: PhD student exploring their region
@@ -21,7 +15,7 @@ links_to_check:
 
 ## Step 1: Start on the home page 
 
-**Page:** [[Home]]
+**Page:** [Home](/)
 
 **Do:** Click **Water Model**.
 
@@ -31,7 +25,7 @@ links_to_check:
 
 ## Step 2: See the whole system
 
-**Page:** [[Water cycle response to vegetation change]]
+**Page:** [Water cycle response to vegetation change](/wiki/evapotranspiration_or_streamflow__response_to_vegetation_change)
 
 **Do:** Find this page under **Relationships**. Click the boxes on the concept map that match what's happening in your region.
 
@@ -39,7 +33,7 @@ links_to_check:
 
 ## Step 3: Zoom out to the global picture
 
-**Page:** [[Global ET trends]]
+**Page:** [Global ET trends](/wiki/evapotranspiration_patterns_global)
 
 **Do:** Look at the spread of published estimates of evapotranspiration trends. Filter by method and time period.
 
@@ -47,7 +41,7 @@ links_to_check:
 
 ## Step 4: Zoom in to watershed studies
 
-**Page:** [[Watershed studies of disturbance effects on hydrology]]
+**Page:** [Watershed studies of disturbance effects on hydrology](/wiki/watershed_disturbance_synthesis)
 
 **Do:** Filter to climates (so a PhD student in a given region can focus) and to the response you care about, such as evapotranspiration. Click a bar in the histogram to see the studies behind it.
 
@@ -57,7 +51,7 @@ links_to_check:
 
 ## Step 5: Find out why responses differ
 
-**Page:** [[What shapes responses]]
+**Page:** [What shapes responses](/wiki/what_shapes_responses)
 
 **Do:** Read through the 18 factors in six groups. Pick ones that apply in your region, so here click on snow - notice the topics (this is the kind of thing you'd see in a review paper = the different explanations for why behavior varies) and links to study - click on a study to see the citation
 
@@ -66,7 +60,7 @@ links_to_check:
 **Prototype note:** I just took a few studies for examples - this is where experts could start adding
 ## Step 6: Look at one process up close
 
-**Page:** [[Evapotranspiration]]
+**Page:** [Evapotranspiration](/models/water/fluxes/process_evapotranspiration)
 
 **Do:** Read about the parts of the flux and the basic physics. Scroll to the table comparing how different land surface models calculate it.
 
@@ -76,7 +70,7 @@ links_to_check:
 
 ## Step 7: See how it's measured
 
-**Page:** [[Measuring evapotranspiration]]
+**Page:** [Measuring evapotranspiration](/models/water/observations/obs_et)
 
 **Do:** Read how evapotranspiration is measured and what the main limitations are.
 
@@ -86,7 +80,7 @@ links_to_check:
 
 ## Step 8: Which models capture what matters? The vegetation side
 
-**Page:** [[Vegetation model]]
+**Page:** [Vegetation model](/models/vegetation-som)
 
 **Do:** Choose a model from the menu. Check whether it represents the vegetation processes behind the factor you care most about from step 5.
 
@@ -94,7 +88,7 @@ links_to_check:
 
 ## Step 9: The same model, the water side
 
-**Page:** [[Water model]]
+**Page:** [Water model](/models/water)
 
 **Do:** Keep the same model selected and check the water processes linked to your factor.
 
@@ -102,7 +96,7 @@ links_to_check:
 
 ## Step 10: The reverse direction
 
-**Page:** [[Hydro to veg]]
+**Page:** [Vegetation response to water availability](/wiki/vegetation_response_to_water_availability)
 
 **Do:** Return to the concept map and follow the arrow from water back to vegetation.
 
