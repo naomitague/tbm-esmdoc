@@ -54,28 +54,13 @@ concept_diagram:
       href: /models/water/fluxes/process_evapotranspiration
       title: "Evapotranspiration"
       type: flux
-    - process_ids: [leaf_transpiration, leaf_interception_evaporation, soil_evaporation, litter_evaporation]
-      href: /wiki/annual_et_response_to_vegetation_change
-      title: "Annual ET response to vegetation change"
-    - process_ids: [leaf_interception_evaporation]
-      href: /wiki/interception_loss_response_to_vegetation_change
-      title: "Interception loss response to vegetation change"
     - process_ids: [soil_water_storage, soil_macropore_flow, lateral_shallow_subsurface, lateral_groundwater]
-      href: /wiki/soil_moisture_change_response_to_vegetation_change
-      title: "Soil moisture response to vegetation change"
-    - process_ids: [soil_water_storage]
-      href: /models/water/observations/obs_soil_moisture
-      title: "Measuring soil moisture"
-      type: observation
+      href: /models/water/parameters/subsurface-moisture-root-accessible
+      title: "Root-accessible subsurface moisture"
+      type: parameter
     - process_ids: [river_channel_flow, river_hyporheic_flow, river_large_waterbody_mixing, lateral_surface]
       href: /wiki/annual_streamflow_response_to_vegetation_change
       title: "Annual streamflow response to vegetation change"
-    - process_ids: [river_channel_flow, river_hyporheic_flow, river_large_waterbody_mixing, lateral_surface]
-      href: /wiki/peak_flow_response_to_vegetation_change
-      title: "Peak flow response to vegetation change"
-    - process_ids: [river_channel_flow, river_hyporheic_flow, river_large_waterbody_mixing, lateral_surface]
-      href: /wiki/low_flow_response_to_vegetation_change
-      title: "Low flow response to vegetation change"
     # the upward "hydro to veg" arrow inside the two-way arrow
     - process_ids: [veg_response_to_water]
       href: /wiki/vegetation_response_to_water_availability

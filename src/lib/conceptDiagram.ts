@@ -47,14 +47,18 @@ export function readConceptDiagram(config: ConceptDiagramConfig): ConceptDiagram
     addPages(model.slug, content.observations, 'observation', 'observations');
   });
 
-  // Author-declared box → page links (`concept_diagram.links`), e.g. the
-  // Stream / river flow box → the per-metric streamflow response pages.
+  // Author-declared box → page links (`concept_diagram.links`). A declared
+  // link is authoritative for the box it names: `declared` makes the renderer
+  // drop that box's auto-resolved pages, so declaring one destination means the
+  // box navigates straight there rather than opening a picker because some
+  // note happens to claim one of its process_ids.
   (config.links ?? []).forEach(link => {
     link.process_ids.forEach(id => {
       (pages[id] ??= []).push({
         href: link.href,
         title: link.title || link.href,
         type: link.type || 'page',
+        declared: true,
       });
     });
   });

@@ -415,6 +415,8 @@ export interface ProcessPageLink {
   title: string;
   /** `page` is a plain author-declared destination (a pattern/relationship page, say); the rest say what kind of note was resolved. */
   type: 'flux' | 'parameter' | 'observation' | 'model' | 'page';
+  /** Came from a `concept_diagram.links` entry rather than from a note's `process_ids` — such a link is the box's only destination. */
+  declared?: boolean;
 }
 
 export interface ProcessDiagramData {

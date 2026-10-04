@@ -23,6 +23,12 @@ function boxProcessIds(box: Element): string[] {
   return ids.split(',').map(id => id.trim()).filter(Boolean);
 }
 
+/**
+ * The pages a box offers. A box with any author-declared link (`links:` in
+ * frontmatter) shows only those: the declaration is the answer to "where does
+ * this box go", and the pages that merely claim one of its `process_ids` would
+ * otherwise turn a deliberate single destination back into a picker.
+ */
 function pagesForIds(data: ConceptDiagramData, ids: string[]): ProcessPageLink[] {
   const seen = new Set<string>();
   const links: ProcessPageLink[] = [];
@@ -33,7 +39,7 @@ function pagesForIds(data: ConceptDiagramData, ids: string[]): ProcessPageLink[]
       links.push(link);
     })
   );
-  return links;
+  return links.some(link => link.declared) ? links.filter(link => link.declared) : links;
 }
 
 /** A box's own label, straight off the figure — the concept diagram has no coverage CSV to name its processes from. */

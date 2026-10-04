@@ -406,6 +406,13 @@ claim. Differences from `process_diagram`:
 - A box exactly one page claims navigates there; a box several pages claim
   opens a picker below the figure; a box nothing claims is left as inert
   artwork (`data-inert="true"`, styled in `globals.css`).
+- **A declared `links:` entry is authoritative for the box it names**: where a
+  box has one, that box's auto-resolved `process_ids` pages are dropped, so it
+  navigates straight to the declared page instead of opening a picker because
+  some note happens to claim one of its ids. One `links:` entry per box =
+  one destination per box, which is how the water-cycle hub figure is set up
+  (its Evapotranspiration box goes to the ET flux page, and that page fans out
+  to transpiration/soil evaporation rather than the figure doing it).
 - `links:` is how sibling pattern/relationship pages get onto the figure — no
   `process_ids` frontmatter would ever claim them.
 Loaded by `src/lib/conceptDiagram.ts`, rendered by
