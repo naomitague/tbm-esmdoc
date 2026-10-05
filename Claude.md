@@ -37,6 +37,8 @@ figures/                          # model-overview diagram SVGs (boxes tagged da
 
 tours/                            # guided walkthroughs of the site (see "Tours" below) — parsed
                                    # into steps, rendered at /tours, NOT wiki notes
+site/                             # markdown for the site's own chrome pages (about.md → /about);
+                                   # read by src/lib/sitePages.ts, NOT wiki notes
 specificESMs/<Model>/             # narrative writeups of one specific ESM's implementation
 Templates/                        # one template per content type; new notes should follow the
                                    # matching template (e.g. models/water/fluxes/*.md ~ Templates/Flux-Template.md)
@@ -495,8 +497,9 @@ Walkthroughs that step a reader through the site itself — "open this page, do 
 - **Parsed, not declared.** Steps come from the markdown (`## Step N:` + `**Page:**` / `**Do:**` /
   `**Notice:**`), so tours stay readable as plain documents. Parsing is deliberately tolerant: a
   step with no usable `**Page:**` link just has no target, it isn't an error.
-- **`tours/` is excluded from the wiki scanner** (`getAllMarkdownFiles` in `markdown.ts`), so a
-  tour is not reachable at `/wiki/<slug>` and a `[[wikilink]]` pointing at one will dead-end.
+- **`tours/` is excluded from the wiki scanner** (`getAllMarkdownFiles` in `markdown.ts`, via
+  `NON_VAULT_DIRS`, which also holds `site/`), so a tour is not reachable at `/wiki/<slug>` and a
+  `[[wikilink]]` pointing at one will dead-end.
 - **The tour bar** (`src/components/TourBar.tsx`) is mounted for every route by `TourProvider` in
   `src/app/layout.tsx` — including `/wiki/[slug]`, which renders its own header and no `Navbar`.
   It carries the current step's Do/Notice plus Prev/Next/Exit while the reader is on the real page.
@@ -507,6 +510,16 @@ Walkthroughs that step a reader through the site itself — "open this page, do 
 - Step `**Page:**` targets should be the route the site's own navigation uses
   (`/models/water/fluxes/process_evapotranspiration`), not the `/wiki/` twin — write those as plain
   markdown links, since a wikilink always resolves to `/wiki/<slug>`.
+
+## Site chrome pages (`site/`)
+
+`/about` renders `site/about.md` rather than hardcoded JSX, so the prose can be edited without
+touching a component. `src/lib/sitePages.ts` reads the file, splits the body at the frontmatter's
+`table_heading`, and hands the page two pieces: the prose above it, and the GFM table below it
+parsed into `{label, body}` rows. The About page renders the prose in one column and those rows as
+cards in a column beside it (stacking below on narrow screens); a row ending in `(NOT THERE YET)`
+gets a "planned" badge instead of the inline note. `site/` is excluded from the wiki scanner, so
+there's no duplicate `/wiki/about`.
 
 ## Tagging protocol: `topic` / `kind` / `model`
 - **`topic: [tag1, tag2]`** — on flux/parameter/observation notes *and* on

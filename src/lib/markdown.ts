@@ -13,6 +13,9 @@ import {
 
 const contentDirectory = path.join(process.cwd());
 
+/** Top-level directories with their own routes — see getAllMarkdownFiles. */
+const NON_VAULT_DIRS = new Set(['tours', 'site']);
+
 /**
  * Extract wiki-style links like [[flux_stomatal_conductance]] or
  * [[process_transpiration|Transpiration]] from markdown. Only the link
@@ -270,18 +273,19 @@ export function getAllMarkdownFiles(dir: string = contentDirectory, fileList: st
     const filePath = path.join(dir, file);
     const stat = fs.statSync(filePath);
 
-    // The top-level `tours/` is parsed into steps by src/lib/tours.ts and
-    // rendered at /tours/<tour_id>, so it is deliberately not a wiki note —
-    // leaving it in would publish each tour twice and list them beside README
-    // in the sidebar. Matched against the path relative to the vault root, so
-    // this skips only that directory and not, say, `patterns/<topic>/tours/`.
+    // Directories that are rendered by their own routes rather than as wiki
+    // notes: `tours/` is parsed into steps by src/lib/tours.ts, `site/` holds
+    // page chrome like the About text. Leaving either in would publish the
+    // same content twice and list it beside README in the sidebar. Matched on
+    // the path relative to the vault root, so this skips only those top-level
+    // directories and not, say, `patterns/<topic>/tours/`.
     const relative = path.relative(contentDirectory, filePath);
     if (
       stat.isDirectory() &&
       !file.startsWith('.') &&
       file !== 'node_modules' &&
       file !== 'src' &&
-      relative !== 'tours'
+      !NON_VAULT_DIRS.has(relative)
     ) {
       getAllMarkdownFiles(filePath, fileList);
     } else if (file.endsWith('.md') && !file.startsWith('.')) {

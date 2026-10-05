@@ -1,166 +1,64 @@
+import { notFound } from 'next/navigation';
 import { Navbar } from '@/components/Navbar';
-import Link from 'next/link';
-import { Droplets, Sprout, FlaskConical, Sun, ArrowLeft } from 'lucide-react';
+import { MarkdownContent } from '@/components/MarkdownContent';
+import { getSitePage } from '@/lib/sitePages';
+
+export const metadata = {
+  title: 'About Heliopause',
+};
+
+/** Rows the author has marked as not built yet, e.g. "… (NOT THERE YET)". */
+const PLANNED = /\s*\(NOT THERE YET\)\s*$/i;
 
 export default function AboutPage() {
+  const page = getSitePage('about');
+
+  if (!page) {
+    notFound();
+  }
+
   return (
     <div className="min-h-screen bg-stone-50">
       <Navbar />
 
-      <main className="max-w-3xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg border border-stone-200 p-8">
-          <h1 className="text-3xl font-heading text-stone-900 mb-6">
-            About RHESSys Documentation
-          </h1>
+      <main className="mx-auto max-w-screen-xl px-4 py-12">
+        <header className="mb-8 max-w-3xl">
+          <h1 className="font-heading text-4xl text-stone-900">{page.title}</h1>
+          {page.subtitle && <p className="mt-2 text-lg text-stone-600">{page.subtitle}</p>}
+        </header>
 
-          <section className="mb-8">
-            <h2 className="text-xl font-heading text-stone-900 mb-3">
-              What is RHESSys?
-            </h2>
-            <p className="text-stone-600 mb-3 text-sm leading-relaxed">
-              RHESSys (Regional Hydro-Ecologic Simulation System) is a physically-based,
-              spatially-distributed ecosystem model that simulates carbon, water, and nutrient
-              cycling across watersheds and regions. It integrates hydrological processes with
-              ecosystem dynamics to understand how climate, topography, soils, and vegetation
-              interact.
-            </p>
-            <p className="text-stone-600 mb-3 text-sm leading-relaxed">
-              Developed by researchers at the University of North Carolina and the University of
-              California, Santa Barbara, RHESSys has been widely used for studying:
-            </p>
-            <ul className="list-disc list-inside text-stone-600 space-y-1.5 mb-4 text-sm">
-              <li>Climate change impacts on watersheds</li>
-              <li>Forest management effects on water yield</li>
-              <li>Drought and wildfire impacts on ecosystems</li>
-              <li>Nutrient cycling and water quality</li>
-              <li>Carbon sequestration in terrestrial ecosystems</li>
-            </ul>
-          </section>
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+          <article className="wiki-content min-w-0 flex-1">
+            <MarkdownContent content={page.prose} />
+          </article>
 
-          <section className="mb-8">
-            <h2 className="text-xl font-heading text-stone-900 mb-3">
-              Model Components
-            </h2>
-            <div className="grid md:grid-cols-2 gap-3 mb-4">
-              <div className="border border-stone-200 p-4 rounded-lg flex items-start gap-3">
-                <Droplets className="w-5 h-5 text-sky-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                <div>
-                  <h3 className="font-medium text-stone-800 text-sm mb-1">Water Model</h3>
-                  <p className="text-xs text-stone-500">
-                    Hydrological fluxes including evapotranspiration, infiltration, and runoff
-                  </p>
-                </div>
+          {page.table && page.table.rows.length > 0 && (
+            <aside className="lg:w-[26rem] lg:flex-shrink-0">
+              <div className="lg:sticky lg:top-20">
+                <h2 className="mb-3 font-heading text-xl text-stone-900">{page.table.heading}</h2>
+                <ul className="space-y-2.5">
+                  {page.table.rows.map(row => {
+                    const planned = PLANNED.test(row.body);
+                    return (
+                      <li key={row.label} className="rounded-lg border border-stone-200 bg-white p-4">
+                        <h3 className="flex items-start justify-between gap-2 text-sm font-medium text-stone-900">
+                          {row.label}
+                          {planned && (
+                            <span className="flex-shrink-0 rounded-full bg-stone-100 px-2 py-0.5 text-[11px] font-normal uppercase tracking-wide text-stone-500">
+                              planned
+                            </span>
+                          )}
+                        </h3>
+                        <p className="mt-1 text-sm leading-relaxed text-stone-600">
+                          {row.body.replace(PLANNED, '')}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
               </div>
-              <div className="border border-stone-200 p-4 rounded-lg flex items-start gap-3">
-                <Sprout className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                <div>
-                  <h3 className="font-medium text-stone-800 text-sm mb-1">Carbon Model</h3>
-                  <p className="text-xs text-stone-500">
-                    Photosynthesis, respiration, allocation, and decomposition fluxes
-                  </p>
-                </div>
-              </div>
-              <div className="border border-stone-200 p-4 rounded-lg flex items-start gap-3">
-                <FlaskConical className="w-5 h-5 text-violet-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                <div>
-                  <h3 className="font-medium text-stone-800 text-sm mb-1">Nitrogen Model</h3>
-                  <p className="text-xs text-stone-500">
-                    Nitrogen cycling, mineralization, and plant uptake dynamics
-                  </p>
-                </div>
-              </div>
-              <div className="border border-stone-200 p-4 rounded-lg flex items-start gap-3">
-                <Sun className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                <div>
-                  <h3 className="font-medium text-stone-800 text-sm mb-1">Energy Model</h3>
-                  <p className="text-xs text-stone-500">
-                    Surface energy balance and radiation transfer through canopies
-                  </p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-xl font-heading text-stone-900 mb-3">
-              Features
-            </h2>
-            <ul className="space-y-2 text-sm text-stone-600">
-              <li>
-                <strong className="text-stone-800">Flux Documentation:</strong> Detailed descriptions of model fluxes
-                with equations and conceptual models, for inputs measurement techniques
-              </li>
-              <li>
-                <strong className="text-stone-800">State/Parameter Documentation</strong> Comprehensive parameter/state definitions including
-                equations, conceptual models, units, ranges, and measurement methods
-              </li>
-              <li>
-                <strong className="text-stone-800">Observation Guide:</strong> Information on model outputs and how to measure
-                them in the field
-              </li>
-              <li>
-                <strong className="text-stone-800">Connection Visualization:</strong> Graphs showing relationships
-                between fluxes, states, and parameters
-              </li>
-              <li>
-                <strong className="text-stone-800">Code References:</strong> Links to specific functions and files in the
-                RHESSys source code
-              </li>
-              <li>
-                <strong className="text-stone-800">Scientific Literature:</strong> Curated references to peer-reviewed papers
-                for each component
-              </li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-xl font-heading text-stone-900 mb-3">
-              Resources
-            </h2>
-            <div className="space-y-2 text-sm text-stone-600">
-              <p>
-                <strong className="text-stone-800">GitHub Repository:</strong>{' '}
-                <a
-                  href="https://github.com/RHESSys/RHESSys"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline"
-                >
-                  github.com/RHESSys/RHESSys
-                </a>
-              </p>
-              <p>
-                <strong className="text-stone-800">Key Publication:</strong>{' '}
-                Tague, C.L. and Band, L.E., 2004. RHESSys: Regional Hydro-Ecologic Simulation
-                System. <em>Earth Interactions</em>, 8(19), pp.1-42.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-heading text-stone-900 mb-3">
-              Contributing
-            </h2>
-            <p className="text-sm text-stone-600 mb-3">
-              This documentation is continually being updated. Contributions welcome:
-            </p>
-            <ul className="list-disc list-inside text-sm text-stone-600 space-y-1.5">
-              <li>Submitting corrections or additions to the documentation</li>
-              <li>Adding new flux descriptions or state/parameter definitions</li>
-              <li>Contributing references to relevant scientific literature</li>
-              <li>Improving code references and examples</li>
-            </ul>
-          </section>
-
-          <div className="mt-8 pt-6 border-t border-stone-200">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" strokeWidth={1.5} />
-              Back to Models
-            </Link>
-          </div>
+            </aside>
+          )}
         </div>
       </main>
     </div>
