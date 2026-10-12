@@ -2,6 +2,8 @@
 title: "Global vegetation change and ET"
 topic: [evapotranspiration, vegetation_change]
 kind: relationship
+min_scale: global
+max_scale: global
 model: water
 parent: evapotranspiration_or_streamflow__response_to_vegetation_change
 related_content:

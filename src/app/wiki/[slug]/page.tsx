@@ -9,7 +9,7 @@ import { readControlGroups } from '@/lib/controlsList';
 import { buildPageOutline } from '@/lib/pageOutline';
 import { Sidebar } from '@/components/Sidebar';
 import { PageOutline } from '@/components/PageOutline';
-import { RelatedContentPanel } from '@/components/RelatedContentPanel';
+import { RelatedContentPanel, RelatedContentSidebar } from '@/components/RelatedContentPanel';
 import { MarkdownContent } from '@/components/MarkdownContent';
 import { CsvHistogramSection } from '@/components/CsvHistogramSection';
 import { CsvScatterSection } from '@/components/CsvScatterSection';
@@ -22,6 +22,8 @@ import { MetricResponseExplorer } from '@/components/MetricResponseExplorer';
 import { UsefulTechniques } from '@/components/UsefulTechniques';
 import { ConceptDiagram } from '@/components/ConceptDiagram';
 import { PageLinks, PageLinksSidebar } from '@/components/PageLinks';
+import { SynthesisScaleLinks } from '@/components/SynthesisScaleLinks';
+import { resolveSynthesisLinks } from '@/lib/synthesisLinks';
 import { readConceptDiagram } from '@/lib/conceptDiagram';
 import { readEsmTable } from '@/lib/esm';
 import { HeadingInjection, orderInjections, splitAtHeadings } from '@/lib/headingSplit';
@@ -230,6 +232,10 @@ export default async function WikiPage({ params }: PageProps) {
   // where a hub page's worked examples are visible without scrolling to the
   // heading they're spliced after.
   const sidebarPageLinks = isPattern && pageLinks?.sidebar ? pageLinks : undefined;
+  // `synthesis_links:` lists a hub's synthesis pages beside a scale ladder;
+  // it gets a slightly wider sidebar so the ladder and the links both fit.
+  const synthesisLinks = 'synthesisLinks' in content.metadata ? content.metadata.synthesisLinks : undefined;
+  const resolvedSynthesisLinks = isPattern && synthesisLinks ? resolveSynthesisLinks(synthesisLinks) : [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -237,15 +243,15 @@ export default async function WikiPage({ params }: PageProps) {
         <div className="max-w-screen-2xl mx-auto px-4 py-3">
           <Link href="/" className="inline-flex items-center gap-2 text-primary hover:underline">
             <Leaf className="w-5 h-5" strokeWidth={1.5} />
-            <span className="text-lg font-heading">ESM Model and Obs</span>
+            <span className="text-lg font-heading">ESM Obs, Theory, Model</span>
           </Link>
         </div>
       </header>
 
       <div className="flex max-w-screen-2xl mx-auto">
         {!isPattern && <Sidebar currentSlug={slug} contentType={content.type} />}
-        {isPattern && (outline.length > 0 || backModel || sidebarPageLinks) && (
-          <aside className="hidden lg:block w-64 flex-shrink-0 px-4 py-6">
+        {isPattern && (outline.length > 0 || backModel || sidebarPageLinks || resolvedSynthesisLinks.length > 0 || relatedContent.length > 0) && (
+          <aside className={`hidden lg:block ${resolvedSynthesisLinks.length > 0 ? 'w-72' : 'w-64'} flex-shrink-0 px-4 py-6`}>
             <div className="bg-white rounded-lg border border-stone-200 p-4 sticky top-16">
               {backModel && (
                 <Link
@@ -256,13 +262,24 @@ export default async function WikiPage({ params }: PageProps) {
                   {backModelTitle}
                 </Link>
               )}
+              {/* Synthesis Papers lead: on a relationship hub they're the main way onward. */}
+              {resolvedSynthesisLinks.length > 0 && (
+                <div className="mb-4">
+                  <SynthesisScaleLinks title={synthesisLinks?.title ?? 'Synthesis Papers'} links={resolvedSynthesisLinks} />
+                </div>
+              )}
               <PageOutline outline={outline} />
               {sidebarPageLinks && (
-                <div className={outline.length > 0 ? 'mt-4 pt-3 border-t border-stone-100' : ''}>
+                <div className={outline.length > 0 || resolvedSynthesisLinks.length > 0 ? 'mt-4 pt-3 border-t border-stone-100' : ''}>
                   <PageLinksSidebar
                     items={sidebarPageLinks.items}
                     title={sidebarPageLinks.sidebar_title ?? sidebarPageLinks.heading?.replace(/^#+\s*/, '') ?? 'Related pages'}
                   />
+                </div>
+              )}
+              {relatedContent.length > 0 && (
+                <div className="mt-4 pt-3 border-t border-stone-100">
+                  <RelatedContentSidebar items={relatedContent} title="Related content" />
                 </div>
               )}
             </div>
@@ -301,12 +318,19 @@ export default async function WikiPage({ params }: PageProps) {
                 ) : (
                   <MarkdownContent content={content.content} />
                 )}
+                {/* Pattern pages carry Related content in the left sidebar, which is
+                    hidden below lg — repeat it here so narrow screens keep it. */}
+                {isPattern && relatedContent.length > 0 && (
+                  <div className="lg:hidden mt-8 rounded-lg border border-stone-200 p-4">
+                    <RelatedContentSidebar items={relatedContent} title="Related content" />
+                  </div>
+                )}
               </div>
 
-              {(relatedContent.length > 0 || showTechniques) && (
+              {((!isPattern && relatedContent.length > 0) || showTechniques) && (
                 <aside className="lg:w-80 flex-shrink-0 space-y-4">
                   {showTechniques && <UsefulTechniques />}
-                  {relatedContent.length > 0 && (
+                  {!isPattern && relatedContent.length > 0 && (
                     <RelatedContentPanel items={relatedContent} title="Related content" />
                   )}
                 </aside>

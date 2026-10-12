@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { BookOpen, Boxes, Info, User, Settings, Menu, X, Leaf, Map, ChevronDown } from 'lucide-react';
+import { Network, Boxes, Info, User, Settings, Menu, X, Leaf, Map, ChevronDown } from 'lucide-react';
 import { useTours } from '@/components/TourProvider';
 
 export function Navbar() {
@@ -13,7 +13,7 @@ export function Navbar() {
   const { tours } = useTours();
 
   const navItems = [
-    { href: '/', label: 'Models', icon: BookOpen },
+    { href: '/synthesis', label: 'Synthesis', icon: Network },
     { href: '/esms', label: 'ESMs', icon: Boxes },
     { href: '/about', label: 'About', icon: Info },
     { href: '/profile', label: 'Profile', icon: User },
@@ -34,7 +34,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2.5">
             <Leaf className="w-6 h-6 text-primary" strokeWidth={1.5} />
             <span className="text-lg font-heading text-stone-900">
-              ESM Model and Obs 
+              ESM Obs, Theory, Model
             </span>
           </Link>
 

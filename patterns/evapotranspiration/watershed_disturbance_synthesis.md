@@ -2,6 +2,8 @@
 title: "Watershed studies of disturbance effects on hydrology"
 topic: [evapotranspiration, streamflow, vegetation_change]
 kind: relationship
+min_scale: TBD
+max_scale: watershed
 model: water
 parent: evapotranspiration_or_streamflow__response_to_vegetation_change
 related_content:

@@ -129,16 +129,23 @@ export default function HomePage() {
 
         {/* Info Section */}
         <div className="grid md:grid-cols-3 gap-5">
-          <div className="bg-white p-6 rounded-lg border border-stone-200">
+          <Link
+            href="/synthesis"
+            className="group bg-white p-6 rounded-lg border border-stone-200 shadow-sm hover:shadow-md hover:border-primary transition-all duration-200"
+          >
             <BookOpen className="w-6 h-6 text-primary mb-3" strokeWidth={1.5} />
-            <h3 className="text-lg font-heading text-stone-900 mb-2">
-              Documentation
+            <h3 className="text-lg font-heading text-stone-900 mb-2 flex items-center gap-1.5">
+              Theory and Synthesis
+              <ArrowRight
+                className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"
+                strokeWidth={1.5}
+              />
             </h3>
             <p className="text-sm text-stone-500">
-              Detailed descriptions of processes, equations, and implementations
-              for each model component.
+              The relationships and topics covered so far: conceptual models, what the
+              literature finds, and where studies disagree.
             </p>
-          </div>
+          </Link>
 
           <div className="bg-white p-6 rounded-lg border border-stone-200">
             <GitFork className="w-6 h-6 text-primary mb-3" strokeWidth={1.5} />

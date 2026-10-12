@@ -136,3 +136,66 @@ export function getRelationshipsOfInterest(modelSlug: string, extraTopics: strin
     }))
     .sort((a, b) => a.title.localeCompare(b.title));
 }
+
+export interface SynthesisEntry {
+  slug: string;
+  title: string;
+  href: string;
+  topics: string[];
+  model?: string;
+  description?: string;
+  /** Narrower pages that set `parent: <this slug>` — the worked examples under a hub. */
+  children: TopicLinkItem[];
+}
+
+export interface SynthesisIndex {
+  /** `kind: relationship` hubs (no `parent`), across every model. */
+  relationships: SynthesisEntry[];
+  /** `kind: pattern` pages — topic-scoped, not relationship hubs. */
+  patterns: SynthesisEntry[];
+  /** Every topic tag in use across the two lists. */
+  topics: string[];
+}
+
+/**
+ * The whole vault's synthesis layer, for `/synthesis`: the relationship hubs
+ * each with the narrower pages nested under it, plus the topic-scoped pattern
+ * pages. Unlike `getRelationshipsOfInterest`, this isn't scoped to one model —
+ * the point of the page is to show every topic the site covers.
+ */
+export function getSynthesisIndex(): SynthesisIndex {
+  const all = getAllContent().filter(item => item.type === 'overview');
+  const kindOf = (item: ContentMetadata) => (item.metadata as any).kind;
+
+  const toEntry = (item: ContentMetadata): SynthesisEntry => {
+    const meta = item.metadata as any;
+    return {
+      slug: item.metadata.slug,
+      title: getTitle(item),
+      href: `/wiki/${item.metadata.slug}`,
+      topics: getTopics(item),
+      model: meta.model,
+      description: meta.description || undefined,
+      children: all
+        .filter(child => (child.metadata as any).parent === item.metadata.slug)
+        .map(child => toLinkItem(child, `/wiki/${child.metadata.slug}`))
+        .sort((a, b) => a.title.localeCompare(b.title)),
+    };
+  };
+
+  const relationships = all
+    .filter(item => kindOf(item) === 'relationship' && !(item.metadata as any).parent)
+    .map(toEntry)
+    .sort((a, b) => b.children.length - a.children.length || a.title.localeCompare(b.title));
+
+  const patterns = all
+    .filter(item => kindOf(item) === 'pattern' && !(item.metadata as any).parent)
+    .map(toEntry)
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+  const topics = Array.from(
+    new Set([...relationships, ...patterns].flatMap(entry => entry.topics))
+  ).sort();
+
+  return { relationships, patterns, topics };
+}

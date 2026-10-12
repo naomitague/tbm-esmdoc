@@ -111,7 +111,7 @@ country_continent | koppen_geiger | whittaker_biome | climate_class_paperdefined
 forest_change_{metric,submetric,value_type,value_point,value_min,value_max,value_sd,unit} |
 hydro_response_{metric,value_type,value_point,…,unit} | method_analysis |
 method_forest_change_measurement | method_hydro_response_measurement | watershed_area_km2 |
-precip_mm_yr | spatial_scale | notes_flags | figure_table_source`.
+precip_mm_yr | watershed_size_class | notes_flags | figure_table_source`.
 Currently 172 rows from Yang et al. 2023 (metric `ET`) + 312 from Zhang et al. 2017 (metric
 `runoff`). 178 rows carry a cross-paper `site_id`; 260 carry a Köppen class (the Zhang rows
 mostly don't — no lat/lon in that source).

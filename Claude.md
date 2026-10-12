@@ -464,10 +464,45 @@ Same splice rule as the rest. How a hub page hands off to the worked examples
 that live on their own pages, rather than carrying every table itself —
 prominent enough to read as the way onward, unlike a markdown link in a
 paragraph. Rendered by `src/components/PageLinks.tsx`. Current example: the
-water-cycle/vegetation-change hub page, which links to
-`watershed_disturbance_synthesis.md` and `global_vegetation_change_et.md`
-(both `parent:` that hub, so they nest under it rather than appearing as
-siblings in the model's Relationships panel).
+water-cycle/vegetation-change hub page, whose sidebar-only `page_links`
+("Response Controls") links to `what_shapes_responses.md` (`parent:` that
+hub, so it nests under it rather than appearing as a sibling in the model's
+Relationships panel). Its synthesis pages moved to `synthesis_links` (below).
+
+### 9. `synthesis_links` — a hub's synthesis pages beside a scale ladder
+```yaml
+# on the relationship hub
+synthesis_links:
+  title: "Synthesis Papers"         # optional, this is the default
+  items:
+    - label: "Global vegetation change and ET"
+      href: /wiki/global_vegetation_change_et
+      # min_scale / max_scale here override the target page's own (rarely needed)
+
+# on each synthesis page it lists
+min_scale: global                   # plant|stand|hillslope|watershed|region/continent|global|TBD
+max_scale: global
+```
+A left-sidebar card (`/wiki/[slug]` pattern/relationship pages only, so not a
+splice and no `heading`): a vertical plant → global ladder beside the listed
+pages. A step is greyed out when no listed page covers it, available when one
+does, and selected on click, which highlights the pages covering that scale
+and dims the rest. A page covers every step from its `min_scale` to its
+`max_scale`; a `TBD`/blank bound collapses onto the other one. Same vocabulary
+as the examplepapers CSVs' `min_scale`/`max_scale` columns. Resolved by
+`src/lib/synthesisLinks.ts`, rendered by `src/components/SynthesisScaleLinks.tsx`.
+Only the `/wiki/` route renders it, so it's wired into `markdown.ts`'s
+`parseOverview` only. Non-synthesis hand-offs (e.g. "What Shapes Responses")
+stay in `page_links` with `sidebar: true`. Current example: the
+water-cycle/vegetation-change hub. Time scale is deliberately not modeled yet.
+
+Left-sidebar order on `/wiki/` pattern/relationship pages: back link →
+Synthesis Papers (tinted, so it reads as the primary way onward) → On this
+page → `page_links` sidebar card → `related_content` as a collapsed, muted
+disclosure (`RelatedContentSidebar`; repeated at the end of the body below
+`lg`, where the sidebar is hidden). Those pages have no right column except
+`kind: pattern`'s UsefulTechniques; non-pattern `/wiki/` pages keep the old
+right-hand `RelatedContentPanel`.
 
 ### ⚠️ Gotcha: two parsers, one frontmatter contract
 Flux/parameter/observation notes are reachable via two different routes,
@@ -621,6 +656,13 @@ metric, hydro-response metric) is stored as `value_type` (`point`/`mean`/
 because papers report ranges (e.g. thinning intensity 14–97%) as often as
 single numbers, and collapsing a range into a fake point value loses
 information.
+
+**`min_scale`/`max_scale` on every paper-derived CSV.** Controlled
+vocabulary `plant` < `stand` < `hillslope` < `watershed` <
+`region/continent` < `global`, or `TBD`; see
+`patterns/evapotranspiration/examplepapers/README.md`. Tag the scale of the
+individual data points, not the extent of the collection. Distinct from the
+obs table's `watershed_size_class` (Zhang's small/large split).
 
 **`ci_lower`/`ci_upper` only exist in `veg_hydro_response_syn.csv`, and only ever bound
 `value_point` in the *same row*.** A raw observation has no CI (it's not a

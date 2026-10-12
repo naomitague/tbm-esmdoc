@@ -4,6 +4,28 @@ Two tables. One row shape per table, deliberately not unified into a single wide
 table because the two record types answer different questions and mix badly
 (see rationale below).
 
+## Scale tags: `min_scale` / `max_scale` (all paper-derived CSVs in this folder)
+Every literature-derived CSV here carries `min_scale` and `max_scale`, the
+smallest and largest spatial scale the source paper's evidence addresses.
+Controlled vocabulary, ordered small → large:
+
+`plant` < `stand` < `hillslope` < `watershed` < `region/continent` < `global`
+
+**Tag the scale of the individual data points, not the extent of the
+collection** — Zhang's 312 catchments span the globe, but each row is one
+watershed, so it's `watershed`. `global` means the quantity itself is a
+global value (e.g. a global-mean ET trend). Model studies are tagged by the
+scale(s) the model resolves and reports (e.g. RHESSys stand → watershed).
+
+Use the same value in both columns when a paper works at a single scale; use
+`TBD` when the bound isn't settled yet (e.g. `veg_hydro_response_obs.csv` has
+`max_scale = watershed` but `min_scale = TBD`, since some underlying catchment
+studies also carry stand/hillslope measurements).
+
+Not to be confused with `watershed_size_class` in `veg_hydro_response_obs.csv`
+(Zhang et al.'s `small`/`large` split), which is a size class *within* the
+watershed scale.
+
 ## Table 1 — `veg_hydro_response_obs.csv`
 One row = one individual catchment/study observation (a real ΔF → ΔET or ΔF →
 Δrunoff pair reported for one physical site, or one digitized point off a

@@ -25,15 +25,20 @@ related_content:
     href: /models/vegetation-som/observations/obs_lai
   - label: "Vegetation biomass"
     type: parameter
-page_links:
-  # sidebar-only: these live in the left panel, not spliced into the body
-  sidebar: true
-  sidebar_title: "Details"
+synthesis_links:
+  # left-sidebar list beside a plant → global scale ladder; each page's scale
+  # comes from its own min_scale/max_scale frontmatter
+  title: "Synthesis Papers"
   items:
     - label: "Watershed studies of disturbance effects on hydrology"
       href: /wiki/watershed_disturbance_synthesis
     - label: "Global vegetation change and ET"
       href: /wiki/global_vegetation_change_et
+page_links:
+  # sidebar-only: these live in the left panel, not spliced into the body
+  sidebar: true
+  sidebar_title: "Response Controls"
+  items:
     - label: "What Shapes Responses"
       href: /wiki/what_shapes_responses
       description: "Watershed controls on how hydrology responds"

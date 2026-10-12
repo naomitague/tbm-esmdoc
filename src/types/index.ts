@@ -341,6 +341,10 @@ export interface OverviewMetadata {
   metricResponseData?: MetricResponseDataConfig;
   conceptDiagram?: ConceptDiagramConfig;
   pageLinks?: PageLinksConfig;
+  synthesisLinks?: SynthesisLinksConfig;
+  /** Spatial scale(s) this page's synthesis works at — read by a hub's `synthesis_links` scale ladder. Same vocabulary as the examplepapers CSVs' `min_scale`/`max_scale`; `TBD` (or blank) for an unsettled bound. */
+  min_scale?: string;
+  max_scale?: string;
   /** Author-curated "see also" list — replaces the old auto-derived Connections panel, which just showed whatever notes happened to be [[wikilinked]] and wasn't reliably meaningful. */
   relatedContent?: RelatedContentItem[];
   topic?: string[];
@@ -459,6 +463,38 @@ export interface PageLinksConfig {
   sidebar?: boolean;
   /** Heading for that sidebar card; defaults to `heading` with its `#`s stripped. */
   sidebar_title?: string;
+}
+
+/**
+ * The spatial scales a synthesis can work at, small → large. Shared with the
+ * `min_scale`/`max_scale` columns in `patterns/<topic>/examplepapers/*.csv`.
+ */
+export const SYNTHESIS_SCALES = ['plant', 'stand', 'hillslope', 'watershed', 'region/continent', 'global'] as const;
+export type SynthesisScale = (typeof SYNTHESIS_SCALES)[number];
+
+/** One synthesis page in a `synthesis_links` list. */
+export interface SynthesisLinkItem extends PageLinkItem {
+  /** Override the target page's own `min_scale`/`max_scale` frontmatter (e.g. for a non-/wiki/ target). */
+  min_scale?: string;
+  max_scale?: string;
+}
+
+/**
+ * Declared on a relationship hub (`synthesis_links:`) to list its synthesis
+ * pages in the left sidebar beside a scale ladder (plant → global). Each
+ * page's scale comes from its own `min_scale`/`max_scale` frontmatter, so a
+ * new page at a new scale only needs adding to `items`. See SynthesisScaleLinks.
+ */
+export interface SynthesisLinksConfig {
+  /** Sidebar card heading; defaults to "Synthesis Papers". */
+  title?: string;
+  items: SynthesisLinkItem[];
+}
+
+/** A `synthesis_links` item with its scale range resolved to ladder indices. */
+export interface ResolvedSynthesisLink extends PageLinkItem {
+  /** Indices into SYNTHESIS_SCALES, inclusive; null when the page declares no scale. */
+  scaleRange: [number, number] | null;
 }
 
 /** One author-declared box → page link in a `concept_diagram` (`links:`). */
